@@ -33,6 +33,7 @@ const GlobalStyle = createGlobalStyle`
         --background-color : #f0f0f0 ;
         --light-gray01 : #F7F7F7 ; 
         --light-gray02 : #e3e3e3 ;        
+        --light-gray03 : #DFDFDF ;        
         --gray01 : #8F8F8F;
         --purple : #CEA1E7 ;
         --yellow : #FFF59F ;

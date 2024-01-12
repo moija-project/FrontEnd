@@ -27,15 +27,15 @@ export default function PreviewPost({ isFirst = false }: PreviewPostProps) {
         <BottomLeft>작성자 · 2024년 01월 01일</BottomLeft>
         <BottomRight>
           <IconWrapper>
-            <FontAwesomeIcon icon={faEye} color="#8F8F8F" />
+            <FontAwesomeIcon icon={faEye} color="#D9D9D9" />
             <IconNumber>1</IconNumber>
           </IconWrapper>
           <IconWrapper>
-            <FontAwesomeIcon icon={faHeart} color="#8F8F8F" />
+            <FontAwesomeIcon icon={faHeart} color="#D9D9D9" />
             <IconNumber>1</IconNumber>
           </IconWrapper>
           <IconWrapper>
-            <FontAwesomeIcon icon={faStar} color="#8F8F8F" />
+            <FontAwesomeIcon icon={faStar} color="#D9D9D9" />
             <IconNumber>1</IconNumber>
           </IconWrapper>
         </BottomRight>
