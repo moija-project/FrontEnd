@@ -51,11 +51,12 @@ const Container = styled.div<{ isFirst: boolean }>`
   cursor: pointer;
   background-color: white;
   padding: 20px;
+  /* width: 100%; */
   max-width: 100%;
-  @media (max-width: 1180px) {
+  /* @media (max-width: 1180px) {
     padding: 10px;
     width: 80%;
-  }
+  } */
 `;
 const TopWrapper = styled.div`
   display: flex;

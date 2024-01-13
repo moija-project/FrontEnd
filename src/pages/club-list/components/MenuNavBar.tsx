@@ -16,6 +16,9 @@ export default function MenuNavBar() {
 }
 
 const Container = styled.div`
+  position: sticky;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 50px;
   background-color: white;
@@ -27,6 +30,7 @@ const MenuWrapper = styled.ul`
   justify-content: center;
 `;
 const MenuItem = styled.li`
+  cursor: pointer;
   font-size: 16px;
   text-align: center;
   height: 100%;
