@@ -1,13 +1,18 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export default function ClubListTopMenu() {
+  const navigate = useNavigate();
+  const onClickPost = () => {
+    navigate("/postClub");
+  };
   return (
     <Container>
       <TopWrapper>
-        <PostButton>글쓰기</PostButton>
+        <PostButton onClick={onClickPost}>글쓰기</PostButton>
         <InputWrapper>
           <InputBox></InputBox>
           <SearchButton>

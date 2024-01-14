@@ -6,6 +6,8 @@ import GlobalStyle from "./style/GlobalStyles";
 import Header from "./components/Header";
 import ClubListScreen from "./pages/club-list/ClubListScreen";
 import MyPageScreen from "./pages/mypage/MyPageScreen";
+import ClubPostScreen from "./pages/club-post/ClubPostScreen";
+import ClubDetailScreen from "./pages/club-detail/ClubDetailScreen";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/" element={<HomeScreen />} />
           <Route path="/clubList" element={<ClubListScreen />} />
           <Route path="/mypage" element={<MyPageScreen />} />
+          <Route path="/postClub" element={<ClubPostScreen />} />
+          <Route path="/clubDetail" element={<ClubDetailScreen />} />
         </Routes>
       </BrowserRouter>
     </Container>

@@ -37,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
         --gray01 : #8F8F8F;
         --purple : #CEA1E7 ;
         --yellow : #FFF59F ;
+        --red : #ED4343 ;
         --white : #FBFBFB ;    
     }
 `;
