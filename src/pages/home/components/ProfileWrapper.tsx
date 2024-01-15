@@ -31,16 +31,16 @@ const ProfileImage = styled.img`
   border-radius: 50px;
 `;
 const ProfileMiddleWraaper = styled.div`
-  margin-left: 12px;
+  margin-left: 0.75rem;
   display: flex;
   flex-direction: column;
 `;
 const NickName = styled.span`
-  font-size: 14px;
+  font-size: 0.875rem;
   margin-bottom: 8px;
 `;
 const ProfileContent = styled.span`
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--gray01);
 `;
 const ProfileRightWrapper = styled.div`
@@ -49,7 +49,7 @@ const ProfileRightWrapper = styled.div`
   margin-left: auto;
 `;
 const Title = styled.span`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gray01);
   margin-bottom: 6px;
 `;

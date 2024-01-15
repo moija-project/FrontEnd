@@ -25,5 +25,5 @@ const ContentContainer = styled.div`
   max-width: 800px;
   background-color: white;
   margin: auto;
-  padding: 10px 15px;
+  padding: 0.625rem 0.94rem;
 `;

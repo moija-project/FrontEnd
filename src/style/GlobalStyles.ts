@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
     input{
         display: flex;
         outline: none;
-        padding-left: 10px;
+        padding-left: 0.625rem;
     }
     ol,
     ul {

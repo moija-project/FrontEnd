@@ -66,5 +66,5 @@ const ButtonWrapper = styled.button<{ isChecked: boolean }>`
 const ButtonCnt = styled.span<{ isChecked: boolean }>`
   margin-top: 3px;
   color: ${({ isChecked }) => (isChecked ? "white" : "var(--purple)")};
-  font-size: 14px;
+  font-size: 0.875rem;
 `;

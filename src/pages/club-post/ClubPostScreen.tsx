@@ -45,9 +45,9 @@ const MainContainer = styled.div`
 const SubmitButton = styled.button`
   background-color: var(--purple);
   border-radius: 4px;
-  padding: 10px 20px;
+  padding: 0.625rem 20px;
   color: white;
-  font-size: 14px;
+  font-size: 0.875rem;
   margin-left: auto;
 `;
 const Line = styled.div`

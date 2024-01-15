@@ -24,14 +24,14 @@ export default function NotificationBox({
 }
 
 const Container = styled.div<{ isFirst: boolean }>`
-  padding-top: 15px;
+  padding-top: 0.94rem;
   ${({ isFirst }) => !isFirst && "border-top: 1px solid var(--light-gray02);"}
   cursor: pointer;
   border-radius: 4px;
   display: flex;
   align-items: flex-start;
   background-color: white;
-  margin-bottom: 15px;
+  margin-bottom: 0.94rem;
 `;
 const IconImage = styled.img`
   width: 45px;
@@ -44,7 +44,7 @@ const MessageWrapper = styled.div`
   flex-direction: column;
 `;
 const MessageTitle = styled.h2`
-  font-size: 14px;
+  font-size: 0.875rem;
   margin-bottom: 4px;
 `;
 const MessageContent = styled.span`
@@ -54,6 +54,6 @@ const MessageContent = styled.span`
   display: -webkit-box;
   -webkit-line-clamp: 2; // 원하는 라인수
   -webkit-box-orient: vertical;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--gray01);
 `;

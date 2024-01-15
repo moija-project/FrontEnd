@@ -100,12 +100,12 @@ const TopTextWrapper = styled.div`
   flex-direction: column;
 `;
 const TopTitle = styled.h2`
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   margin-bottom: 8px;
 `;
 const TopInstruction = styled.span`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gray01);
 `;
 const ToggleButton = styled.button<{ isChecked: boolean }>`
@@ -129,10 +129,10 @@ const ContentContainer = styled.div`
   margin: 40px 0;
 `;
 const InstructionText = styled.span`
-  font-size: 12px;
+  font-size: 0.75rem;
 `;
 const AddButton = styled.button<{ isMax?: boolean }>`
-  padding: 6px 10px;
+  padding: 6px 0.625rem;
   margin: auto;
   border-radius: 50px;
   background-color: white;
@@ -148,15 +148,15 @@ const QuestionWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 0.94rem;
 `;
 const QuestionNumber = styled.label`
-  font-size: 16px;
+  font-size: 1.125rem;
   font-weight: 600;
-  margin-right: 15px;
+  margin-right: 0.94rem;
 `;
 const QuestionInput = styled.input`
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
   width: 100%;
   padding: 5px 0;

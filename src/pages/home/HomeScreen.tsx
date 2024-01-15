@@ -48,14 +48,14 @@ const Container = styled.div`
   }
 `;
 const LeftContainer = styled.div`
-  /* padding: 0 15px; */
+  /* padding: 0 0.94rem; */
 
   @media screen and (max-width: 1500px) {
     display: none;
   }
 `;
 const MiddleContainer = styled.div`
-  /* padding: 0 15px; */
+  /* padding: 0 0.94rem; */
   max-width: 800px;
   margin: auto;
   @media screen and (max-width: 1000px) {
@@ -81,21 +81,21 @@ const RightContainer = styled.div`
   }
 `;
 const MiddleTitle = styled.h2`
-  font-size: 16px;
+  font-size: 1.125rem;
   font-weight: 700;
 `;
 const MiddleInstruction = styled.h4`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gray01);
   margin-top: 4px;
 `;
 const RightTitle = styled.h2`
-  font-size: 16px;
+  font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: 40px;
 `;
 const NoNotificationMsg = styled.span`
   text-align: center;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--gray01);
 `;

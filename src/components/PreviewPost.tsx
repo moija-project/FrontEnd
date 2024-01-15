@@ -54,7 +54,7 @@ const Container = styled.div<{ isFirst: boolean }>`
   /* width: 100%; */
   max-width: 100%;
   /* @media (max-width: 1180px) {
-    padding: 10px;
+    padding: 0.625rem;
     width: 80%;
   } */
 `;
@@ -64,12 +64,12 @@ const TopWrapper = styled.div`
   align-items: center;
 `;
 const MiddleWrapper = styled.div`
-  margin-top: 8px;
+  margin-top: 0.5rem;
   max-width: 100%;
 `;
 const Content = styled.div`
   overflow: hidden;
-  font-size: 15px;
+  font-size: 0.94rem;
   font-weight: 600;
   color: var(--gray01);
   text-overflow: ellipsis;
@@ -83,7 +83,7 @@ const BottomWrapper = styled.div`
   margin-top: 20px;
 `;
 const BottomLeft = styled.span`
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--gray01);
 `;
 const BottomRight = styled.div`
@@ -94,27 +94,27 @@ const IconWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 8px;
+  margin-left: 0.5rem;
 `;
 const IconNumber = styled.span`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gray01);
-  margin-left: 4px;
+  margin-left: 0.25rem;
 `;
 
 const RecruitStatus = styled.span<{ isRecruiting: boolean }>`
-  font-size: 10px;
-  padding: 6px 9px;
+  font-size: 0.625rem;
+  padding: 0.375rem 0.5625rem;
   text-align: center;
   min-width: 55px;
-  border-radius: 15px;
+  border-radius: 0.94rem;
   background-color: ${({ isRecruiting }) =>
     isRecruiting ? "var(--purple)" : "var(--gray01)"};
   color: white;
-  margin-right: 10px;
+  margin-right: 0.625rem;
 `;
 const Title = styled.div`
-  font-size: 16px;
+  font-size: 1.125rem;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;

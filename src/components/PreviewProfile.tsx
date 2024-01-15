@@ -29,7 +29,7 @@ const Container = styled.div<{ hasBorder: boolean }>`
   flex-direction: row;
   align-items: center;
   background-color: white;
-  padding: 15px ${({ hasBorder }) => (hasBorder ? "20px" : "0")};
+  padding: 0.94rem ${({ hasBorder }) => (hasBorder ? "20px" : "0")};
   border-radius: 90px;
   ${({ hasBorder }) => hasBorder && "border: 1px solid var(--purple);"}
 `;
@@ -37,7 +37,7 @@ const ProfileImg = styled.img`
   width: 65px;
   height: 65px;
   border-radius: 65px;
-  margin-right: 12px;
+  margin-right: 0.75rem;
 `;
 const ProfileContentWrapper = styled.div`
   display: flex;
@@ -49,7 +49,7 @@ const Nickname = styled.span`
   margin-bottom: 8px;
 `;
 const Content = styled.span`
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 400;
 `;
 const CredibilityWrapper = styled.div`
@@ -59,7 +59,7 @@ const CredibilityWrapper = styled.div`
   align-items: end;
 `;
 const CredibilityTitle = styled.span`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gray01);
   margin-bottom: 8px;
 `;

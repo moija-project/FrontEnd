@@ -49,7 +49,7 @@ const TopWrapper = styled.div`
   margin: 25px 0 40px;
 `;
 const PostButton = styled.button`
-  padding: 10px 35px;
+  padding: 0.625rem 35px;
   color: white;
   text-align: center;
   border-radius: 4px;
@@ -64,7 +64,7 @@ const InputBox = styled.input`
   background-color: white;
   /* width: 250px; */
   min-width: 120px;
-  padding: 8px 30px 8px 10px;
+  padding: 8px 30px 8px 0.625rem;
   border: 1px solid var(--light-gray03);
   border-radius: 80px;
 `;
@@ -73,11 +73,11 @@ const FilterWrapper = styled.ul`
   width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 15px;
+  gap: 0.94rem;
   padding: 0 20px;
 `;
 const FilterItem = styled.li`
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 400;
   color: var(--gray01);
   cursor: pointer;
@@ -86,5 +86,5 @@ const Line = styled.div`
   width: 100%;
   height: 1px;
   background-color: var(--light-gray02);
-  margin: 12px 0 26px;
+  margin: 0.75rem 0 26px;
 `;

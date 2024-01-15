@@ -31,7 +31,7 @@ const ButtonWrapper = styled.div`
 const BoxButton = styled.button<{ isColored: boolean }>`
   width: 150px;
   height: 50px;
-  font-size: 16px;
+  font-size: 1.125rem;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -74,12 +74,12 @@ const PhotoTitleWrapper = styled.div`
   align-items: flex-end;
 `;
 const PhotoTitle = styled.span`
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   margin-right: 6px;
 `;
 const PhotoInstruction = styled.span`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gray01);
 `;
 const PhotosContainer = styled.div`

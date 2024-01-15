@@ -89,25 +89,25 @@ const TitleInput = styled.input`
   font-size: 20px;
   border: none;
   width: 100%;
-  padding: 10px 0;
+  padding: 0.625rem 0;
 `;
 
 const TypeContainer = styled.div`
   margin-top: 30px;
 `;
 const TypeTitle = styled.span`
-  font-size: 14px;
+  font-size: 0.875rem;
   margin-bottom: 7px;
   font-weight: 600;
 `;
 const TypesWrapper = styled.div`
-  margin-top: 10px;
+  margin-top: 0.625rem;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 0.625rem;
 `;
 const TypeItemWrapper = styled.div<{ isChecked: boolean }>`
-  padding: 6px 15px;
+  padding: 6px 0.94rem;
   border-radius: 50px;
   background-color: ${({ isChecked }) =>
     isChecked ? "var(--purple)" : "white"};
@@ -133,5 +133,5 @@ const TextArea = styled.textarea`
   border-radius: 4px;
   border: 1px solid var(--light-gray03);
   font-weight: 500;
-  font-size: 16px;
+  font-size: 1.125rem;
 `;

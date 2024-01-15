@@ -36,7 +36,7 @@ const ColoredButton = styled.button`
   text-align: center;
   padding: 11px;
   background-color: var(--purple);
-  font-size: 16px;
+  font-size: 1.125rem;
 `;
 
 const NonColoredButton = styled.button`
@@ -49,7 +49,7 @@ const NonColoredButton = styled.button`
   text-align: center;
   padding: 11px;
   background-color: white;
-  font-size: 16px;
+  font-size: 1.125rem;
 `;
 const RedBorderButton = styled.button`
   display: flex;
@@ -61,7 +61,7 @@ const RedBorderButton = styled.button`
   text-align: center;
   padding: 11px;
   background-color: white;
-  font-size: 16px;
+  font-size: 1.125rem;
 `;
 
 const DisabledButton = styled.button`
@@ -74,5 +74,5 @@ const DisabledButton = styled.button`
   text-align: center;
   padding: 11px;
   background-color: var(--gray01);
-  font-size: 16px;
+  font-size: 1.125rem;
 `;

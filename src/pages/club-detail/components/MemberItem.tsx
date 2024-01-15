@@ -40,13 +40,13 @@ const Container = styled.div`
 `;
 const RoleIcon = styled.div`
   width: 25px;
-  margin-right: 12px;
+  margin-right: 0.75rem;
 `;
 const Nickname = styled.span`
   cursor: pointer;
   margin: 3px 0;
   max-width: 80%;
-  font-size: 16px;
+  font-size: 1.125rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -54,7 +54,7 @@ const Nickname = styled.span`
 const DeleteButton = styled.button`
   margin-left: auto;
   color: var(--red);
-  font-size: 14px;
+  font-size: 0.875rem;
   text-decoration: underline;
   text-underline-position: under;
 `;

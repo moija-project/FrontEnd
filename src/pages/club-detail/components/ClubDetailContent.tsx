@@ -48,7 +48,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 20px 10px;
+  padding: 20px 0.625rem;
 `;
 const Line = styled.div`
   width: 100%;
@@ -76,7 +76,7 @@ const DateWrapper = styled.div`
   flex-direction: column;
 `;
 const Date = styled.span`
-  font-size: 16px;
+  font-size: 0.95rem;
   color: var(--gray01);
 `;
 const RightWrapper = styled.div`
@@ -86,24 +86,25 @@ const RightWrapper = styled.div`
   justify-content: center;
 `;
 const State = styled.div`
-  padding: 5px 10px;
+  padding: 5px 0.625rem;
   background-color: var(--purple);
-  border-radius: 15px;
+  border-radius: 0.94rem;
   color: white;
-  font-size: 12px;
+  font-size: 0.75rem;
   max-width: fit-content;
   margin-bottom: 8px;
 `;
 const CheckText = styled.span`
   color: var(--purple);
+  font-size: 0.8rem;
 `;
 const Content = styled.div`
-  font-size: 18px;
+  font-size: 1.125rem;
   margin: 45px 0 25px;
   line-height: 25px;
 `;
 const Hits = styled.span`
   color: var(--gray01);
-  font-size: 16px;
-  margin: 15px 0;
+  font-size: 1.125rem;
+  margin: 0.94rem 0;
 `;

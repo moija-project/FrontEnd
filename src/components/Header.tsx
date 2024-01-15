@@ -46,7 +46,7 @@ const ToggleMenu = styled.ul`
 const Container = styled.div`
   overflow-x: hidden;
   width: 100%;
-  padding: 15px 60px;
+  padding: 0.94rem 3.75rem;
   background-color: var(--purple);
   display: flex;
   flex-direction: row;
@@ -92,7 +92,7 @@ const Menu = styled.button`
   flex-direction: row;
   justify-content: center;
   color: white;
-  font-size: 16px;
+  font-size: 1.125rem;
   font-weight: 400;
   text-decoration: underline;
   text-underline-position: under;

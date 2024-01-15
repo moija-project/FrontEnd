@@ -31,7 +31,7 @@ const MenuWrapper = styled.ul`
 `;
 const MenuItem = styled.li`
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1.125rem;
   text-align: center;
   height: 100%;
   display: flex;

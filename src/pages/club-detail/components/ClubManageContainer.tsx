@@ -44,7 +44,7 @@ const Button = styled.button<{ isActivated: boolean }>`
   ${({ isActivated }) => !isActivated && "pointer-events: none;"}
   background-color: ${({ isActivated }) =>
     isActivated ? "var(--purple)" : "var(--gray01)"};
-  font-size: 16px;
+  font-size: 1.125rem;
   margin-bottom: 20px;
 `;
 
@@ -68,19 +68,19 @@ const HeaderTitle = styled.h2`
   margin-right: 6px;
 `;
 const PeopleCnt = styled.span`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gray01);
 `;
 const InstructionText = styled.span`
   color: var(--gray01);
-  font-size: 12px;
+  font-size: 0.75rem;
 `;
 const MemberListWrapper = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
   margin-top: 30px;
 `;
 const NoMemberText = styled.span`
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--gray01);
   text-align: center;
 `;

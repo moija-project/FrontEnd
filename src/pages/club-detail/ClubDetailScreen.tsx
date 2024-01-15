@@ -43,7 +43,7 @@ const MainContainer = styled.div`
   flex: 0 0 65%;
   max-width: 800px;
   background-color: white;
-  padding: 10px 35px;
+  padding: 0.625rem 35px;
   box-sizing: border-box;
   margin: auto;
 
@@ -51,7 +51,7 @@ const MainContainer = styled.div`
     flex: 0 0 100%;
     margin-bottom: 20px;
     max-width: 100%;
-    padding: 10px 20px;
+    padding: 0.625rem 20px;
   }
 `;
 
