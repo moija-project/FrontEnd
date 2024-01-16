@@ -39,6 +39,7 @@ const GlobalStyle = createGlobalStyle`
         --yellow : #FFF59F ;
         --red : #ED4343 ;
         --white : #FBFBFB ;    
+        --blue : #4C8DD8 ;
     }
 `;
 

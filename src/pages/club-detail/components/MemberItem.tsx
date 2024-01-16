@@ -1,6 +1,7 @@
 import { faCrown, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 type MemberItemProps = {
@@ -12,9 +13,10 @@ export default function MemberItem({
   isLeader = false,
   isMe = false,
 }: MemberItemProps) {
-  const moveToAssessment = () => {
+  const navigate = useNavigate();
+  const moveToCredReview = () => {
     if (isMe) return;
-    console.log("moveToAssessment");
+    navigate("/credReview", { state: { type: "peer" } });
   };
   return (
     <Container>
@@ -25,7 +27,7 @@ export default function MemberItem({
           <FontAwesomeIcon icon={faUser} color="#CEA1E7" size="lg" />
         )}
       </RoleIcon>
-      <Nickname onClick={() => moveToAssessment()}>
+      <Nickname onClick={() => moveToCredReview()}>
         닉네임이름닉네임이름닉네임이름닉네임이름닉네임이름닉네임이름
       </Nickname>
       {!isMe && <DeleteButton>강퇴</DeleteButton>}

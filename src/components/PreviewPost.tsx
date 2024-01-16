@@ -4,6 +4,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faL, faStar } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 type PreviewPostProps = {
   isFirst?: boolean;
@@ -14,8 +15,17 @@ export default function PreviewPost({
   isFirst = false,
   hasSidePadding = true,
 }: PreviewPostProps) {
+  const navigate = useNavigate();
+
+  const moveToPostDetail = () => {
+    navigate("/clubDetail");
+  };
   return (
-    <Container isFirst={isFirst} sidePadding={hasSidePadding}>
+    <Container
+      onClick={moveToPostDetail}
+      isFirst={isFirst}
+      sidePadding={hasSidePadding}
+    >
       <TopWrapper>
         <RecruitStatus isRecruiting>모집중</RecruitStatus>
         <Title>

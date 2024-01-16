@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import PostContent from "./components/PostContent";
 import CreateQuestionnaire from "./components/CreateQuestionnaire";
+import CommonContainer from "../../components/CommonContainer";
 
 export default function ClubPostScreen() {
   const onSetQuestionList = (list: any) => {
@@ -18,30 +19,19 @@ export default function ClubPostScreen() {
   };
 
   return (
-    <Container>
-      <MainContainer>
-        <SubmitButton>등록</SubmitButton>
-        <PostContent
-          setTitle={onSetTitle}
-          setClubType={onSetType}
-          setContent={onSetContent}
-        />
-        <Line />
-        <CreateQuestionnaire setListArr={onSetQuestionList} />
-      </MainContainer>
-    </Container>
+    <CommonContainer>
+      <SubmitButton>등록</SubmitButton>
+      <PostContent
+        setTitle={onSetTitle}
+        setClubType={onSetType}
+        setContent={onSetContent}
+      />
+      <Line />
+      <CreateQuestionnaire setListArr={onSetQuestionList} />
+    </CommonContainer>
   );
 }
 
-const Container = styled.div`
-  background-color: var(--background-color);
-`;
-const MainContainer = styled.div`
-  max-width: 800px;
-  background-color: white;
-  padding: 45px 56px;
-  margin: auto;
-`;
 const SubmitButton = styled.button`
   background-color: var(--purple);
   border-radius: 4px;

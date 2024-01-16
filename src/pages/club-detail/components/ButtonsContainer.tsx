@@ -1,13 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export default function ButtonsContainer() {
+  const navigate = useNavigate();
+
+  const moveToClubCredReview = () => {
+    navigate("/credReview", { state: { type: "club" } });
+  };
   return (
     <Container>
       <SettingWrapper>
         <ColoredButton>모집 종료하기</ColoredButton>
         <NonColoredButton>모집하기</NonColoredButton>
       </SettingWrapper>
+      <ColoredButton onClick={moveToClubCredReview}>
+        모집 신뢰도 평가하기
+      </ColoredButton>
       <ColoredButton>모집 종료하기</ColoredButton>
       <NonColoredButton>모집하기</NonColoredButton>
       <RedBorderButton>삭제하기</RedBorderButton>
