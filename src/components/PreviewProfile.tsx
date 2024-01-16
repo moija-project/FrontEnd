@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Modal from "./Modal";
+import ProfileModal from "./ProfileModal";
 
 type PreviewProfileProps = {
   hasBorder?: boolean;
@@ -8,9 +10,19 @@ type PreviewProfileProps = {
 export default function PreviewProfile({
   hasBorder = false,
 }: PreviewProfileProps) {
+  const [showModal, setShowModal] = useState(false);
+  const handleClickProfile = () => {
+    setShowModal(!showModal);
+  };
   return (
     <Container hasBorder={hasBorder}>
-      <ProfileImg src={require("../assets/images/default-img-01.png")} />
+      {showModal && <ProfileModal setOpen={(open) => setShowModal(open)} />}
+
+      <ProfileImg
+        onClick={handleClickProfile}
+        src={require("../assets/images/default-img-01.png")}
+      />
+      {/* </button> */}
       <ProfileContentWrapper>
         <Nickname>닉네임</Nickname>
         <Content>여 20대</Content>
@@ -34,6 +46,7 @@ const Container = styled.div<{ hasBorder: boolean }>`
   ${({ hasBorder }) => hasBorder && "border: 1px solid var(--purple);"}
 `;
 const ProfileImg = styled.img`
+  cursor: pointer;
   width: 4.1rem;
   height: 4.1rem;
   border-radius: 4.1rem;
