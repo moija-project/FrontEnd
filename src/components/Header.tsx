@@ -1,6 +1,6 @@
 import { debounce } from "lodash";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 type HeaderProps = {
@@ -9,8 +9,11 @@ type HeaderProps = {
 
 export default function Header({ RightOption }: HeaderProps) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const navigate = useNavigate();
 
   const handleResize = debounce(() => setScreenWidth(window.innerWidth), 1000); // 1100px 기준으로!
+
+  const moveToHome = () => navigate("/");
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -21,7 +24,10 @@ export default function Header({ RightOption }: HeaderProps) {
   return (
     <>
       <Container>
-        <Logo src={require("../assets/images/logo-01.png")} />
+        <Logo
+          onClick={moveToHome}
+          src={require("../assets/images/logo-01.png")}
+        />
         <MenuListWrapper>
           <MenuList>
             <Link to={"/"}>
@@ -58,6 +64,7 @@ const Container = styled.div`
 `;
 
 const Logo = styled.img`
+  cursor: pointer;
   width: 100px;
   @media screen and (max-width: 1100px) {
     margin: 0 auto;

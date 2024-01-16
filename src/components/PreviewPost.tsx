@@ -7,11 +7,15 @@ import styled from "styled-components";
 
 type PreviewPostProps = {
   isFirst?: boolean;
+  hasSidePadding?: boolean;
 };
 
-export default function PreviewPost({ isFirst = false }: PreviewPostProps) {
+export default function PreviewPost({
+  isFirst = false,
+  hasSidePadding = true,
+}: PreviewPostProps) {
   return (
-    <Container isFirst={isFirst}>
+    <Container isFirst={isFirst} sidePadding={hasSidePadding}>
       <TopWrapper>
         <RecruitStatus isRecruiting>모집중</RecruitStatus>
         <Title>
@@ -44,13 +48,13 @@ export default function PreviewPost({ isFirst = false }: PreviewPostProps) {
   );
 }
 
-const Container = styled.div<{ isFirst: boolean }>`
+const Container = styled.div<{ isFirst: boolean; sidePadding?: boolean }>`
   ${({ isFirst }) => !isFirst && "border-top: 1px solid var(--light-gray02);"}
   display: flex;
   flex-direction: column;
   cursor: pointer;
   background-color: white;
-  padding: 20px;
+  padding: 1.25rem ${({ sidePadding }) => (sidePadding ? "1.25rem" : "0")};
   /* width: 100%; */
   max-width: 100%;
   /* @media (max-width: 1180px) {

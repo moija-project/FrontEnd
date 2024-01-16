@@ -1,13 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 import ProfileWrapper from "./ProfileWrapper";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfileBox() {
+  const navigate = useNavigate();
+
+  const moveToMypage = () => {
+    navigate("/mypage");
+  };
   return (
     <Container>
       <ProfileWrapper />
       <ButtonWrapper>
-        <BoxButton isColored={true}>마이페이지</BoxButton>
+        <BoxButton isColored={true} onClick={moveToMypage}>
+          채팅 목록
+        </BoxButton>
         <BoxButton isColored={false}>로그아웃</BoxButton>
       </ButtonWrapper>
     </Container>
