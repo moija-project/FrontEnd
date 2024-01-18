@@ -27,6 +27,9 @@ const GlobalStyle = createGlobalStyle`
     ol,
     ul {
         list-style: none;
+    } ;
+    a {
+        text-decoration: none;
     }
 
     :root {
@@ -36,6 +39,7 @@ const GlobalStyle = createGlobalStyle`
         --light-gray03 : #DFDFDF ;        
         --gray01 : #8F8F8F;
         --purple : #CEA1E7 ;
+        --light-purple01 : #FFF5FF ;
         --yellow : #FFF59F ;
         --red : #ED4343 ;
         --white : #FBFBFB ;    

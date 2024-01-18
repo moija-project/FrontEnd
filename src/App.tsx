@@ -10,12 +10,14 @@ import ClubPostScreen from "./pages/club-post/ClubPostScreen";
 import ClubDetailScreen from "./pages/club-detail/ClubDetailScreen";
 import ReviewCredScreen from "./pages/credibility-review/ReviewCredScreen";
 import NotFoundScreen from "./pages/NotFoundScreen";
+import DefaultScrollTop from "./components/DefaultScrollTop";
 
 function App() {
   return (
     <Container className="App">
       <BrowserRouter>
         <Header />
+        <DefaultScrollTop />
         <GlobalStyle />
         <Routes>
           <Route path="/" element={<HomeScreen />} />
