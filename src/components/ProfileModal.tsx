@@ -3,7 +3,6 @@ import Modal from "./Modal";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-// import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 
 type ProfileModalProps = {
   setOpen: (open: boolean) => void;
@@ -97,7 +96,7 @@ export default function ProfileModal({ setOpen }: ProfileModalProps) {
             </MyScore>
           </ScoreWrapper>
         </CredWrapper>
-        <EditButton onClick={handleEditSubmit}>프로필 수정하기</EditButton>
+        <EditButton onClick={handleEditSubmit}>수정하기</EditButton>
       </Container>
     </Modal>
   );
@@ -120,6 +119,7 @@ const ProfileImg = styled.img`
   border-radius: 100%;
 `;
 const ProfileImgEdit = styled.label`
+  object-fit: none;
   display: flex;
   cursor: pointer;
   justify-content: center;
@@ -181,10 +181,19 @@ const TotalScore = styled.span`
   font-weight: 400;
 `;
 const EditButton = styled.button`
-  max-width: 36rem;
+  max-width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 1rem auto;
   color: white;
   background-color: var(--purple);
   border-radius: 4px;
   padding: 0.5rem 6.8rem;
+  font-size: 1rem;
+  white-space: nowrap;
+  text-align: center;
+  @media (max-width: 580px) {
+    font-size: 0.7rem;
+  }
 `;

@@ -56,6 +56,7 @@ const LeftContainer = styled.div`
 `;
 const MiddleContainer = styled.div`
   /* padding: 0 0.94rem; */
+  flex: 1;
   max-width: 800px;
   margin: auto;
   @media screen and (max-width: 1000px) {
@@ -68,6 +69,7 @@ const ClubListWrapper = styled.div`
 `;
 const RightContainer = styled.div`
   min-width: 300px;
+  max-width: 380px;
   max-height: 535px;
   overflow-y: scroll;
   height: fit-content;

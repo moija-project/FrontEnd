@@ -9,6 +9,7 @@ import MyPageScreen from "./pages/mypage/MyPageScreen";
 import ClubPostScreen from "./pages/club-post/ClubPostScreen";
 import ClubDetailScreen from "./pages/club-detail/ClubDetailScreen";
 import ReviewCredScreen from "./pages/credibility-review/ReviewCredScreen";
+import NotFoundScreen from "./pages/NotFoundScreen";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/postClub" element={<ClubPostScreen />} />
           <Route path="/clubDetail" element={<ClubDetailScreen />} />
           <Route path="/credReview" element={<ReviewCredScreen />} />
+          <Route path="/*" element={<NotFoundScreen />} />
         </Routes>
       </BrowserRouter>
     </Container>
