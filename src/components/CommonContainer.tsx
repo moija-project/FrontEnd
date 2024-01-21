@@ -13,15 +13,19 @@ export default function CommonContainer({
 }: CommonContainerProps) {
   return (
     <Container>
-      <MainContainer style={containerStyle}>{children}</MainContainer>
+      <BoxContainer>
+        <MainContainer style={containerStyle}>{children}</MainContainer>
+      </BoxContainer>
     </Container>
   );
 }
 
 const Container = styled.div`
   background-color: var(--background-color);
+  min-height: 100vh;
 `;
-const MainContainer = styled.div`
+const BoxContainer = styled.div`
+  min-height: 100vh;
   background-color: white;
   padding: 2.19rem 3.125rem;
   display: flex;
@@ -32,4 +36,7 @@ const MainContainer = styled.div`
     width: 100%;
     padding: 1.5rem 2.2rem;
   }
+`;
+const MainContainer = styled.div`
+  width: 100%;
 `;

@@ -23,7 +23,8 @@ export default function ProfileBox() {
 }
 
 const Container = styled.div`
-  /* width: 100%; */
+  width: 100%;
+  min-width: 324px;
   padding: 20px;
   border-radius: 4px;
   background-color: white;
@@ -37,7 +38,9 @@ const ButtonWrapper = styled.div`
   gap: 20px;
 `;
 const BoxButton = styled.button<{ isColored: boolean }>`
-  width: 150px;
+  /* width: 150px; */
+  white-space: nowrap;
+  width: 100%;
   height: 50px;
   font-size: 1.125rem;
   display: flex;

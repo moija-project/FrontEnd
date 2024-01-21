@@ -9,8 +9,8 @@ export default function HomeScreen() {
   return (
     <Container>
       <LeftContainer>
-        {/* <LoginBox /> */}
-        <ProfileBox />
+        <LoginBox />
+        {/* <ProfileBox /> */}
       </LeftContainer>
       <MiddleContainer>
         <MiddleTitle>모임 모집</MiddleTitle>
@@ -25,8 +25,9 @@ export default function HomeScreen() {
         <RightTitle>알림</RightTitle>
         {/* <NoNotificationMsg>알림이 없어요</NoNotificationMsg> */}
         <div style={{ marginTop: 25 }}>
-          {[1, 2, 3, 4, 1, 1, 1].map((v, i) =>
-            i === 0 ? <NotificationBox isFirst={true} /> : <NotificationBox />
+          {[1, 2, 3, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(
+            (v, i) =>
+              i === 0 ? <NotificationBox isFirst={true} /> : <NotificationBox />
           )}
         </div>
       </RightContainer>
@@ -40,6 +41,7 @@ const Container = styled.div`
   flex-direction: row;
   gap: 20px;
   padding: 40px;
+  align-items: flex-start;
   background-color: var(--background-color);
   @media screen and (max-width: 1500px) {
     flex-direction: column;
@@ -51,11 +53,12 @@ const LeftContainer = styled.div`
   /* padding: 0 0.94rem; */
 
   @media screen and (max-width: 1500px) {
-    display: none;
+    max-width: 100%;
   }
 `;
 const MiddleContainer = styled.div`
   /* padding: 0 0.94rem; */
+
   flex: 1;
   max-width: 800px;
   margin: auto;
@@ -70,7 +73,7 @@ const ClubListWrapper = styled.div`
 const RightContainer = styled.div`
   min-width: 300px;
   max-width: 380px;
-  max-height: 535px;
+  max-height: 530px;
   overflow-y: scroll;
   height: fit-content;
   position: sticky;

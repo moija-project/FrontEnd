@@ -11,6 +11,7 @@ import ClubDetailScreen from "./pages/club-detail/ClubDetailScreen";
 import ReviewCredScreen from "./pages/credibility-review/ReviewCredScreen";
 import NotFoundScreen from "./pages/NotFoundScreen";
 import DefaultScrollTop from "./components/DefaultScrollTop";
+import LoginScreen from "./pages/login/LoginScreen";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <GlobalStyle />
         <Routes>
           <Route path="/" element={<HomeScreen />} />
+          <Route path="/login" element={<LoginScreen />} />
           <Route path="/clubList" element={<ClubListScreen />} />
           <Route path="/mypage" element={<MyPageScreen />} />
           <Route path="/postClub" element={<ClubPostScreen />} />
