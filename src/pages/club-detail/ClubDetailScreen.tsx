@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import ClubDetailContent from "./components/ClubDetailContent";
 import ButtonsContainer from "./components/ButtonsContainer";
 import LikeScrapContainer from "./components/LikeScrapContainer";
 import ClubManageContainer from "./components/ClubManageContainer";
+import { useParams } from "react-router-dom";
 
 export default function ClubDetailScreen() {
+  const { postId } = useParams();
   return (
     <Container>
       <ContentWrapper>

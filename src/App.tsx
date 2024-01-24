@@ -12,24 +12,39 @@ import ReviewCredScreen from "./pages/credibility-review/ReviewCredScreen";
 import NotFoundScreen from "./pages/NotFoundScreen";
 import DefaultScrollTop from "./components/DefaultScrollTop";
 import LoginScreen from "./pages/login/LoginScreen";
+import ReadRequestDetailScreen from "./pages/read-request-detail/ReadRequestDetailScreen";
+import { RecoilRoot } from "recoil";
+import RegulationAgreementScreen from "./pages/sign-up/RegulationAgreementScreen";
+import SignupScreen from "./pages/sign-up/SignupScreen";
 
 function App() {
   return (
     <Container className="App">
       <BrowserRouter>
-        <Header />
-        <DefaultScrollTop />
-        <GlobalStyle />
-        <Routes>
-          <Route path="/" element={<HomeScreen />} />
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/clubList" element={<ClubListScreen />} />
-          <Route path="/mypage" element={<MyPageScreen />} />
-          <Route path="/postClub" element={<ClubPostScreen />} />
-          <Route path="/clubDetail" element={<ClubDetailScreen />} />
-          <Route path="/credReview" element={<ReviewCredScreen />} />
-          <Route path="/*" element={<NotFoundScreen />} />
-        </Routes>
+        <RecoilRoot>
+          <Header />
+          <DefaultScrollTop />
+          <GlobalStyle />
+          <Routes>
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/regulation" element={<RegulationAgreementScreen />} />
+            <Route path="/signup" element={<SignupScreen />} />
+            <Route path="/clubList" element={<ClubListScreen />} />
+            <Route path="/mypage" element={<MyPageScreen />} />
+            <Route path="/postClub" element={<ClubPostScreen />} />
+            <Route path="/clubDetail/:postId" element={<ClubDetailScreen />} />
+
+            {/**신뢰도 평가 하는 페이지 */}
+            <Route path="/credReview" element={<ReviewCredScreen />} />
+
+            <Route
+              path="/readRequestDetail"
+              element={<ReadRequestDetailScreen />}
+            />
+            <Route path="/*" element={<NotFoundScreen />} />
+          </Routes>
+        </RecoilRoot>
       </BrowserRouter>
     </Container>
   );

@@ -58,12 +58,13 @@ const LeftContainer = styled.div`
 `;
 const MiddleContainer = styled.div`
   /* padding: 0 0.94rem; */
-
   flex: 1;
   max-width: 800px;
   margin: auto;
-  @media screen and (max-width: 1000px) {
-    max-width: 100%;
+  @media screen and (max-width: 1500px) {
+    max-width: 800px;
+    width: 100%;
+    /* min-width: 100%; */
   }
 `;
 const ClubListWrapper = styled.div`

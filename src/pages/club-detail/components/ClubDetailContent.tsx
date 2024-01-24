@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Carousel from "./Carousel";
 import PreviewProfile from "../../../components/PreviewProfile";
+import { getPostDetail } from "../../../api/service-api/clubPostApi";
+import { postDetailResType } from "../../../interfaces/post-type";
+import { changeDateExprssion } from "../../../utils/datetime";
 
 export default function ClubDetailContent() {
+  const [postDetail, setPostDetail] = useState<postDetailResType>();
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getPostDetail({ post_id: 1 });
+      setPostDetail(data);
+    };
+    getData();
+  }, []);
   return (
     <Container>
       <Carousel />
@@ -11,35 +22,26 @@ export default function ClubDetailContent() {
       <Line />
       <PostHeader>
         <LeftWrapper>
-          <PostTitle>게시물제목</PostTitle>
+          <PostTitle>{postDetail?.title}</PostTitle>
           <DateWrapper>
             <Date style={{ marginBottom: 4 }}>
-              작성일자 2024.01.01 00:00:00
+              작성일자{" "}
+              {postDetail && changeDateExprssion(postDetail?.latest_write)}
             </Date>
-            <Date>수정일자 2024.01.01 00:00:00</Date>
+            {postDetail?.is_changed && (
+              <Date>수정일자 2024.01.01 00:00:00</Date>
+            )}
           </DateWrapper>
         </LeftWrapper>
         <RightWrapper>
-          <State>모집중</State>
+          <State isRecruiting={postDetail?.state_recruit ?? false}>
+            {postDetail?.state_recruit ? "모집중" : "모집종료"}
+          </State>
           <CheckText>가입 조건 있음 · 보증금 있음</CheckText>
         </RightWrapper>
       </PostHeader>
-      <Content>
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다 게시물 내용입니다 게시물 내용입니다
-        게시물 내용입니다 게시물 내용입니다
-      </Content>
-      <Hits>조회수 10</Hits>
+      <Content>{postDetail?.contents}</Content>
+      <Hits>조회수 {postDetail?.views}</Hits>
     </Container>
   );
 }
@@ -85,9 +87,10 @@ const RightWrapper = styled.div`
   align-items: flex-end;
   justify-content: center;
 `;
-const State = styled.div`
+const State = styled.div<{ isRecruiting: boolean }>`
   padding: 5px 0.625rem;
-  background-color: var(--purple);
+  background-color: ${({ isRecruiting }) =>
+    isRecruiting ? "var(--purple)" : "var(--gray01)"};
   border-radius: 0.94rem;
   color: white;
   font-size: 0.75rem;

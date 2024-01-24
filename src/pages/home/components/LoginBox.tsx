@@ -5,6 +5,10 @@ import styled from "styled-components";
 export default function LoginBox() {
   const navigate = useNavigate();
 
+  const moveToSignup = () => {
+    navigate("/regulation");
+  };
+
   return (
     <Container>
       <Content>
@@ -14,7 +18,9 @@ export default function LoginBox() {
         <BoxButton isColored={true} onClick={() => navigate("/login")}>
           로그인
         </BoxButton>
-        <BoxButton isColored={false}>회원가입</BoxButton>
+        <BoxButton onClick={moveToSignup} isColored={false}>
+          회원가입
+        </BoxButton>
       </ButtonWrapper>
     </Container>
   );

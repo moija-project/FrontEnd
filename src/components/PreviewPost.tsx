@@ -2,24 +2,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faL, faStar } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { changeDateExprssion } from "../utils/datetime";
+import { postListResType } from "../interfaces/post-type";
 
 type PreviewPostProps = {
+  postItem?: postListResType; // fix!!
   isFirst?: boolean;
   hasSidePadding?: boolean;
 };
 
 export default function PreviewPost({
+  postItem,
   isFirst = false,
   hasSidePadding = true,
 }: PreviewPostProps) {
   const navigate = useNavigate();
 
   const moveToPostDetail = () => {
-    navigate("/clubDetail");
+    navigate(`/clubDetail/${postItem?.post_id ?? 0}`);
   };
+
   return (
     <Container
       onClick={moveToPostDetail}
@@ -27,26 +32,29 @@ export default function PreviewPost({
       sidePadding={hasSidePadding}
     >
       <TopWrapper>
-        <RecruitStatus isRecruiting>모집중</RecruitStatus>
-        <Title>
-          게시물제목제목제목게시물제목제목제목게시물제목제목제목게시물제목제목제목게시물제목제목제목게시물제목제목제목
-        </Title>
+        <RecruitStatus isRecruiting={postItem?.state_recruit ?? true}>
+          {postItem?.state_recruit ? "모집중" : "모집종료"}
+        </RecruitStatus>
+        <Title>{postItem ? postItem.title : "test title"}</Title>
       </TopWrapper>
       <MiddleWrapper>
-        <Content>
-          내용입니다다다다다다다다내용입니다다다다다다다다내용입니다다다다다다다다내용입니다다다다다다다다내용입니다다다다다다다다내용입니다다다다다다다다
-        </Content>
+        <Content>{postItem?.contents ?? "test contents"}</Content>
       </MiddleWrapper>
       <BottomWrapper>
-        <BottomLeft>작성자 · 2024년 01월 01일</BottomLeft>
+        <BottomLeft>
+          {postItem?.leader_nickname ?? "leader nickname"} ·{" "}
+          {postItem
+            ? changeDateExprssion(postItem?.latest_write)
+            : "2024년 01월 01일"}
+        </BottomLeft>
         <BottomRight>
           <IconWrapper>
             <FontAwesomeIcon icon={faEye} color="#D9D9D9" />
-            <IconNumber>1</IconNumber>
+            <IconNumber>{postItem?.views ?? 1}</IconNumber>
           </IconWrapper>
           <IconWrapper>
             <FontAwesomeIcon icon={faHeart} color="#D9D9D9" />
-            <IconNumber>1</IconNumber>
+            <IconNumber>{postItem?.likes ?? 1}</IconNumber>
           </IconWrapper>
           <IconWrapper>
             <FontAwesomeIcon icon={faStar} color="#D9D9D9" />
@@ -67,6 +75,7 @@ const Container = styled.div<{ isFirst: boolean; sidePadding?: boolean }>`
   padding: 1.25rem ${({ sidePadding }) => (sidePadding ? "1.25rem" : "0")};
   /* width: 100%; */
   max-width: 100%;
+
   /* @media (max-width: 1180px) {
     padding: 0.625rem;
     width: 80%;
