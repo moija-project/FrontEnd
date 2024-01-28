@@ -1,17 +1,32 @@
-import { createProxyMiddleware, Filter, Options } from "http-proxy-middleware";
-import { Application } from "express";
+// // import { createProxyMiddleware, Filter, Options } from "http-proxy-middleware";
+// // import { Application } from "express";
 
-const addCorsHeaders = (proxyRes: any, req: any, res: any) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-};
+// // const addCorsHeaders = (proxyRes: any, req: any, res: any) => {
+// //   res.setHeader("Access-Control-Allow-Origin", "*");
+// // };
 
-// module.exports = (app: Application) => {
+// // // module.exports = (app: Application) => {
+// // //   app.use(
+// // //     "/post",
+// // //     createProxyMiddleware({
+// // //       target: "http://localhost:8090",
+// // //       changeOrigin: true,
+// // //       onProxyRes: addCorsHeaders,
+// // //     })
+// // //   );
+// // // };
+
+// import { createProxyMiddleware } from "http-proxy-middleware";
+// import { Express } from "express";
+
+// export default function (app: Express) {
 //   app.use(
-//     "/post",
+//     "/api",
 //     createProxyMiddleware({
-//       target: "http://localhost:8090",
-//       changeOrigin: true,
-//       onProxyRes: addCorsHeaders,
+//       target: "http://mo.ija.kro.kr/",
+//       pathRewrite: {
+//         "^/api": "",
+//       },
 //     })
 //   );
-// };
+// }

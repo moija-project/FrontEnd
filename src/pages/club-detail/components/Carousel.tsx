@@ -5,15 +5,18 @@ import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { useRecoilValue } from "recoil";
+import { postDetailState } from "../../../store/postStore";
 
 const dumyData = [
-  "https://phinf.wevpstatic.net/MjAyNDAxMDVfMTA4/MDAxNzA0NDYzOTkzNTQw.05sPEM3384LXhHFPkFDTVv9wUU5PVXD8dGNZV5WGuw4g.PuaWVrZxBYxz8fHxC-RyedOi7sd8VdKPPSGAFdz57H0g.JPEG/04a067c5-af59-464d-bae9-fa3dd2b94027.jpeg?type=w670",
+  "https://t1.daumcdn.net/cfile/tistory/24163538586FE4AF34",
   "https://kpopsingers.com/wp-content/uploads/2023/10/Eunseok-gallery-4-jpg.webp",
   "https://kpopsingers.com/wp-content/uploads/2023/10/Eunseok-gallery-2-jpg.webp",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdsAqNfKx-6LQSueLo5_uw9slXouWWr4Pp5w&usqp=CAU",
 ];
 
 export default function Carousel() {
+  const postDetail = useRecoilValue(postDetailState);
   const settings = {
     dots: true,
     infinite: true,
@@ -24,11 +27,19 @@ export default function Carousel() {
   return (
     <Container>
       <StyledSlider {...settings}>
-        {dumyData.map((img, idx) => (
-          <ImgWrapper key={idx}>
-            <ImgItem src={`${img}`} />
+        {postDetail.pictures === null ? (
+          <ImgWrapper>
+            <ImgItem
+              src={require("../../../assets/images/default-img-01.png")}
+            />
           </ImgWrapper>
-        ))}
+        ) : (
+          postDetail.pictures.map((img, idx) => (
+            <ImgWrapper key={idx}>
+              <ImgItem src={`${img}`} />
+            </ImgWrapper>
+          ))
+        )}
       </StyledSlider>
     </Container>
   );

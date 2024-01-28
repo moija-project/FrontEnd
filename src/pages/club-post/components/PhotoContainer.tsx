@@ -1,9 +1,12 @@
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { writePostState } from "../../../store/postStore";
 
 export default function PhotoContainer() {
+  const [writePost, setWritePost] = useRecoilState(writePostState);
   const [postImg, setPostImg] = useState<any[]>([]);
   const [previewImg, setPreviewImg] = useState<any[]>([]);
 
@@ -41,6 +44,7 @@ export default function PhotoContainer() {
         <AddPhotoButton
           id="addImg"
           type="file"
+          accept="image/*"
           onChange={(e) => onUploadImage(e)}
         />
         <AddPhotoLabel htmlFor="addImg">

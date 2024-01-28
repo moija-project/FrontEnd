@@ -1,42 +1,81 @@
 import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import {
+  getPostDetail,
+  postPostClip,
+  postPostLike,
+} from "../../../api/service-api/clubPostApi";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { fetchPostDetailAtom, postDetailState } from "../../../store/postStore";
 
 // !!! 로그인했을 때만 클릭 가능하도록!!
 
-export default function LikeScrapContainer() {
+type LikeScrapContainerProps = {
+  postId: number;
+};
+
+export default function LikeScrapContainer({
+  postId,
+}: LikeScrapContainerProps) {
+  // const post = useRecoilValue(postDetailState);
+  const [postDetail, setPostDetail] = useRecoilState(postDetailState);
+  // const like = useRecoilValue(fetchPostDetailAtom({ post_id: postId }))?.likes;
   const [likeCnt, setLikeCnt] = useState(10);
-  const [scrapCnt, setScrapCnt] = useState(10);
   const [isLiked, setIsLiked] = useState(false);
   const [isScrapped, setIsScrapped] = useState(false);
 
-  const onClickLike = () => {
-    isLiked ? setLikeCnt(likeCnt - 1) : setLikeCnt(likeCnt + 1);
-    setIsLiked(!isLiked);
+  // const postPostLikeToggle =async (vote : number) => { // 0:취소 / 1:등록
+  //   const res = await postPostLike({vote , post_id : postId})
+  //   if (res?.isSuccess) {}
+  // }
+  const onClickLike = async () => {
+    let newDetail = { ...postDetail };
+    const vote = postDetail.myliked ? 0 : 1;
+
+    const res = await postPostLike({ vote, post_id: postId });
+    if (!res?.isSuccess) return;
+
+    newDetail.likes = vote === 0 ? newDetail.likes - 1 : newDetail.likes + 1;
+    setPostDetail(newDetail);
   };
-  const onClickScrap = () => {
-    isScrapped ? setScrapCnt(scrapCnt - 1) : setScrapCnt(scrapCnt + 1);
-    setIsScrapped(!isScrapped);
+  const onClickScrap = async () => {
+    let newPostDetail = { ...postDetail };
+    const clip = postDetail.mycliped ? 0 : 1;
+
+    const res = await postPostClip({ post_id: postId, clip });
+    if (!res?.isSuccess) return;
+
+    // newPostDetail.
   };
+
+  useEffect(() => {
+    console.log("## ", postDetail);
+  }, [postDetail]);
   return (
     <Container>
-      <ButtonWrapper isChecked={isLiked} onClick={() => onClickLike()}>
+      <ButtonWrapper
+        isChecked={postDetail.myliked}
+        onClick={() => onClickLike()}
+      >
         <FontAwesomeIcon
           icon={faHeart}
-          color={!isLiked ? "#DFDFDF" : "#ffffff"}
+          color={!postDetail.myliked ? "#DFDFDF" : "#ffffff"}
           size="2x"
         />
-        <ButtonCnt isChecked={isLiked}>{likeCnt}</ButtonCnt>
+        <ButtonCnt isChecked={postDetail.myliked}>{postDetail.likes}</ButtonCnt>
       </ButtonWrapper>
 
-      <ButtonWrapper isChecked={isScrapped} onClick={() => onClickScrap()}>
+      <ButtonWrapper
+        isChecked={postDetail.mycliped}
+        onClick={() => onClickScrap()}
+      >
         <FontAwesomeIcon
           icon={faStar}
-          color={isScrapped ? "#ffffff" : "#DFDFDF"}
+          color={postDetail.mycliped ? "#ffffff" : "#DFDFDF"}
           size="2x"
         />
-        <ButtonCnt isChecked={isScrapped}>{scrapCnt}</ButtonCnt>
       </ButtonWrapper>
     </Container>
   );

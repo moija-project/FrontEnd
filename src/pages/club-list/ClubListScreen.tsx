@@ -1,38 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import styled from "styled-components";
 import MenuNavBar from "./components/MenuNavBar";
 import PreviewPost from "../../components/PreviewPost";
 import ClubListTopMenu from "./components/ClubListTopMenu";
 import { getPostList } from "../../api/service-api/clubPostApi";
 import axios from "axios";
-import { postListResType } from "../../interfaces/post-type";
-import { useRecoilValue, useRecoilValueLoadable } from "recoil";
+import {
+  CategoryType,
+  ViewType,
+  postListResType,
+} from "../../interfaces/post-type";
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
 import { fetchPostListAtom } from "../../store/postStore";
 
 export default function ClubListScreen() {
-  // const [postList, setPostList] = useState<postListResType[]>([]);
-  const postList = useRecoilValue(
-    fetchPostListAtom({ category: "all", view_type: "latest" })
-  );
+  const [postList, setPostList] = useState<postListResType[]>([]);
+  const [postCate, setPostCate] = useState<CategoryType>();
+  const [postView, setPostView] = useState<ViewType>();
+  // const postList = useRecoilValue(
+  //   fetchPostListAtom({
+  //     category: postCate ?? "all",
+  //     view_type: postView ?? "latest",
+  //   })
+  // );
   useEffect(() => {
-    // console.log("### ::: ", contents);
-    // const getData = async () => {
-    //   const res = await getPostList({ category: "all", view_type: "latest" });
-    //   res && setPostList(res);
-    // };
-    // getData();
-  }, []);
+    setPostList([]);
+    const getData = async () => {
+      const res = await getPostList({
+        category: postCate ?? "all",
+        view_type: postView ?? "latest",
+      });
+      res && setPostList(res);
+    };
+    getData();
+  }, [postCate, postView]);
   return (
     <Container>
-      <MenuNavBar />
+      <MenuNavBar setCate={(cate) => setPostCate(cate)} />
       <ContentContainer>
-        <ClubListTopMenu />
-        {postList?.map((v, i) =>
-          i === 0 ? (
-            <PreviewPost postItem={v} key={`post-item-${i}`} isFirst={true} />
-          ) : (
-            <PreviewPost postItem={v} key={`post-item-${i}`} isFirst={false} />
+        <ClubListTopMenu setViewType={(type) => setPostView(type)} />
+        {postList && postList.length ? (
+          postList.map((v, i) =>
+            i === 0 ? (
+              <PreviewPost postItem={v} key={`post-item-${i}`} isFirst={true} />
+            ) : (
+              <PreviewPost
+                postItem={v}
+                key={`post-item-${i}`}
+                isFirst={false}
+              />
+            )
           )
+        ) : (
+          <EmptyText>해당 카테고리에 관한 글이 없습니다.</EmptyText>
         )}
       </ContentContainer>
     </Container>
@@ -48,4 +68,10 @@ const ContentContainer = styled.div`
   background-color: white;
   margin: auto;
   padding: 0.625rem 0.94rem;
+`;
+const EmptyText = styled.div`
+  width: 100%;
+  margin-top: 5rem;
+  text-align: center;
+  color: var(--gray01);
 `;

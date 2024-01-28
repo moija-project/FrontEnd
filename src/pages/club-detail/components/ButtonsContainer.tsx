@@ -2,11 +2,18 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-export default function ButtonsContainer() {
-  const navigate = useNavigate();
+type ButtonsContainerProps = {
+  postId: number;
+};
 
+export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
+  const navigate = useNavigate();
   const moveToClubCredReview = () => {
     navigate("/credReview", { state: { type: "club" } });
+  };
+
+  const moveToAnswerQuestions = () => {
+    navigate(`/answerQuestions/${postId}`);
   };
   return (
     <Container>
@@ -16,6 +23,9 @@ export default function ButtonsContainer() {
       </SettingWrapper>
       <ColoredButton onClick={moveToClubCredReview}>
         모집 신뢰도 평가하기
+      </ColoredButton>
+      <ColoredButton onClick={moveToAnswerQuestions}>
+        1대1 채팅 요청하기
       </ColoredButton>
       <ColoredButton>모집 종료하기</ColoredButton>
       <NonColoredButton>모집하기</NonColoredButton>

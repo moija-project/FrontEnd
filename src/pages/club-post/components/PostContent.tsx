@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import PhotoContainer from "./PhotoContainer";
+import { useRecoilState } from "recoil";
+import { writePostState } from "../../../store/postStore";
+import { CategoryType } from "../../../interfaces/post-type";
 
 type PostContentProps = {
   setClubType: (type: string) => void;
@@ -8,10 +11,10 @@ type PostContentProps = {
   setContent: (content: string) => void;
 };
 
-const TypesArray = [
+const TypesArray: { id: CategoryType; name: string }[] = [
   { id: "language", name: "어학" },
   { id: "study", name: "학업" },
-  { id: "job", name: "취업" },
+  { id: "employ", name: "취업" },
   { id: "hobby", name: "취미 및 소모임" },
   { id: "etc", name: "기타" },
 ];
@@ -21,34 +24,45 @@ export default function PostContent({
   setClubType,
   setContent,
 }: PostContentProps) {
+  const [writePost, setWritePost] = useRecoilState(writePostState);
   const [type, setType] = useState("all");
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
 
-  const onChangeTypesRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setType(e.target.value);
+  const onChangeTypesRadio = (cate: CategoryType) => {
+    // setType(e.target.value);
+    let newPost = { ...writePost };
+    newPost["category"] = cate;
+    setWritePost(newPost);
   };
   const onChangeTitle = (title: string) => {
-    setPostTitle(title);
+    // setPostTitle(title);
+    let newPost = { ...writePost };
+    newPost["title"] = title;
+    setWritePost(newPost);
   };
   const onChangeContent = (content: string) => {
-    setPostContent(content);
+    // setPostContent(content);
+    let newPost = { ...writePost };
+    newPost["contents"] = content;
+    setWritePost(newPost);
   };
 
-  useEffect(() => {
-    setTitle(postTitle);
-  }, [postTitle]);
-  useEffect(() => {
-    setClubType(type);
-  }, [type]);
-  useEffect(() => {
-    setContent(postContent);
-  }, [postContent]);
+  // useEffect(() => {
+  //   setTitle(postTitle);
+  // }, [postTitle]);
+  // useEffect(() => {
+  //   setClubType(type);
+  // }, [type]);
+  // useEffect(() => {
+  //   setContent(postContent);
+  // }, [postContent]);
+
   return (
     <Container>
       <form>
         <TitleInput
-          value={postTitle}
+          value={writePost.title}
           onChange={(e) => onChangeTitle(e.target.value)}
           placeholder="제목을 입력해주세요"
         />
@@ -56,15 +70,18 @@ export default function PostContent({
           <TypeTitle>분야</TypeTitle>
           <TypesWrapper>
             {TypesArray.map((item, index) => (
-              <TypeItemWrapper isChecked={item.id === type}>
+              <TypeItemWrapper isChecked={item.id === writePost.category}>
                 <TypeItemInput
                   type="radio"
                   value={item.id}
                   id={item.id}
                   checked={type === item.id}
-                  onChange={onChangeTypesRadio}
+                  onChange={() => onChangeTypesRadio(item.id)}
                 />
-                <TypeItemLabel isChecked={item.id === type} htmlFor={item.id}>
+                <TypeItemLabel
+                  isChecked={item.id === writePost.category}
+                  htmlFor={item.id}
+                >
                   {item.name}
                 </TypeItemLabel>
               </TypeItemWrapper>
@@ -72,8 +89,9 @@ export default function PostContent({
           </TypesWrapper>
         </TypeContainer>
         <TextArea
+          maxLength={2000}
           onChange={(e) => onChangeContent(e.target.value)}
-          value={postContent}
+          value={writePost.contents}
         />
         <PhotoContainer />
       </form>

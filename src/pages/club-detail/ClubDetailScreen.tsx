@@ -5,18 +5,52 @@ import ButtonsContainer from "./components/ButtonsContainer";
 import LikeScrapContainer from "./components/LikeScrapContainer";
 import ClubManageContainer from "./components/ClubManageContainer";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { postDetailState } from "../../store/postStore";
+import { getPostDetail } from "../../api/service-api/clubPostApi";
+import { postDetailResType } from "../../interfaces/post-type";
 
 export default function ClubDetailScreen() {
   const { postId } = useParams();
+  const [postDetail, setPostDetail] =
+    useRecoilState<postDetailResType>(postDetailState);
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getPostDetail({ post_id: Number(postId) });
+      if (!res) return;
+      setPostDetail({
+        title: res?.title,
+        contents: res.contents,
+        penalty: res.penalty,
+        likes: res.likes,
+        views: res.views,
+        is_changed: res.is_changed,
+        state_recruit: res.state_recruit,
+        leader_nickname: res.leader_nickname,
+        latest_write: res.latest_write,
+        reliability_recruit: res.reliability_recruit,
+        pictures: res.pictures,
+        myliked: res.myliked,
+        mycliped: res.mycliped,
+        userNickname: res.userNickname,
+        user_id: res.user_id,
+        born_in: res.born_in,
+        reliability_user: res.reliability_user,
+        profile_photo: res.profile_photo,
+      });
+    };
+    getData();
+  }, [postId]);
+
   return (
     <Container>
       <ContentWrapper>
         <MainContainer>
           <ClubDetailContent />
-          <ButtonsContainer />
+          <ButtonsContainer postId={Number(postId)} />
         </MainContainer>
         <RightContainer>
-          <LikeScrapContainer />
+          <LikeScrapContainer postId={Number(postId)} />
           <ClubManageContainer />
         </RightContainer>
       </ContentWrapper>

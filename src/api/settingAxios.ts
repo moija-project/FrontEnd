@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8090";
+const BASE_URL = "http://mo.ija.kro.kr/";
 
 const axiosUnAuth = axios.create({
-  //   baseURL: BASE_URL,
+  // baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 const axiosAuth = axios.create({
-  //   baseURL: BASE_URL,
+  // baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 

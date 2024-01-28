@@ -5,16 +5,19 @@ import PreviewProfile from "../../../components/PreviewProfile";
 import { getPostDetail } from "../../../api/service-api/clubPostApi";
 import { postDetailResType } from "../../../interfaces/post-type";
 import { changeDateExprssion } from "../../../utils/datetime";
+import { useRecoilValue } from "recoil";
+import { postDetailState } from "../../../store/postStore";
 
 export default function ClubDetailContent() {
-  const [postDetail, setPostDetail] = useState<postDetailResType>();
-  useEffect(() => {
-    const getData = async () => {
-      const data = await getPostDetail({ post_id: 1 });
-      setPostDetail(data);
-    };
-    getData();
-  }, []);
+  const postDetail = useRecoilValue(postDetailState);
+  // const [postDetail, setPostDetail] = useState<postDetailResType>();
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const data = await getPostDetail({ post_id: postId });
+  //     setPostDetail(data);
+  //   };
+  //   getData();
+  // }, []);
   return (
     <Container>
       <Carousel />
@@ -28,16 +31,14 @@ export default function ClubDetailContent() {
               작성일자{" "}
               {postDetail && changeDateExprssion(postDetail?.latest_write)}
             </Date>
-            {postDetail?.is_changed && (
-              <Date>수정일자 2024.01.01 00:00:00</Date>
-            )}
+            {postDetail?.is_changed && <Date>수정일자2024.01.01 00:00:00</Date>}
           </DateWrapper>
         </LeftWrapper>
         <RightWrapper>
           <State isRecruiting={postDetail?.state_recruit ?? false}>
             {postDetail?.state_recruit ? "모집중" : "모집종료"}
           </State>
-          <CheckText>가입 조건 있음 · 보증금 있음</CheckText>
+          <CheckText>가입 조건 있음</CheckText>
         </RightWrapper>
       </PostHeader>
       <Content>{postDetail?.contents}</Content>
