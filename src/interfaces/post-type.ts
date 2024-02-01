@@ -10,6 +10,13 @@ export type CategoryType =
 // 보기 순 타입
 export type ViewType = "latest" | "most_view" | "most_like";
 
+// 게시물 리스트 검색&필터링 (카테고리, 보기순서, 검색어)
+export type FilterListType = {
+  searchKeyword: string;
+  category: CategoryType;
+  view: ViewType;
+};
+
 // 모임 가입 조건 질문
 export type ClubConditionType = {
   question: string;
@@ -57,25 +64,6 @@ export type postListResType = {
 };
 
 export type postDetailResType = PostWriterProfileType & {
-  // title: string;
-  // contents: string;
-  // penalty: number;
-  // likes: number;
-  // views: number;
-  // changed: boolean;
-  // state_recruit: boolean;
-  // leader_nickname: string;
-  // latest_write: string;
-  // is_changed: false;
-  // reliability_recruit: number;
-  // pictures: string[];
-  // myliked: boolean;
-  // mycliped: boolean;
-  // user_nickname: string;
-  // user_id: string;
-  // born_in: string;
-  // reliability_user: number;
-  // profile_photo: string;
   is_changed: boolean;
   contents: string;
   latest_write: string;
@@ -88,6 +76,11 @@ export type postDetailResType = PostWriterProfileType & {
   state_recruit: boolean;
   title: string;
   views: number;
+  category: Exclude<CategoryType, "all">;
+  changed: boolean;
+  last_write: string;
+  first_write: string;
+  num_condition: number;
 };
 
 export type PostLikeReqType = {
@@ -103,8 +96,9 @@ export type PostLikeResType = {
   code: number;
   message: string;
 };
-// export type PostClipResType = {
-//   isSuccess : boolean ,
-//   code : number ,
-//   message : string
-// }
+export type AnsweringReqType = {
+  user_id: string;
+  num_answer: number;
+  is_ask: boolean;
+  answers: string[] | [];
+};

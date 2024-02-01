@@ -3,13 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
 import PreviewPost from "../../../components/PreviewPost";
+import { postListResType } from "../../../interfaces/post-type";
 
 type PostListContainerProps = {
   postlistType: "host" | "join" | "scrap";
+  data?: postListResType[];
 };
 
 export default function PostListContainer({
   postlistType,
+  data,
 }: PostListContainerProps) {
   let postListTypeName =
     postlistType === "host"
@@ -30,11 +33,18 @@ export default function PostListContainer({
       </HeaderWrapper> */}
 
       <ListWrapper>
-        <PreviewPost isFirst hasSidePadding={false} />
-        <PreviewPost hasSidePadding={false} />
-        <PreviewPost hasSidePadding={false} />
-        <PreviewPost hasSidePadding={false} />
-        <PreviewPost hasSidePadding={false} />
+        {data
+          ?.slice(0, 5)
+          .map((item, idx) =>
+            idx === 0 ? (
+              <PreviewPost postItem={item} isFirst hasSidePadding={false} />
+            ) : (
+              <PreviewPost postItem={item} hasSidePadding={false} />
+            )
+          )}
+        {(data?.length === 0 || !data) && (
+          <NoneText>{postListTypeName}이 없어요</NoneText>
+        )}
       </ListWrapper>
     </Container>
   );
@@ -47,4 +57,9 @@ const Container = styled.div`
 `;
 const ListWrapper = styled.div`
   width: 100%;
+`;
+const NoneText = styled.div`
+  width: 100%;
+  text-align: center;
+  color: var(--gray01);
 `;

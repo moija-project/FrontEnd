@@ -38,6 +38,7 @@ export default function LikeScrapContainer({
     if (!res?.isSuccess) return;
 
     newDetail.likes = vote === 0 ? newDetail.likes - 1 : newDetail.likes + 1;
+    newDetail.myliked = !newDetail.myliked;
     setPostDetail(newDetail);
   };
   const onClickScrap = async () => {
@@ -45,20 +46,14 @@ export default function LikeScrapContainer({
     const clip = postDetail.mycliped ? 0 : 1;
 
     const res = await postPostClip({ post_id: postId, clip });
+    console.log("!! ", res);
     if (!res?.isSuccess) return;
-
-    // newPostDetail.
+    newPostDetail.mycliped = !newPostDetail.mycliped;
   };
 
-  useEffect(() => {
-    console.log("## ", postDetail);
-  }, [postDetail]);
   return (
     <Container>
-      <ButtonWrapper
-        isChecked={postDetail.myliked}
-        onClick={() => onClickLike()}
-      >
+      <ButtonWrapper isChecked={postDetail.myliked} onClick={onClickLike}>
         <FontAwesomeIcon
           icon={faHeart}
           color={!postDetail.myliked ? "#DFDFDF" : "#ffffff"}
@@ -67,10 +62,7 @@ export default function LikeScrapContainer({
         <ButtonCnt isChecked={postDetail.myliked}>{postDetail.likes}</ButtonCnt>
       </ButtonWrapper>
 
-      <ButtonWrapper
-        isChecked={postDetail.mycliped}
-        onClick={() => onClickScrap()}
-      >
+      <ButtonWrapper isChecked={postDetail.mycliped} onClick={onClickScrap}>
         <FontAwesomeIcon
           icon={faStar}
           color={postDetail.mycliped ? "#ffffff" : "#DFDFDF"}

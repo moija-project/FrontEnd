@@ -7,7 +7,8 @@ export const changeDateExprssion = (str: string) => {
   return `${year}년 ${month}월 ${day}일`;
 };
 
-export const hasPassed30Hours = (dateTimeString: string): boolean => {
+// 30시간 지났는지 여부
+export const hasPassed = (dateTimeString: string): boolean => {
   const givenDate = new Date(dateTimeString);
   const currentDate = new Date();
 

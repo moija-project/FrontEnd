@@ -3,14 +3,15 @@ import styled from "styled-components";
 import PostContent from "./components/PostContent";
 import CreateQuestionnaire from "./components/CreateQuestionnaire";
 import CommonContainer from "../../components/CommonContainer";
-import { writePostState } from "../../store/postStore";
-import { useRecoilState } from "recoil";
-import { postPostWrite } from "../../api/service-api/clubPostApi";
+import { postDetailState, writePostState } from "../../store/postStore";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { patchPost } from "../../api/service-api/clubPostApi";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function ClubPostScreen() {
+export default function ClubReviseScreen() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { state } = useLocation();
+  const post = useRecoilValue(postDetailState);
   const [writePost, setWritePost] = useRecoilState(writePostState);
   const onSetQuestionList = (list: any) => {
     setWritePost((prev) => {
@@ -23,18 +24,10 @@ export default function ClubPostScreen() {
       };
     });
   };
-  const onSetTitle = (title: string) => {
-    console.log("title : ", title);
-  };
-  const onSetType = (type: string) => {
-    console.log("$", type);
-  };
-  const onSetContent = (content: string) => {
-    console.log("$#%#$", content);
-  };
   const handleSubmit = () => {
     const postClub = async () => {
-      const res = await postPostWrite(writePost);
+      const res = await patchPost(writePost, state.postId);
+
       if (res?.data.isSuccess) {
         setWritePost({
           title: "",
@@ -50,7 +43,7 @@ export default function ClubPostScreen() {
       }
       // 요청 성공 시 ui 보여지게
     };
-    if (window.confirm("게시물을 등록하시겠습니까?")) {
+    if (window.confirm("게시물을 수정하시겠습니까?")) {
       postClub();
     }
   };
@@ -62,6 +55,19 @@ export default function ClubPostScreen() {
     window.history.pushState(null, "", window.location.href);
   };
 
+  useEffect(() => {
+    // 수정할 게시물 미리 세팅
+    setWritePost({
+      title: post.title,
+      contents: post.contents,
+      category: post.category,
+      leader_id: post.user_id, // fix
+      num_condition: 0,
+      is_changed: post.is_changed,
+      penalty: post.penalty,
+      conditions: [],
+    });
+  }, [post]);
   useEffect(() => {
     (() => {
       window.addEventListener("beforeunload", preventClose);
@@ -91,12 +97,8 @@ export default function ClubPostScreen() {
 
   return (
     <CommonContainer>
-      <SubmitButton onClick={handleSubmit}>등록</SubmitButton>
-      <PostContent
-        setTitle={onSetTitle}
-        setClubType={onSetType}
-        setContent={onSetContent}
-      />
+      <SubmitButton onClick={handleSubmit}>수정하기</SubmitButton>
+      <PostContent />
       <Line />
       <CreateQuestionnaire setListArr={onSetQuestionList} />
     </CommonContainer>

@@ -18,6 +18,7 @@ import RegulationAgreementScreen from "./pages/sign-up/RegulationAgreementScreen
 import SignupScreen from "./pages/sign-up/SignupScreen";
 import AnswerQuestions from "./pages/answer-questions/AnswerQuestionsScreen";
 import AnswerQuestionsScreen from "./pages/answer-questions/AnswerQuestionsScreen";
+import ClubReviseScreen from "./pages/club-post-revise/ClubReviseScreen";
 
 function App() {
   return (
@@ -38,7 +39,10 @@ function App() {
               <Route path="/signup" element={<SignupScreen />} />
               <Route path="/clubList" element={<ClubListScreen />} />
               <Route path="/mypage" element={<MyPageScreen />} />
+
               <Route path="/postClub" element={<ClubPostScreen />} />
+              <Route path="/reviseClub" element={<ClubReviseScreen />} />
+
               <Route
                 path="/clubDetail/:postId"
                 element={<ClubDetailScreen />}

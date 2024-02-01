@@ -56,10 +56,6 @@ export default function PreviewPost({
             <FontAwesomeIcon icon={faHeart} color="#D9D9D9" />
             <IconNumber>{postItem?.likes ?? 1}</IconNumber>
           </IconWrapper>
-          <IconWrapper>
-            <FontAwesomeIcon icon={faStar} color="#D9D9D9" />
-            <IconNumber>1</IconNumber>
-          </IconWrapper>
         </BottomRight>
       </BottomWrapper>
     </Container>

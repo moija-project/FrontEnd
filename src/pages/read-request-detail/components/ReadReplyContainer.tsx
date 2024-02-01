@@ -1,18 +1,23 @@
 import React from "react";
 import styled from "styled-components";
+import { ClubConditionType } from "../../../interfaces/post-type";
 
-export default function ReadReplyContainer() {
+type ReadReplyContainer = {
+  nickname: string;
+  data: ClubConditionType[];
+};
+
+export default function ReadReplyContainer({
+  nickname,
+  data,
+}: ReadReplyContainer) {
   const _renderReplyItems = (idx: number, question: string, answer: string) => {
     return (
       <ItemWrapper key={`question-item-${idx}`}>
         <Question>
-          {idx + 1}. 가입 질문가입 질문가입 질문가입 질문가입 질문가입 질문가입
-          질문가입 질문가입 질문
+          {idx + 1}. {question}
         </Question>
-        <Answer>
-          작성한 답변작성한 답변작성한 답변작성한 답변작성한 답변작성한
-          답변작성한 답변
-        </Answer>
+        <Answer>{answer}</Answer>
       </ItemWrapper>
     );
   };
@@ -21,12 +26,14 @@ export default function ReadReplyContainer() {
       <Line />
 
       <Title>
-        [참여하고싶은사람닉네임] 님 께서 작성한
+        {nickname} 님 께서 작성한
         <br />
         가입 조건 질문 답변을 확인해보세요!
       </Title>
       <ItemsContainer>
-        {[1, 1, 1, 1].map((item, idx) => _renderReplyItems(idx, "", ""))}
+        {data.map((item, idx) =>
+          _renderReplyItems(idx, item.question, item.answer ?? "")
+        )}
       </ItemsContainer>
     </Container>
   );

@@ -6,38 +6,55 @@ import LikeScrapContainer from "./components/LikeScrapContainer";
 import ClubManageContainer from "./components/ClubManageContainer";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { postDetailState } from "../../store/postStore";
-import { getPostDetail } from "../../api/service-api/clubPostApi";
+import { postDetailQuestions, postDetailState } from "../../store/postStore";
+import {
+  getPostDetail,
+  getPostQuestion,
+} from "../../api/service-api/clubPostApi";
 import { postDetailResType } from "../../interfaces/post-type";
 
 export default function ClubDetailScreen() {
   const { postId } = useParams();
   const [postDetail, setPostDetail] =
     useRecoilState<postDetailResType>(postDetailState);
+  const [questions, setQuestions] = useRecoilState(postDetailQuestions);
   useEffect(() => {
     const getData = async () => {
       const res = await getPostDetail({ post_id: Number(postId) });
-      if (!res) return;
-      setPostDetail({
-        title: res?.title,
-        contents: res.contents,
-        penalty: res.penalty,
-        likes: res.likes,
-        views: res.views,
-        is_changed: res.is_changed,
-        state_recruit: res.state_recruit,
-        leader_nickname: res.leader_nickname,
-        latest_write: res.latest_write,
-        reliability_recruit: res.reliability_recruit,
-        pictures: res.pictures,
-        myliked: res.myliked,
-        mycliped: res.mycliped,
-        userNickname: res.userNickname,
-        user_id: res.user_id,
-        born_in: res.born_in,
-        reliability_user: res.reliability_user,
-        profile_photo: res.profile_photo,
-      });
+      const questionRes = await getPostQuestion({
+        user_id: "testman1",
+        post_id: Number(postId),
+      }); // fix
+      console.log("##", res);
+      console.log("##", questionRes);
+      if (!res || !questionRes) return;
+      setPostDetail(res);
+      // setPostDetail({
+      //   title: res?.title,
+      //   contents: res.contents,
+      //   penalty: res.penalty,
+      //   likes: res.likes,
+      //   views: res.views,
+      //   is_changed: res.is_changed,
+      //   state_recruit: res.state_recruit,
+      //   leader_nickname: res.leader_nickname,
+      //   latest_write: res.latest_write,
+      //   reliability_recruit: res.reliability_recruit,
+      //   pictures: res.pictures,
+      //   myliked: res.myliked,
+      //   mycliped: res.mycliped,
+      //   userNickname: res.userNickname,
+      //   user_id: res.user_id,
+      //   born_in: res.born_in,
+      //   reliability_user: res.reliability_user,
+      //   profile_photo: res.profile_photo,
+      //   num_condition: res.num_condition,
+      //   last_write: res.last_write,
+      //   first_write: res.first_write,
+      //   changed: res.changed,
+      //   category: res.category,
+      // });
+      setQuestions(questionRes);
     };
     getData();
   }, [postId]);
@@ -51,7 +68,7 @@ export default function ClubDetailScreen() {
         </MainContainer>
         <RightContainer>
           <LikeScrapContainer postId={Number(postId)} />
-          <ClubManageContainer />
+          <ClubManageContainer postId={Number(postId)} />
         </RightContainer>
       </ContentWrapper>
     </Container>

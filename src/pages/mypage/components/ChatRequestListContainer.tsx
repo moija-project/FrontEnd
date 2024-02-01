@@ -1,23 +1,46 @@
 import React from "react";
 import styled from "styled-components";
 import PreviewChatRequest from "../../../components/PreviewChatRequest";
+import { useRecoilValue } from "recoil";
+import { fetchRequestListState } from "../../../store/mypageStore";
 
 export default function ChatRequestListContainer() {
+  const list = useRecoilValue(fetchRequestListState);
   return (
     <Container>
       <RequestContainer>
         <Title>받은 요청</Title>
         <MessageList>
-          <PreviewChatRequest />
+          {!list.map((v) => v.type === "received").length && (
+            <NoneText>받은 요청이 없어요</NoneText>
+          )}
+          {list.map(
+            (item, idx) =>
+              item.type === "received" && (
+                <PreviewChatRequest
+                  key={`received-request-msg-${idx}`}
+                  data={item}
+                />
+              )
+          )}
         </MessageList>
       </RequestContainer>
       <Line />
       <RequestContainer>
         <Title>보낸 요청</Title>
         <MessageList>
-          {[1, 1, 1].map((item, idx) => (
-            <PreviewChatRequest />
-          ))}
+          {!list.map((v) => v.type === "sent").length && (
+            <NoneText>보낸 요청이 없어요</NoneText>
+          )}
+          {list.map(
+            (item, idx) =>
+              item.type === "sent" && (
+                <PreviewChatRequest
+                  key={`sent-request-msg-${idx}`}
+                  data={item}
+                />
+              )
+          )}
         </MessageList>
       </RequestContainer>
     </Container>
@@ -57,4 +80,8 @@ const MessageItem = styled.div`
   padding: 0.35rem 0.5rem;
   font-size: 1rem;
   width: 100%;
+`;
+const NoneText = styled.span`
+  color: var(--gray01);
+  margin-top: 1rem;
 `;

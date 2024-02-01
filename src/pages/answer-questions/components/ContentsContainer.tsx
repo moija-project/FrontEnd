@@ -61,4 +61,5 @@ const Answer = styled.input`
   width: 100%;
   border: 1px solid var(--purple);
   border-radius: 4px;
+  font-weight: 400;
 `;

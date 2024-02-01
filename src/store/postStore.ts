@@ -2,6 +2,7 @@ import axios from "axios";
 import { atom, selector, selectorFamily } from "recoil";
 import {
   ClubConditionType,
+  FilterListType,
   PostWriteReqType,
   getPostDetailParamsType,
   postDetailResType,
@@ -25,7 +26,6 @@ export const writePostState = atom<PostWriteReqType>({
 });
 export const postDetailState = atom<postDetailResType>({
   key: "postDetailState",
-  // default: 0,
   default: {
     title: "",
     contents: "",
@@ -45,6 +45,11 @@ export const postDetailState = atom<postDetailResType>({
     born_in: "",
     reliability_user: 0,
     profile_photo: "",
+    num_condition: 0,
+    last_write: "",
+    first_write: "",
+    changed: false,
+    category: "etc",
   },
 });
 
@@ -68,4 +73,10 @@ export const fetchPostListAtom = selectorFamily({
 export const postQuestionAnswerState = atom<ClubConditionType[] | null>({
   key: "postQuestionAnswerState",
   default: null,
+});
+
+// 해당 게시물에 대한 가입조건 질문만
+export const postDetailQuestions = atom<ClubConditionType[] | null | []>({
+  key: "postDetailQuestions",
+  default: [],
 });

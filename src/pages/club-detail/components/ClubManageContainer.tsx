@@ -1,21 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MemberItem from "./MemberItem";
+import { postPostBump } from "../../../api/service-api/clubPostApi";
+import { useRecoilValue } from "recoil";
+import { postDetailState } from "../../../store/postStore";
+import { hasPassed } from "../../../utils/datetime";
 
-export default function ClubManageContainer() {
+type ClubManageContainer = {
+  postId: number;
+};
+
+export default function ClubManageContainer({ postId }: ClubManageContainer) {
+  const postDetail = useRecoilValue(postDetailState);
+  const [isActiveBumpBtn, setIsActiveBumpBtn] = useState(false);
+  const handleBump = async () => {
+    const res = await postPostBump({ post_id: postId });
+    if (res?.data.isSuccess) setIsActiveBumpBtn(false);
+    return res;
+  };
+
+  useEffect(() => {
+    setIsActiveBumpBtn(hasPassed(postDetail.latest_write));
+  }, [postDetail]);
+
   return (
     <Container>
-      {/* <Button isActivated={false} disabled>
-        30시간 지난 후에 끌올이 가능해요
-      </Button> */}
-      <Button isActivated>모집글 끌어올리기</Button>
+      {isActiveBumpBtn ? (
+        <Button isActivated onClick={handleBump}>
+          모집글 끌어올리기
+        </Button>
+      ) : (
+        <Button isActivated={false} disabled>
+          30시간 지난 후에 끌올이 가능해요
+        </Button>
+      )}
       <BoxContainer>
         <HeaderWrapper>
           <HeaderTitle>모집 인원</HeaderTitle>
           <PeopleCnt>총 3명</PeopleCnt>
         </HeaderWrapper>
         <InstructionText>
-          멤버의 개인 평가를 하고 싶으면 멤버 닉네임을 클랙해보세요
+          멤버의 개인 평가를 하고 싶으면 멤버 닉네임을 클릭해보세요
         </InstructionText>
         <MemberListWrapper>
           <MemberItem isLeader />

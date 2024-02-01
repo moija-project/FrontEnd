@@ -7,9 +7,13 @@ import { postDetailResType } from "../../../interfaces/post-type";
 import { changeDateExprssion } from "../../../utils/datetime";
 import { useRecoilValue } from "recoil";
 import { postDetailState } from "../../../store/postStore";
+import { myProfileInfoState } from "../../../store/userStore";
 
 export default function ClubDetailContent() {
   const postDetail = useRecoilValue(postDetailState);
+  const myProfile = useRecoilValue(myProfileInfoState);
+  let writer;
+
   // const [postDetail, setPostDetail] = useState<postDetailResType>();
   // useEffect(() => {
   //   const getData = async () => {
@@ -18,10 +22,24 @@ export default function ClubDetailContent() {
   //   };
   //   getData();
   // }, []);
+
+  // 작성자가 본인이면 PreviewProfile 은 본인
+  useEffect(() => {
+    if (postDetail.user_id === "testman1") {
+      //fix
+    }
+  }, []);
+
   return (
     <Container>
       <Carousel />
-      <PreviewProfile />
+      {/* <PreviewProfile /> */}
+      {/* fix : 본인이면 본인 프로필로 , 아니면 남의 프로필로 */}
+      {postDetail.user_id === "testman1" ? (
+        <PreviewProfile profileData={myProfile} />
+      ) : (
+        <PreviewProfile />
+      )}
       <Line />
       <PostHeader>
         <LeftWrapper>
@@ -31,7 +49,9 @@ export default function ClubDetailContent() {
               작성일자{" "}
               {postDetail && changeDateExprssion(postDetail?.latest_write)}
             </Date>
-            {postDetail?.is_changed && <Date>수정일자2024.01.01 00:00:00</Date>}
+            {postDetail?.is_changed && (
+              <Date>수정일자 2024.01.01 00:00:00 (수정됨)</Date>
+            )}
           </DateWrapper>
         </LeftWrapper>
         <RightWrapper>

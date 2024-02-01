@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import PostListContainer from "./PostListContainer";
 import ChatRequestListContainer from "./ChatRequestListContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  postListIWrote,
+  postScrapList,
+} from "../../../api/service-api/mypageApi";
+import { postListResType } from "../../../interfaces/post-type";
 
 type ListContainerProps = {
   listType: "host" | "join" | "scrap" | "chat-request" | "chat-list";
@@ -22,6 +27,20 @@ export default function ListContainer({ listType }: ListContainerProps) {
       : listType === "chat-list"
       ? "1대1 채팅 목록"
       : "";
+  const [postList, setPostList] = useState<postListResType[] | undefined>(); // 내가 주최한 모임
+
+  useEffect(() => {
+    const getData = async () => {
+      let res;
+      if (listType === "host") {
+        res = await postListIWrote({});
+      } else if (listType === "scrap") {
+        res = await postScrapList();
+      }
+      setPostList(res);
+    };
+    getData();
+  }, []);
   return (
     <Container>
       <HeaderWrapper>
@@ -35,7 +54,7 @@ export default function ListContainer({ listType }: ListContainerProps) {
       </HeaderWrapper>
 
       {(listType === "host" || listType === "join" || listType === "scrap") && (
-        <PostListContainer postlistType={listType} />
+        <PostListContainer data={postList} postlistType={listType} />
       )}
       {listType === "chat-request" && <ChatRequestListContainer />}
 

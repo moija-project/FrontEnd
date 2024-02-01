@@ -37,6 +37,7 @@ export default function LoginScreen() {
         />
         <InputBox
           type="password"
+          autoComplete="off"
           placeholder="Password"
           onChange={(e) => handlePw(e.target.value)}
           value={pw}
@@ -57,7 +58,7 @@ const Title = styled.h1`
   font-size: 1.25rem;
   font-weight: 600;
 `;
-const InputContainer = styled.div`
+const InputContainer = styled.form`
   margin: 7rem 0;
   width: 100%;
   display: flex;

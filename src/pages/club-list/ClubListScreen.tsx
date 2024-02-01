@@ -10,19 +10,12 @@ import {
   ViewType,
   postListResType,
 } from "../../interfaces/post-type";
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
-import { fetchPostListAtom } from "../../store/postStore";
 
 export default function ClubListScreen() {
   const [postList, setPostList] = useState<postListResType[]>([]);
   const [postCate, setPostCate] = useState<CategoryType>();
   const [postView, setPostView] = useState<ViewType>();
-  // const postList = useRecoilValue(
-  //   fetchPostListAtom({
-  //     category: postCate ?? "all",
-  //     view_type: postView ?? "latest",
-  //   })
-  // );
+
   useEffect(() => {
     setPostList([]);
     const getData = async () => {

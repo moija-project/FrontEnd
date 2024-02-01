@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Modal from "./Modal";
 import ProfileModal from "./ProfileModal";
+import { ProfileResType, ProfileType } from "../interfaces/user-type";
 
 type PreviewProfileProps = {
   hasBorder?: boolean;
+  profileData?: ProfileResType;
 };
+
+const defaultImg = require("../assets/images/default-img-01.png");
 
 export default function PreviewProfile({
   hasBorder = false,
+  profileData,
 }: PreviewProfileProps) {
   const [showModal, setShowModal] = useState(false);
   const handleClickProfile = () => {
@@ -20,16 +25,22 @@ export default function PreviewProfile({
 
       <ProfileImg
         onClick={handleClickProfile}
-        src={require("../assets/images/default-img-01.png")}
+        src={profileData?.profilePhotoUrl || defaultImg}
       />
+      {/* <ProfileImg
+        onClick={handleClickProfile}
+        src={require("../assets/images/default-img-01.png")}
+      /> */}
       {/* </button> */}
       <ProfileContentWrapper>
-        <Nickname>닉네임</Nickname>
-        <Content>여 20대</Content>
+        <Nickname>{profileData?.nickname ?? "nickname"}</Nickname>
+        <Content>
+          {profileData?.gender} {profileData?.bornIn}
+        </Content>
       </ProfileContentWrapper>
       <CredibilityWrapper>
         <CredibilityTitle>신뢰도 점수</CredibilityTitle>
-        <CredibilityScore>5점</CredibilityScore>
+        <CredibilityScore>{profileData?.reliabilityUser}점</CredibilityScore>
       </CredibilityWrapper>
     </Container>
   );

@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LoginBox from "./components/LoginBox";
 import ProfileBox from "./components/ProfileBox";
 import PreviewPost from "../../components/PreviewPost";
 import NotificationBox from "./components/NotificationBox";
+import { postListResType } from "../../interfaces/post-type";
+import { getPostList } from "../../api/service-api/clubPostApi";
 
 export default function HomeScreen() {
+  const [postList, setPostList] = useState<postListResType[]>([]);
+  useEffect(() => {
+    setPostList([]);
+    const getData = async () => {
+      const res = await getPostList({
+        category: "all",
+        view_type: "latest",
+      });
+      res && setPostList(res);
+    };
+    getData();
+  }, []);
   return (
     <Container>
       <LeftContainer>
@@ -16,9 +30,19 @@ export default function HomeScreen() {
         <MiddleTitle>모임 모집</MiddleTitle>
         <MiddleInstruction>관심있는 모임에 참여해보세요</MiddleInstruction>
         <ClubListWrapper>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, i) =>
-            i === 0 ? <PreviewPost isFirst={true} /> : <PreviewPost />
-          )}
+          {postList
+            .slice(0, 10)
+            .map((v, i) =>
+              i === 0 ? (
+                <PreviewPost
+                  key={`home-post-item-${i}`}
+                  postItem={v}
+                  isFirst={true}
+                />
+              ) : (
+                <PreviewPost key={`home-post-item-${i}`} postItem={v} />
+              )
+            )}
         </ClubListWrapper>
       </MiddleContainer>
       <RightContainer>

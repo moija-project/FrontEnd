@@ -8,13 +8,6 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilValue } from "recoil";
 import { postDetailState } from "../../../store/postStore";
 
-const dumyData = [
-  "https://t1.daumcdn.net/cfile/tistory/24163538586FE4AF34",
-  "https://kpopsingers.com/wp-content/uploads/2023/10/Eunseok-gallery-4-jpg.webp",
-  "https://kpopsingers.com/wp-content/uploads/2023/10/Eunseok-gallery-2-jpg.webp",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdsAqNfKx-6LQSueLo5_uw9slXouWWr4Pp5w&usqp=CAU",
-];
-
 export default function Carousel() {
   const postDetail = useRecoilValue(postDetailState);
   const settings = {
@@ -27,7 +20,7 @@ export default function Carousel() {
   return (
     <Container>
       <StyledSlider {...settings}>
-        {postDetail.pictures === null ? (
+        {postDetail.pictures === null || postDetail.pictures.length === 0 ? (
           <ImgWrapper>
             <ImgItem
               src={require("../../../assets/images/default-img-01.png")}
