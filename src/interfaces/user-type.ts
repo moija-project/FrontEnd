@@ -18,3 +18,15 @@ export type ProfileResType = {
 export type MyProfileType = ProfileResType & {
   user_id: string;
 };
+
+// 회원가입
+export type SignupReqType = {
+  user_id: string;
+  password_encode: string;
+  name: string;
+  nickname: string;
+  gender: number; // 1:femail 0:male
+  birth: string;
+  phone_number: string;
+  email: string;
+};

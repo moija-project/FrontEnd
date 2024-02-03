@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Modal from "./Modal";
 import ProfileModal from "./ProfileModal";
@@ -19,6 +19,9 @@ export default function PreviewProfile({
   const handleClickProfile = () => {
     setShowModal(!showModal);
   };
+  useEffect(() => {
+    console.log(profileData);
+  }, [profileData]);
   return (
     <Container hasBorder={hasBorder}>
       {showModal && <ProfileModal setOpen={(open) => setShowModal(open)} />}

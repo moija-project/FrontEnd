@@ -19,6 +19,7 @@ import SignupScreen from "./pages/sign-up/SignupScreen";
 import AnswerQuestions from "./pages/answer-questions/AnswerQuestionsScreen";
 import AnswerQuestionsScreen from "./pages/answer-questions/AnswerQuestionsScreen";
 import ClubReviseScreen from "./pages/club-post-revise/ClubReviseScreen";
+import CompleteSignupScreen from "./pages/sign-up/CompleteSignupScreen";
 
 function App() {
   return (
@@ -32,11 +33,18 @@ function App() {
             <Routes>
               <Route path="/" element={<HomeScreen />} />
               <Route path="/login" element={<LoginScreen />} />
+
+              {/* 회원가입 */}
               <Route
                 path="/regulation"
                 element={<RegulationAgreementScreen />}
               />
               <Route path="/signup" element={<SignupScreen />} />
+              <Route
+                path="/completeSignup"
+                element={<CompleteSignupScreen />}
+              />
+
               <Route path="/clubList" element={<ClubListScreen />} />
               <Route path="/mypage" element={<MyPageScreen />} />
 
