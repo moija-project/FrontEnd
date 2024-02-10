@@ -7,7 +7,7 @@ export const postMyProfile = async (data: {}): Promise<
 > => {
   const url = `/my/profile`;
   try {
-    const res = await axiosAuth.post(url, { user_id: "testman1" }); // fix
+    const res = await axiosAuth.post(url); // fix
     if (!res.data.isSuccess) return;
     return res.data.result;
   } catch (error) {

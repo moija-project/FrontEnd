@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   AnsweringReqType,
   ClubConditionType,
@@ -10,14 +11,14 @@ import {
   postListParamsType,
   postListResType,
 } from "../../interfaces/post-type";
-import { axiosAuth } from "../settingAxios";
+import { axiosAuth, axiosUnAuth } from "../settingAxios";
 
 export const getPostList = async (
   params: postListParamsType
 ): Promise<postListResType[] | undefined> => {
   const url = `/post/list`;
   try {
-    const response = await axiosAuth.get(url, { params });
+    const response = await axiosUnAuth.get(url, { params }); // fix?!
     return response.data.result;
   } catch (error) {
     console.error("**ERROR**", error);
@@ -29,17 +30,23 @@ export const getPostDetail = async (
 ): Promise<postDetailResType | undefined> => {
   const url = `/post/page`;
   try {
-    const res = await axiosAuth.get(url, { params });
+    // fix 이거 unauth로 해도되는지 고민!
+    const res = await axiosUnAuth.get(url, { params });
     return res.data.result;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const postPostWrite = async (body: PostWriteReqType) => {
+export const postPostWrite = async (body: any) => {
+  // export const postPostWrite = async (body: PostWriteReqType) => {
   const url = `/post/write`;
   try {
-    const res = await axiosAuth.post(url, body);
+    const res = await axiosAuth.post(url, body, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return res;
   } catch (error) {
     console.error(error);

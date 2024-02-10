@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { writePostState } from "../../../store/postStore";
+import { postPhotoState, writePostState } from "../../../store/postStore";
 
 export default function PhotoContainer() {
   const [writePost, setWritePost] = useRecoilState(writePostState);
-  const [postImg, setPostImg] = useState<any[]>([]);
+  const [postImg, setPostImg] = useRecoilState(postPhotoState);
   const [previewImg, setPreviewImg] = useState<any[]>([]);
 
   const onUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {

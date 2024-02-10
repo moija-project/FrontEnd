@@ -2,12 +2,25 @@ import React from "react";
 import styled from "styled-components";
 import ProfileWrapper from "./ProfileWrapper";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { accessTokenState, isLoggedInState } from "../../../store/userStore";
+import { removeCookie } from "../../../utils/cookie";
 
 export default function ProfileBox() {
   const navigate = useNavigate();
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [isLoggedin, setIsLoggedin] = useRecoilState(isLoggedInState);
 
   const moveToMypage = () => {
     navigate("/mypage");
+  };
+
+  const handleLogout = () => {
+    if (window.confirm("정말 로그아웃 하실 건가요?")) {
+      localStorage.removeItem("accessToken");
+      removeCookie("REFRESH_TOKEN");
+      setIsLoggedin(false);
+    }
   };
   return (
     <Container>
@@ -16,7 +29,9 @@ export default function ProfileBox() {
         <BoxButton isColored={true} onClick={moveToMypage}>
           채팅 목록
         </BoxButton>
-        <BoxButton isColored={false}>로그아웃</BoxButton>
+        <BoxButton onClick={handleLogout} isColored={false}>
+          로그아웃
+        </BoxButton>
       </ButtonWrapper>
     </Container>
   );

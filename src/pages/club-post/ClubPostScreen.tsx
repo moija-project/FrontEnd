@@ -3,15 +3,15 @@ import styled from "styled-components";
 import PostContent from "./components/PostContent";
 import CreateQuestionnaire from "./components/CreateQuestionnaire";
 import CommonContainer from "../../components/CommonContainer";
-import { writePostState } from "../../store/postStore";
+import { postPhotoState, writePostState } from "../../store/postStore";
 import { useRecoilState } from "recoil";
 import { postPostWrite } from "../../api/service-api/clubPostApi";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function ClubPostScreen() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [writePost, setWritePost] = useRecoilState(writePostState);
+  const [postImg, setPostImg] = useRecoilState(postPhotoState);
   const onSetQuestionList = (list: any) => {
     setWritePost((prev) => {
       return {
@@ -23,24 +23,24 @@ export default function ClubPostScreen() {
       };
     });
   };
-  const onSetTitle = (title: string) => {
-    console.log("title : ", title);
-  };
-  const onSetType = (type: string) => {
-    console.log("$", type);
-  };
-  const onSetContent = (content: string) => {
-    console.log("$#%#$", content);
-  };
+
   const handleSubmit = () => {
     const postClub = async () => {
-      const res = await postPostWrite(writePost);
+      let formData = new FormData();
+      const json = JSON.stringify(writePost);
+      const blob = new Blob([json], { type: "application/json" });
+
+      formData.append("write", blob);
+      postImg.length !== 0 &&
+        postImg.forEach((img) => {
+          formData.append("image", img);
+        });
+      const res = await postPostWrite(formData);
       if (res?.data.isSuccess) {
         setWritePost({
           title: "",
           contents: "",
           category: "etc",
-          leader_id: "testman1", // fix
           num_condition: 0,
           is_changed: false,
           penalty: 0,
@@ -71,7 +71,7 @@ export default function ClubPostScreen() {
         title: "",
         contents: "",
         category: "etc",
-        leader_id: "testman1", // fix
+        // leader_id: "testman1", // fix
         num_condition: 0,
         is_changed: false,
         penalty: 0,
@@ -92,11 +92,7 @@ export default function ClubPostScreen() {
   return (
     <CommonContainer>
       <SubmitButton onClick={handleSubmit}>등록</SubmitButton>
-      <PostContent
-        setTitle={onSetTitle}
-        setClubType={onSetType}
-        setContent={onSetContent}
-      />
+      <PostContent />
       <Line />
       <CreateQuestionnaire setListArr={onSetQuestionList} />
     </CommonContainer>

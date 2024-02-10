@@ -6,12 +6,18 @@ import PreviewPost from "../../components/PreviewPost";
 import NotificationBox from "./components/NotificationBox";
 import { postListResType } from "../../interfaces/post-type";
 import { getPostList } from "../../api/service-api/clubPostApi";
+import { useRecoilValue } from "recoil";
+import { isLoggedInState } from "../../store/userStore";
+import { postMyProfile } from "../../api/service-api/profileApi";
 
 export default function HomeScreen() {
+  const isLoggedin = useRecoilValue(isLoggedInState);
   const [postList, setPostList] = useState<postListResType[]>([]);
   useEffect(() => {
     setPostList([]);
     const getData = async () => {
+      // const profileRes = await postMyProfile({});
+      // console.log("---------------------", profileRes);
       const res = await getPostList({
         category: "all",
         view_type: "latest",
@@ -23,8 +29,7 @@ export default function HomeScreen() {
   return (
     <Container>
       <LeftContainer>
-        <LoginBox />
-        {/* <ProfileBox /> */}
+        {isLoggedin ? <ProfileBox /> : <LoginBox />}
       </LeftContainer>
       <MiddleContainer>
         <MiddleTitle>모임 모집</MiddleTitle>
@@ -84,7 +89,7 @@ const MiddleContainer = styled.div`
   /* padding: 0 0.94rem; */
   flex: 1;
   max-width: 800px;
-  margin: auto;
+  margin: 0 auto;
   @media screen and (max-width: 1500px) {
     max-width: 800px;
     width: 100%;

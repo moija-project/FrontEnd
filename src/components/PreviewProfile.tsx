@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Modal from "./Modal";
 import ProfileModal from "./ProfileModal";
-import { ProfileResType, ProfileType } from "../interfaces/user-type";
+import {
+  MyProfileType,
+  ProfileResType,
+  ProfileType,
+} from "../interfaces/user-type";
 
 type PreviewProfileProps = {
   hasBorder?: boolean;
-  profileData?: ProfileResType;
+  profileData?: MyProfileType;
 };
 
 const defaultImg = require("../assets/images/default-img-01.png");
@@ -19,12 +23,17 @@ export default function PreviewProfile({
   const handleClickProfile = () => {
     setShowModal(!showModal);
   };
-  useEffect(() => {
-    console.log(profileData);
-  }, [profileData]);
+  // useEffect(() => {
+  //   console.log(profileData);
+  // }, [profileData]);
   return (
     <Container hasBorder={hasBorder}>
-      {showModal && <ProfileModal setOpen={(open) => setShowModal(open)} />}
+      {showModal && (
+        <ProfileModal
+          setOpen={(open) => setShowModal(open)}
+          profileData={profileData ?? undefined}
+        />
+      )}
 
       <ProfileImg
         onClick={handleClickProfile}

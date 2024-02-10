@@ -39,6 +39,7 @@ export default function CreateQuestionnaire({
   };
 
   useEffect(() => {
+    console.log("------------- ", questions);
     let questionsSetting = questions?.map((value) => value.question);
     setQuestionList(questionsSetting ?? []);
   }, [questions]);

@@ -22,11 +22,24 @@ export type MyProfileType = ProfileResType & {
 // 회원가입
 export type SignupReqType = {
   user_id: string;
-  password_encode: string;
+  password: string;
   name: string;
   nickname: string;
   gender: number; // 1:femail 0:male
   birth: string;
   phone_number: string;
   email: string;
+};
+
+// 로그인
+export type LoginResType = {
+  isSuccess: boolean;
+  code: number;
+  message: string;
+  result?: LoginResResultType;
+};
+export type LoginResResultType = {
+  grantType: string;
+  accessToken: string;
+  // refreshToken: string;
 };

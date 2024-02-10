@@ -17,7 +17,7 @@ export const writePostState = atom<PostWriteReqType>({
     title: "",
     contents: "",
     category: "etc",
-    leader_id: "testman1", // fix
+    // leader_id: "testman1", // fix
     num_condition: 0,
     is_changed: false,
     penalty: 0,
@@ -78,5 +78,11 @@ export const postQuestionAnswerState = atom<ClubConditionType[] | null>({
 // 해당 게시물에 대한 가입조건 질문만
 export const postDetailQuestions = atom<ClubConditionType[] | null | []>({
   key: "postDetailQuestions",
+  default: [],
+});
+
+// 게시글 글쓰기 - 사진 보내기
+export const postPhotoState = atom<any[]>({
+  key: "postPhotoState",
   default: [],
 });

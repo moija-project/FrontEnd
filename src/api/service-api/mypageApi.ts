@@ -62,7 +62,17 @@ export const postReceivedChatRequestAccept = async (waiting_id: number) => {
   const url = `/my/accept/${waiting_id}`;
   try {
     const res = await axiosAuth.post(url);
-    console.log("받은 요청 수락 api ", res);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// 내가 참여한 모임 보기
+export const postMyJoinedClub = async ({}) => {
+  const url = `/my/joined-team`;
+  try {
+    const res = await axiosAuth.post(url);
     return res.data;
   } catch (error) {
     console.error(error);

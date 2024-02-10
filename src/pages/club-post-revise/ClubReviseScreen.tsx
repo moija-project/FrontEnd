@@ -33,7 +33,7 @@ export default function ClubReviseScreen() {
           title: "",
           contents: "",
           category: "etc",
-          leader_id: "testman1", // fix
+          // leader_id: "testman1", // fix
           num_condition: 0,
           is_changed: false,
           penalty: 0,
@@ -61,7 +61,7 @@ export default function ClubReviseScreen() {
       title: post.title,
       contents: post.contents,
       category: post.category,
-      leader_id: post.user_id, // fix
+      // leader_id: post.user_id, // fix
       num_condition: 0,
       is_changed: post.is_changed,
       penalty: post.penalty,
@@ -77,7 +77,7 @@ export default function ClubReviseScreen() {
         title: "",
         contents: "",
         category: "etc",
-        leader_id: "testman1", // fix
+        // leader_id: "testman1", // fix
         num_condition: 0,
         is_changed: false,
         penalty: 0,

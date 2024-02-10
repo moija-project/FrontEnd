@@ -144,7 +144,7 @@ export default function SignupScreen() {
       if (!window.confirm("회원가입 하시겠습니까?")) return;
       const res = await postSignup({
         user_id: id,
-        password_encode: pw,
+        password: pw,
         name,
         nickname,
         gender: gender,

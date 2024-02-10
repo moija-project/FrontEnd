@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ViewType } from "../../../interfaces/post-type";
+import { useRecoilValue } from "recoil";
+import { isLoggedInState } from "../../../store/userStore";
 
 type ClubListTopMenuProps = {
   setViewType: (cate: ViewType) => void;
@@ -17,10 +19,15 @@ const viewItems: { data: ViewType; name: string }[] = [
 
 export default function ClubListTopMenu({ setViewType }: ClubListTopMenuProps) {
   const [activeView, setActiveView] = useState<ViewType>("latest");
+  const isLoggedin = useRecoilValue(isLoggedInState);
 
   const navigate = useNavigate();
   const onClickPost = () => {
-    navigate("/postClub");
+    if (isLoggedin) navigate("/postClub");
+    else {
+      window.alert("로그인을 먼저 해주세요");
+      navigate("/login");
+    }
   };
   const handleViewType = (type: ViewType) => {
     setActiveView(type);

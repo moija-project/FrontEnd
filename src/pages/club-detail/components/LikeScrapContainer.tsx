@@ -22,9 +22,6 @@ export default function LikeScrapContainer({
   // const post = useRecoilValue(postDetailState);
   const [postDetail, setPostDetail] = useRecoilState(postDetailState);
   // const like = useRecoilValue(fetchPostDetailAtom({ post_id: postId }))?.likes;
-  const [likeCnt, setLikeCnt] = useState(10);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isScrapped, setIsScrapped] = useState(false);
 
   // const postPostLikeToggle =async (vote : number) => { // 0:취소 / 1:등록
   //   const res = await postPostLike({vote , post_id : postId})
@@ -46,7 +43,6 @@ export default function LikeScrapContainer({
     const clip = postDetail.mycliped ? 0 : 1;
 
     const res = await postPostClip({ post_id: postId, clip });
-    console.log("!! ", res);
     if (!res?.isSuccess) return;
     newPostDetail.mycliped = !newPostDetail.mycliped;
   };

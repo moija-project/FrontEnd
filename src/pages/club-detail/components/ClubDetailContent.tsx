@@ -38,7 +38,16 @@ export default function ClubDetailContent() {
       {postDetail.user_id === "testman1" ? (
         <PreviewProfile profileData={myProfile} />
       ) : (
-        <PreviewProfile />
+        <PreviewProfile
+          profileData={{
+            user_id: postDetail.user_id,
+            nickname: postDetail.leader_nickname,
+            bornIn: postDetail.born_in,
+            reliabilityUser: postDetail.reliability_user,
+            profilePhotoUrl: postDetail.profile_photo ?? "",
+            gender: "여",
+          }}
+        />
       )}
       <Line />
       <PostHeader>

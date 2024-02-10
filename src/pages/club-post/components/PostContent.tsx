@@ -5,12 +5,6 @@ import { useRecoilState } from "recoil";
 import { writePostState } from "../../../store/postStore";
 import { CategoryType } from "../../../interfaces/post-type";
 
-type PostContentProps = {
-  setClubType: (type: string) => void;
-  setTitle: (title: string) => void;
-  setContent: (content: string) => void;
-};
-
 const TypesArray: { id: CategoryType; name: string }[] = [
   { id: "language", name: "어학" },
   { id: "study", name: "학업" },
@@ -19,15 +13,9 @@ const TypesArray: { id: CategoryType; name: string }[] = [
   { id: "etc", name: "기타" },
 ];
 
-export default function PostContent({
-  setTitle,
-  setClubType,
-  setContent,
-}: PostContentProps) {
+export default function PostContent() {
   const [writePost, setWritePost] = useRecoilState(writePostState);
   const [type, setType] = useState("all");
-  const [postTitle, setPostTitle] = useState("");
-  const [postContent, setPostContent] = useState("");
 
   const onChangeTypesRadio = (cate: CategoryType) => {
     // setType(e.target.value);
@@ -60,7 +48,7 @@ export default function PostContent({
 
   return (
     <Container>
-      <form>
+      <form encType="multipart/form-data">
         <TitleInput
           value={writePost.title}
           onChange={(e) => onChangeTitle(e.target.value)}

@@ -1,18 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "./Modal";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { MyProfileType, ProfileResType } from "../interfaces/user-type";
+import { useRecoilState } from "recoil";
+import { myProfileInfoState } from "../store/userStore";
 
 type ProfileModalProps = {
   setOpen: (open: boolean) => void;
+  profileData?: MyProfileType;
 };
-const sample =
-  "https://i.pinimg.com/564x/21/b9/1e/21b91ef8c190540c9f6262dc92df015a.jpg";
 
-export default function ProfileModal({ setOpen }: ProfileModalProps) {
+export default function ProfileModal({
+  setOpen,
+  profileData,
+}: ProfileModalProps) {
+  let defaultNickname = profileData?.nickname;
   const [postImg, setPostImg] = useState<any>();
   const [previewImg, setPreviewImg] = useState<any>();
+  const [inpuNickname, setInputNickname] = useState(defaultNickname);
+  const [myProfile, setMyProfile] = useRecoilState(myProfileInfoState);
+
+  let isUser = myProfile.user_id === profileData?.user_id;
 
   const onUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     let reader = new FileReader();
@@ -67,23 +77,44 @@ export default function ProfileModal({ setOpen }: ProfileModalProps) {
       </HeartWrapper>
     );
   };
+
   return (
     <Modal setClose={handleModal} open>
       <Container>
         <ProfileImgWrapper>
-          <ProfileImg src={previewImg ? previewImg : sample} />
-          <input
-            type="file"
-            style={{ display: "none" }}
-            id="file_btn"
-            onChange={(e) => onUploadImage(e)}
+          <ProfileImg
+            src={
+              !profileData?.profilePhotoUrl ||
+              profileData.profilePhotoUrl === ""
+                ? require("../assets/images/default-img-01.png")
+                : profileData.profilePhotoUrl
+            }
           />
-          <ProfileImgEdit htmlFor="file_btn">
-            <FontAwesomeIcon icon={faPenToSquare} color="#ffffff" />
-          </ProfileImgEdit>
+
+          {isUser && (
+            <>
+              <input
+                type="file"
+                style={{ display: "none" }}
+                id="file_btn"
+                onChange={(e) => onUploadImage(e)}
+              />
+              <ProfileImgEdit htmlFor="file_btn">
+                <FontAwesomeIcon icon={faPenToSquare} color="#ffffff" />
+              </ProfileImgEdit>
+            </>
+          )}
         </ProfileImgWrapper>
-        <Nickname>닉네임</Nickname>
-        <Birth>2000년 생</Birth>
+        <Nickname
+          type="text"
+          placeholder={defaultNickname}
+          // disabled
+          onChange={(e) => setInputNickname(e.target.value)}
+          value={inpuNickname}
+          defaultValue={profileData?.nickname}
+        />
+
+        <Birth>{profileData?.bornIn}</Birth>
         <CredWrapper>
           <CredTitle>신뢰도 점수</CredTitle>
           <ScoreWrapper>
@@ -92,11 +123,11 @@ export default function ProfileModal({ setOpen }: ProfileModalProps) {
               {_renderColoredHeart(2.5)}
             </HeartContainer> */}
             <MyScore>
-              5 점 <TotalScore> / 5점</TotalScore>
+              {profileData?.reliabilityUser} 점 <TotalScore> / 5점</TotalScore>
             </MyScore>
           </ScoreWrapper>
         </CredWrapper>
-        <EditButton onClick={handleEditSubmit}>수정하기</EditButton>
+        {isUser && <EditButton onClick={handleEditSubmit}>수정하기</EditButton>}
       </Container>
     </Modal>
   );
@@ -133,10 +164,22 @@ const ProfileImgEdit = styled.label`
   top: 0;
   right: 0;
 `;
-const Nickname = styled.span`
+
+const Nickname = styled.input`
+  margin: 1.62rem 0 0.7rem;
   font-size: 1.25rem;
   font-weight: 500;
-  margin: 1.62rem 0 0.25rem;
+  border: 1px solid var(--light-gray02);
+  border-radius: 4px;
+  padding: 3px;
+  text-align: center;
+  &:focus {
+    border-color: var(--purple);
+  }
+  &:disabled {
+    background-color: white;
+    border: none;
+  }
 `;
 const Birth = styled.span`
   font-size: 0.8rem;

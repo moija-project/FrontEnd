@@ -28,13 +28,32 @@ export type PostWriteReqType = {
   title: string;
   contents: string;
   category: CategoryType;
-  leader_id: string;
+  // leader_id: string;
   num_condition: number;
   is_changed: boolean;
   penalty: number;
   conditions: ClubConditionType[];
 };
-
+/*
+ {
+	"title": "테스트 페이지 ??모임 구함",
+	"contents": "안녕하세요 저희는 누구고 토익 어디서 악기연주를 할 모임을 어쩌구 해서 모든 내용(2000자까지 가능)",
+    "category": "hobby",
+	"leader_id": "testman1",
+	"num_condition": 2,
+    "penalty": 0,
+	"is_changed": false,
+	"conditions": [
+	{
+		"question": "당신의 포지션은요?",
+		"answer": null
+	},
+	{
+		"question": "당신의 경력은요?",
+		"answer": null
+	}]
+}
+ */
 export type PostWriterProfileType = {
   born_in: string;
   leader_nickname: string;

@@ -1,19 +1,29 @@
 import React from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { myProfileInfoState } from "../../../store/userStore";
 
 export default function ProfileWrapper() {
+  const myProfile = useRecoilValue(myProfileInfoState);
   return (
     <ProfileContainer>
       <ProfileImage
-        src={require("../../../assets/images/default-img-01.png")}
+        // src={require("../../../assets/images/default-img-01.png")}
+        src={
+          !myProfile.profilePhotoUrl || myProfile.profilePhotoUrl === ""
+            ? require("../../../assets/images/default-img-01.png")
+            : myProfile.profilePhotoUrl
+        }
       />
       <ProfileMiddleWraaper>
-        <NickName>닉네임 님</NickName>
-        <ProfileContent>여 20대</ProfileContent>
+        <NickName>{myProfile.nickname} 님</NickName>
+        <ProfileContent>
+          {myProfile.gender} {myProfile.bornIn}
+        </ProfileContent>
       </ProfileMiddleWraaper>
       <ProfileRightWrapper>
         <Title>신뢰도 점수</Title>
-        <Score>5점</Score>
+        <Score>{myProfile.reliabilityUser}점</Score>
       </ProfileRightWrapper>
     </ProfileContainer>
   );

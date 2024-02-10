@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ClubDetailContent from "./components/ClubDetailContent";
 import ButtonsContainer from "./components/ButtonsContainer";
@@ -13,11 +13,14 @@ import {
 } from "../../api/service-api/clubPostApi";
 import { postDetailResType } from "../../interfaces/post-type";
 
+type PostCaseType = "writer" | "member" | "requiring" | "default";
+
 export default function ClubDetailScreen() {
   const { postId } = useParams();
   const [postDetail, setPostDetail] =
     useRecoilState<postDetailResType>(postDetailState);
   const [questions, setQuestions] = useRecoilState(postDetailQuestions);
+  const [postCase, setPostCase] = useState<PostCaseType>("default"); // writer, member,requiring,default
   useEffect(() => {
     const getData = async () => {
       const res = await getPostDetail({ post_id: Number(postId) });
@@ -25,10 +28,8 @@ export default function ClubDetailScreen() {
         user_id: "testman1",
         post_id: Number(postId),
       }); // fix
-      console.log("##", res);
-      console.log("##", questionRes);
-      if (!res || !questionRes) return;
-      setPostDetail(res);
+
+      res && setPostDetail(res);
       // setPostDetail({
       //   title: res?.title,
       //   contents: res.contents,
@@ -54,10 +55,14 @@ export default function ClubDetailScreen() {
       //   changed: res.changed,
       //   category: res.category,
       // });
-      setQuestions(questionRes);
+      questionRes && setQuestions(questionRes);
     };
     getData();
   }, [postId]);
+
+  // useEffect(() => {
+
+  // })
 
   return (
     <Container>
@@ -95,6 +100,7 @@ const ContentWrapper = styled.div`
 const MainContainer = styled.div`
   flex: 0 0 65%;
   max-width: 800px;
+  min-width: 600px;
   background-color: white;
   padding: 0.625rem 35px;
   box-sizing: border-box;

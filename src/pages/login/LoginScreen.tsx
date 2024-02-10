@@ -1,8 +1,22 @@
 import React, { useEffect, useState } from "react";
 import CommonContainer from "../../components/CommonContainer";
 import styled from "styled-components";
+import { postLogin } from "../../api/service-api/userApi";
+import { setCookie } from "../../utils/cookie";
+import { useRecoilState } from "recoil";
+import {
+  accessTokenState,
+  getAccessTokenState,
+  isLoggedInState,
+  myProfileInfoState,
+} from "../../store/userStore";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginScreen() {
+  const navigate = useNavigate();
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [isLoggedin, setIsLoggedin] = useRecoilState(isLoggedInState);
+  const [userProfile, setUserProfile] = useRecoilState(myProfileInfoState);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [activeSubBtn, setActiveSubBtn] = useState(false);
@@ -13,8 +27,20 @@ export default function LoginScreen() {
   const handlePw = (val: string) => {
     setPw(val);
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // 로그인 처리
+    if (!activeSubBtn) return;
+    const res = await postLogin(id, pw);
+    if (res?.isSuccess && res.result) {
+      // setAccessToken(res.result.accessToken);
+      localStorage.setItem("accessToken", res.result.accessToken);
+      // setCookie("accessToken", res.result.accessToken);
+      setIsLoggedin(true);
+      // setUserProfile()
+      navigate("/");
+    } else {
+      window.alert(res?.message);
+    }
   };
 
   useEffect(() => {
