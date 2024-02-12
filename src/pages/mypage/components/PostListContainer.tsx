@@ -37,9 +37,18 @@ export default function PostListContainer({
           ?.slice(0, 5)
           .map((item, idx) =>
             idx === 0 ? (
-              <PreviewPost postItem={item} isFirst hasSidePadding={false} />
+              <PreviewPost
+                key={`preview-post-${idx}`}
+                postItem={item}
+                isFirst
+                hasSidePadding={false}
+              />
             ) : (
-              <PreviewPost postItem={item} hasSidePadding={false} />
+              <PreviewPost
+                key={`preview-post-${idx}`}
+                postItem={item}
+                hasSidePadding={false}
+              />
             )
           )}
         {(data?.length === 0 || !data) && (

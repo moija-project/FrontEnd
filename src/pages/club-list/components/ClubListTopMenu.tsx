@@ -23,7 +23,8 @@ export default function ClubListTopMenu({ setViewType }: ClubListTopMenuProps) {
 
   const navigate = useNavigate();
   const onClickPost = () => {
-    if (isLoggedin) navigate("/postClub");
+    if (localStorage.getItem("login") === "login") navigate("/postClub");
+    // if (isLoggedin) navigate("/postClub");
     else {
       window.alert("로그인을 먼저 해주세요");
       navigate("/login");

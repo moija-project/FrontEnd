@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -6,8 +6,9 @@ import {
   postAnswering,
   postChangeClubState,
 } from "../../../api/service-api/clubPostApi";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { postDetailState } from "../../../store/postStore";
+import { myUserIdState } from "../../../store/userStore";
 
 type ButtonsContainerProps = {
   postId: number;
@@ -16,6 +17,7 @@ type ButtonsContainerProps = {
 export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
   const navigate = useNavigate();
   const [postDetail, setPostDetail] = useRecoilState(postDetailState);
+  const myUserid = useRecoilValue(myUserIdState);
   const moveToClubCredReview = () => {
     navigate("/credReview", { state: { type: "club" } });
   };
@@ -30,6 +32,7 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
   };
   const postRequestWithoutAnswers = async () => {
     const res = await postAnswering(
+      // fix
       {
         user_id: "testman2",
         num_answer: postDetail.num_condition,
@@ -66,6 +69,11 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
       deleteData();
     }
   };
+
+  useEffect(() => {
+    console.log("--- ", myUserid);
+  }, []);
+
   return (
     <Container>
       <SettingWrapper>

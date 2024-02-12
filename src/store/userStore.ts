@@ -12,6 +12,17 @@ const { persistAtom } = recoilPersist({
 export const isLoggedInState = atom<Boolean>({
   key: "isLoggedInState",
   default: false,
+  effects: [
+    ({ setSelf, onSet }) => {
+      const data = localStorage.getItem("accessToken");
+      // setSelf: atom 값을 설정 혹은 재설정
+      if (data) setSelf(true);
+      else setSelf(false);
+
+      // onSet : atom이 변화가 감지될 때 작동, Storage에 데이터 저장
+      // setSelf에 의해서는 작동하지 않음
+    },
+  ],
   effects_UNSTABLE: [persistAtom],
 });
 
@@ -28,6 +39,12 @@ export const getAccessTokenState = selector({
   get: ({ get }) => {
     return get(accessTokenState); // Atom에서 액세스 토큰 상태를 가져옴
   },
+});
+
+// 로그인한 유저의 아이디 (이건 아마 임시로 할듯) // fix
+export const myUserIdState = atom<string>({
+  key: "myUserIdState",
+  default: "",
 });
 
 // 본인 프로필

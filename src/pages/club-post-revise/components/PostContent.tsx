@@ -45,7 +45,10 @@ export default function PostContent() {
           <TypeTitle>분야</TypeTitle>
           <TypesWrapper>
             {TypesArray.map((item, index) => (
-              <TypeItemWrapper isChecked={item.id === writePost.category}>
+              <TypeItemWrapper
+                key={`type-btn-${index}`}
+                isChecked={item.id === writePost.category}
+              >
                 <TypeItemInput
                   type="radio"
                   value={item.id}

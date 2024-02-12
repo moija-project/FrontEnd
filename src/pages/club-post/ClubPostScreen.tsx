@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import PostContent from "./components/PostContent";
 import CreateQuestionnaire from "./components/CreateQuestionnaire";
@@ -36,6 +36,7 @@ export default function ClubPostScreen() {
           formData.append("image", img);
         });
       const res = await postPostWrite(formData);
+      console.log(res);
       if (res?.data.isSuccess) {
         setWritePost({
           title: "",

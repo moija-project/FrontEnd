@@ -61,7 +61,7 @@ export default function CreateQuestionnaire({
           </InstructionText>
           <QuestionsContainer>
             {[...Array(questionCnt)].map((v, i) => (
-              <QuestionWrapper id={`${i}`}>
+              <QuestionWrapper key={`question-${i}`}>
                 <QuestionNumber>{i + 1}</QuestionNumber>
                 <QuestionInput
                   value={questionList[i] || ""}

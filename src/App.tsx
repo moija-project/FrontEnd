@@ -21,6 +21,7 @@ import AnswerQuestionsScreen from "./pages/answer-questions/AnswerQuestionsScree
 import ClubReviseScreen from "./pages/club-post-revise/ClubReviseScreen";
 import CompleteSignupScreen from "./pages/sign-up/CompleteSignupScreen";
 import axios from "axios";
+import MorePostListScreen from "./pages/mypage/MorePostListScreen";
 
 function App() {
   return (
@@ -47,7 +48,12 @@ function App() {
               />
 
               <Route path="/clubList" element={<ClubListScreen />} />
+
               <Route path="/mypage" element={<MyPageScreen />} />
+              <Route
+                path="/mypage-morePost/:type"
+                element={<MorePostListScreen />}
+              />
 
               <Route path="/postClub" element={<ClubPostScreen />} />
               <Route path="/reviseClub" element={<ClubReviseScreen />} />

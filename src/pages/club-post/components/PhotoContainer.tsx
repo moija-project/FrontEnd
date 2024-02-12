@@ -54,7 +54,7 @@ export default function PhotoContainer() {
         </AddPhotoLabel>
         {previewImg &&
           previewImg.map((src, i) => (
-            <ImgItemWrapper id={`photo-${i}`}>
+            <ImgItemWrapper key={`photo-${i}`}>
               <ImgItemImage src={src} />
               <ImgRemoveButton onClick={(e) => onRemoveImage(e, i)}>
                 <FontAwesomeIcon icon={faXmark} />

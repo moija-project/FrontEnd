@@ -32,6 +32,7 @@ export default function QuestionContainer({
       <ButtonsWrapper>
         {scoresArr.map((v, i) => (
           <ButtonWrapper
+            key={`score-${i}`}
             onClick={() => onClickScore(i)}
             isChecked={i === checkedScore}
           >

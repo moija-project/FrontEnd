@@ -9,6 +9,7 @@ import {
   getAccessTokenState,
   isLoggedInState,
   myProfileInfoState,
+  myUserIdState,
 } from "../../store/userStore";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +18,7 @@ export default function LoginScreen() {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [isLoggedin, setIsLoggedin] = useRecoilState(isLoggedInState);
   const [userProfile, setUserProfile] = useRecoilState(myProfileInfoState);
+  const [userId, setUserId] = useRecoilState(myUserIdState); // maybe fix
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [activeSubBtn, setActiveSubBtn] = useState(false);
@@ -31,11 +33,13 @@ export default function LoginScreen() {
     // 로그인 처리
     if (!activeSubBtn) return;
     const res = await postLogin(id, pw);
+    console.log(res);
     if (res?.isSuccess && res.result) {
       // setAccessToken(res.result.accessToken);
       localStorage.setItem("accessToken", res.result.accessToken);
       // setCookie("accessToken", res.result.accessToken);
       setIsLoggedin(true);
+      setUserId(id); // maybe fix
       // setUserProfile()
       navigate("/");
     } else {
