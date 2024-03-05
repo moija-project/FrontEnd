@@ -4,6 +4,7 @@ import { debounce } from "lodash";
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { postMyProfile } from "../api/service-api/profileApi";
 
 type HeaderProps = {
   RightOption?: React.ReactNode;
@@ -37,7 +38,10 @@ export default function Header({ RightOption }: HeaderProps) {
             <Link to={"/clubList"}>
               <Menu isActive={path === "/clubList"}>모임</Menu>
             </Link>
-            <Link to={"/mypage"}>
+            <Link
+              to={localStorage.getItem("accessToken") ? "/mypage" : "/login"}
+            >
+              {/* <Link to={"/mypage"}> */}
               <Menu isActive={path === "/mypage"}>마이페이지</Menu>
             </Link>
           </MenuList>

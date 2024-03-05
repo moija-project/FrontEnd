@@ -7,8 +7,8 @@ import axios, {
 import { getCookie } from "../utils/cookie";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { getAccessTokenState } from "../store/userStore";
+import useUserProfile from "../hook/useUserProfile";
 
-const BASE_URL = "http://mo.ija.kro.kr/";
 axios.defaults.withCredentials = true;
 
 const axiosUnAuth = axios.create({
@@ -17,7 +17,6 @@ const axiosUnAuth = axios.create({
 });
 const axiosAuth = axios.create({
   // baseURL: BASE_URL,
-  timeout: 10000,
   headers: {
     // "Content-Type": "application/json",
   },
@@ -32,7 +31,6 @@ const extractNewTokenFromHeader = (headers: any): string | null => {
 
 axiosAuth.interceptors.request.use(
   (config) => {
-    console.log("$$$$ ", config);
     const ACCESS_TOKEN = localStorage.getItem("accessToken") ?? "";
     try {
       if (ACCESS_TOKEN) {
@@ -54,6 +52,8 @@ axiosAuth.interceptors.request.use(
       );
       return extractNewTokenFromHeader(error.config?.headers);
     }
+    localStorage.removeItem("accessToken");
+    useUserProfile({});
     return Promise.reject(error);
   }
 );
@@ -68,6 +68,7 @@ axiosAuth.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
+    console.log("errrrrrr");
     if (
       error.response?.status === 503 ||
       error.response?.status === 500 ||
@@ -84,11 +85,15 @@ axiosAuth.interceptors.response.use(
           return updatedResponse;
         } catch (requestError) {
           localStorage.removeItem("accessToken");
+          useUserProfile({});
           console.error("Failed to reattempt request:", requestError);
           return Promise.reject(requestError);
         }
       }
     }
+    console.log("erorrrrrr");
+    localStorage.removeItem("accessToken");
+    useUserProfile({});
     return Promise.reject(error);
   }
 );

@@ -61,6 +61,7 @@ export type PostWriterProfileType = {
   reliability_user: number;
   userNickname: string;
   user_id: string;
+  gender: string;
 };
 
 export type postListParamsType = {
@@ -100,6 +101,7 @@ export type postDetailResType = PostWriterProfileType & {
   last_write: string;
   first_write: string;
   num_condition: number;
+  role_in_post: "V" | "L" | "M" | "T"; // viewer, leader, member , temp(요청만 보낸상태)
 };
 
 export type PostLikeReqType = {
@@ -116,7 +118,6 @@ export type PostLikeResType = {
   message: string;
 };
 export type AnsweringReqType = {
-  user_id: string;
   num_answer: number;
   is_ask: boolean;
   answers: string[] | [];

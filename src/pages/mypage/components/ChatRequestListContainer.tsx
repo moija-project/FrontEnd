@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import PreviewChatRequest from "../../../components/PreviewChatRequest";
 import { useRecoilValue } from "recoil";
@@ -6,6 +6,9 @@ import { fetchRequestListState } from "../../../store/mypageStore";
 
 export default function ChatRequestListContainer() {
   const list = useRecoilValue(fetchRequestListState);
+  useEffect(() => {
+    console.log(list);
+  }, [list]);
   return (
     <Container>
       <RequestContainer>

@@ -12,6 +12,7 @@ import {
   myUserIdState,
 } from "../../store/userStore";
 import { useNavigate } from "react-router-dom";
+import { postMyProfile } from "../../api/service-api/profileApi";
 
 export default function LoginScreen() {
   const navigate = useNavigate();
@@ -29,6 +30,11 @@ export default function LoginScreen() {
   const handlePw = (val: string) => {
     setPw(val);
   };
+  const fetchProfile = async () => {
+    const res = await postMyProfile({});
+    console.log("profile api", res);
+    res && setUserProfile(res);
+  };
   const handleSubmit = async () => {
     // 로그인 처리
     if (!activeSubBtn) return;
@@ -41,6 +47,7 @@ export default function LoginScreen() {
       setIsLoggedin(true);
       setUserId(id); // maybe fix
       // setUserProfile()
+      fetchProfile();
       navigate("/");
     } else {
       window.alert(res?.message);

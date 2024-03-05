@@ -16,10 +16,15 @@ export const postMyProfile = async (data: {}): Promise<
 };
 
 // 내 프로필 사진 수정하기
-export const patchMyProfileImg = async (data: { file: File }) => {
+export const patchMyProfileImg = async (body: any) => {
+  // export const patchMyProfileImg = async (data: { file: File }) => {
   const url = `/my/profile/edit/photo`;
   try {
-    const res = await axiosAuth.patch(url, data);
+    const res = await axiosAuth.patch(url, body, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return res;
   } catch (error) {
     console.error(error);
@@ -27,4 +32,12 @@ export const patchMyProfileImg = async (data: { file: File }) => {
 };
 
 // 내 프로필 닉네임 수정하기
-// export const patchMyProfileNickname = async (data: {}) => {};
+export const patchMyProfileNickname = async (new_nickname: string) => {
+  const url = `/my/profile/edit/nick`;
+  try {
+    const res = await axiosAuth.patch(url, new_nickname);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};

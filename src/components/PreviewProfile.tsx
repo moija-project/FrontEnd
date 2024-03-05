@@ -37,7 +37,7 @@ export default function PreviewProfile({
 
       <ProfileImg
         onClick={handleClickProfile}
-        src={profileData?.profilePhotoUrl || defaultImg}
+        src={profileData?.photo_profile || defaultImg}
       />
       {/* <ProfileImg
         onClick={handleClickProfile}
@@ -47,12 +47,12 @@ export default function PreviewProfile({
       <ProfileContentWrapper>
         <Nickname>{profileData?.nickname ?? "nickname"}</Nickname>
         <Content>
-          {profileData?.gender} {profileData?.bornIn}
+          {profileData?.gender} {profileData?.birth_year}
         </Content>
       </ProfileContentWrapper>
       <CredibilityWrapper>
         <CredibilityTitle>신뢰도 점수</CredibilityTitle>
-        <CredibilityScore>{profileData?.reliabilityUser}점</CredibilityScore>
+        <CredibilityScore>{profileData?.reliability_user}점</CredibilityScore>
       </CredibilityWrapper>
     </Container>
   );

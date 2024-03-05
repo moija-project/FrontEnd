@@ -5,25 +5,27 @@ import { myProfileInfoState } from "../../../store/userStore";
 
 export default function ProfileWrapper() {
   const myProfile = useRecoilValue(myProfileInfoState);
+
+  console.log("!@# ", myProfile.photo_profile);
   return (
     <ProfileContainer>
       <ProfileImage
         // src={require("../../../assets/images/default-img-01.png")}
         src={
-          !myProfile.profilePhotoUrl || myProfile.profilePhotoUrl === ""
+          !myProfile.photo_profile || myProfile.photo_profile === ""
             ? require("../../../assets/images/default-img-01.png")
-            : myProfile.profilePhotoUrl
+            : myProfile.photo_profile
         }
       />
       <ProfileMiddleWraaper>
         <NickName>{myProfile.nickname} 님</NickName>
         <ProfileContent>
-          {myProfile.gender} {myProfile.bornIn}
+          {myProfile.gender} {myProfile.birth_year}
         </ProfileContent>
       </ProfileMiddleWraaper>
       <ProfileRightWrapper>
         <Title>신뢰도 점수</Title>
-        <Score>{myProfile.reliabilityUser}점</Score>
+        <Score>{myProfile.reliability_user}점</Score>
       </ProfileRightWrapper>
     </ProfileContainer>
   );

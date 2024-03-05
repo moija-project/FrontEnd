@@ -10,11 +10,34 @@ import {
   ViewType,
   postListResType,
 } from "../../interfaces/post-type";
+import { useQuery } from "react-query";
 
 export default function ClubListScreen() {
   const [postList, setPostList] = useState<postListResType[]>([]);
   const [postCate, setPostCate] = useState<CategoryType>();
   const [postView, setPostView] = useState<ViewType>();
+
+  // const fetchList = async () => {
+  //   // const res = await getPostList({
+  //   //   category: postCate ?? "all",
+  //   //   view_type: postView ?? "latest",
+  //   // });
+  //   // res && setPostList(res);
+  //   const res = (
+  //     await fetch("https://jsonplaceholder.typicode.com/posts")
+  //   ).json();
+  //   return res;
+  // };
+  // const { status, data, error } = useQuery("clubList", fetchList, {
+  //   onSuccess: (data) => console.log(data),
+  //   onError: (e) => console.log(e),
+  // });
+
+  // if (status === "loading") {
+  //   return <span>Loading...</span>;
+  // } else if (status === "error") {
+  //   return <span>ERROR</span>;
+  // }
 
   useEffect(() => {
     setPostList([]);

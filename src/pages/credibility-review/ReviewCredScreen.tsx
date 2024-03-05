@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CommonContainer from "../../components/CommonContainer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PreviewProfile from "../../components/PreviewProfile";
 import ReviewContentContainer from "./components/ReviewContentContainer";
@@ -10,9 +10,11 @@ type - 'peer' / 'club'
 */
 
 export default function ReviewCredScreen() {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const [totalScore, setTotalScore] = useState(0);
   let type = state.type;
+  let postId = state.postId;
 
   const handleSumScore = (sum: number) => {
     setTotalScore(sum);
@@ -23,7 +25,7 @@ export default function ReviewCredScreen() {
     // 게시물 상세 페이지로 이동
     if (window.confirm("신뢰도 평가를 제출하시겠습니까?")) {
       alert("제출되었습니다!");
-      console.log("##");
+      navigate("/clubList");
     }
   };
 
@@ -31,7 +33,11 @@ export default function ReviewCredScreen() {
     <CommonContainer>
       <Title>{type === "peer" ? "개인" : "모임"} 신뢰도 평가하기</Title>
       {type === "peer" && <PreviewProfile hasBorder />}
-      <ReviewContentContainer type={type} setSumScore={handleSumScore} />
+      <ReviewContentContainer
+        postId={state.postId}
+        type={type}
+        setSumScore={handleSumScore}
+      />
 
       <TotalScoreWrapper>
         <CalculatedTotal>

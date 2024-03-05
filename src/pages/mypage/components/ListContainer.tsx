@@ -9,12 +9,23 @@ import {
   postScrapList,
 } from "../../../api/service-api/mypageApi";
 import { postListResType } from "../../../interfaces/post-type";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import {
+  fetchMyHostListState,
+  fetchMyJoinListState,
+  fetchMyScrapListState,
+} from "../../../store/mypageStore";
 
 type ListContainerProps = {
   listType: "host" | "join" | "scrap" | "chat-request" | "chat-list";
 };
 
 export default function ListContainer({ listType }: ListContainerProps) {
+  const navigate = useNavigate();
+  const [scrapList, setScrapList] = useRecoilState(fetchMyScrapListState);
+  const [hostList, setHostList] = useRecoilState(fetchMyHostListState);
+  const [joinList, setJoinList] = useRecoilState(fetchMyJoinListState);
   let postListTypeName =
     listType === "host"
       ? "내가 주최한 모임"
@@ -27,17 +38,25 @@ export default function ListContainer({ listType }: ListContainerProps) {
       : listType === "chat-list"
       ? "1대1 채팅 목록"
       : "";
-  const [postList, setPostList] = useState<postListResType[] | undefined>(); // 내가 주최한 모임
+  // const [postList, setPostList] = useState<postListResType[] | undefined>(); // 내가 주최한 모임
+
+  const moveToMoreList = () => {
+    if (listType === "host" || listType === "scrap" || listType === "join")
+      navigate(`/mypage-morePost/${listType}`);
+  };
 
   useEffect(() => {
     const getData = async () => {
       let res;
       if (listType === "host") {
         res = await postListIWrote({});
+        if (res) setHostList(res);
       } else if (listType === "scrap") {
         res = await postScrapList();
+        if (res) setScrapList(res);
+      } else {
       }
-      setPostList(res);
+      // setPostList(res);
     };
     getData();
   }, []);
@@ -46,7 +65,7 @@ export default function ListContainer({ listType }: ListContainerProps) {
       <HeaderWrapper>
         <Title>{postListTypeName}</Title>
         {listType !== "chat-list" && (
-          <MoreButton>
+          <MoreButton onClick={moveToMoreList}>
             <MoreButtonText>더보기</MoreButtonText>{" "}
             <FontAwesomeIcon icon={faArrowRight} />
           </MoreButton>
@@ -54,7 +73,16 @@ export default function ListContainer({ listType }: ListContainerProps) {
       </HeaderWrapper>
 
       {(listType === "host" || listType === "join" || listType === "scrap") && (
-        <PostListContainer data={postList} postlistType={listType} />
+        <PostListContainer
+          data={
+            listType === "host"
+              ? hostList
+              : listType === "scrap"
+              ? scrapList
+              : joinList
+          }
+          postlistType={listType}
+        />
       )}
       {listType === "chat-request" && <ChatRequestListContainer />}
 

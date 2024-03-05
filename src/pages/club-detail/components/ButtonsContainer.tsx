@@ -8,7 +8,7 @@ import {
 } from "../../../api/service-api/clubPostApi";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { postDetailState } from "../../../store/postStore";
-import { myUserIdState } from "../../../store/userStore";
+import { myProfileInfoState, myUserIdState } from "../../../store/userStore";
 
 type ButtonsContainerProps = {
   postId: number;
@@ -16,10 +16,11 @@ type ButtonsContainerProps = {
 
 export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
   const navigate = useNavigate();
+  const myProfile = useRecoilValue(myProfileInfoState);
   const [postDetail, setPostDetail] = useRecoilState(postDetailState);
   const myUserid = useRecoilValue(myUserIdState);
   const moveToClubCredReview = () => {
-    navigate("/credReview", { state: { type: "club" } });
+    navigate("/credReview", { state: { type: "club", postId } });
   };
 
   const handleClubState = async (changeTo: "start" | "stop") => {
@@ -32,9 +33,7 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
   };
   const postRequestWithoutAnswers = async () => {
     const res = await postAnswering(
-      // fix
       {
-        user_id: "testman2",
         num_answer: postDetail.num_condition,
         is_ask: true,
         answers: [],
@@ -70,33 +69,45 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
     }
   };
 
-  useEffect(() => {
-    console.log("--- ", myUserid);
-  }, []);
-
   return (
     <Container>
-      <SettingWrapper>
-        <NonColoredButton onClick={moveToRevise}>수정하기</NonColoredButton>
-        <RedBorderButton onClick={handleDelete}>삭제하기</RedBorderButton>
-      </SettingWrapper>
+      {postDetail.user_id === myUserid && (
+        // {postDetail.role_in_post === "L" && (
+        <SettingWrapper>
+          <NonColoredButton onClick={moveToRevise}>수정하기</NonColoredButton>
+          <RedBorderButton onClick={handleDelete}>삭제하기</RedBorderButton>
+        </SettingWrapper>
+      )}
+      {/* {(postDetail.role_in_post === "M" || postDetail.role_in_post === "L") && (
+        <ColoredButton onClick={moveToClubCredReview}>
+          모임 신뢰도 평가하기
+        </ColoredButton>
+      )} */}
       <ColoredButton onClick={moveToClubCredReview}>
-        모집 신뢰도 평가하기
+        모임 신뢰도 평가하기
       </ColoredButton>
-      <ColoredButton onClick={moveToAnswerQuestions}>
-        1대1 채팅 요청하기
-      </ColoredButton>
-      {postDetail.state_recruit ? (
+
+      {postDetail.role_in_post === "L" && postDetail.state_recruit && (
         <ColoredButton onClick={() => handleClubState("stop")}>
           모집 종료하기
         </ColoredButton>
-      ) : (
+      )}
+      {postDetail.role_in_post === "L" && !postDetail.state_recruit && (
         <NonColoredButton onClick={() => handleClubState("start")}>
           모집하기
         </NonColoredButton>
       )}
 
-      {!postDetail.state_recruit && (
+      {/* {postDetail.role_in_post === "V" && postDetail.state_recruit && (
+        <ColoredButton onClick={moveToAnswerQuestions}>
+          1대1 채팅 요청하기
+        </ColoredButton>
+      )} */}
+      <ColoredButton onClick={moveToAnswerQuestions}>
+        1대1 채팅 요청하기
+      </ColoredButton>
+
+      {postDetail.role_in_post === "V" && !postDetail.state_recruit && (
         <DisabledButton disabled>모집이 종료됐어요</DisabledButton>
       )}
     </Container>
@@ -112,6 +123,7 @@ const SettingWrapper = styled.div`
   flex-direction: row;
   gap: 40px;
   width: 100%;
+  margin-bottom: 2rem;
 `;
 
 const ColoredButton = styled.button`
@@ -124,6 +136,7 @@ const ColoredButton = styled.button`
   padding: 11px;
   background-color: var(--purple);
   font-size: 1.125rem;
+  margin-bottom: 2rem;
 `;
 
 const NonColoredButton = styled.button`

@@ -7,13 +7,15 @@ import NotificationBox from "./components/NotificationBox";
 import { postListResType } from "../../interfaces/post-type";
 import { getPostList } from "../../api/service-api/clubPostApi";
 import { useRecoilValue } from "recoil";
-import { isLoggedInState } from "../../store/userStore";
+import { isLoggedInState, myProfileInfoState } from "../../store/userStore";
 import { postMyProfile } from "../../api/service-api/profileApi";
 
 export default function HomeScreen() {
   const isLoggedin = useRecoilValue(isLoggedInState);
+  const ex = useRecoilValue(myProfileInfoState);
   const [postList, setPostList] = useState<postListResType[]>([]);
   useEffect(() => {
+    console.log("##home : ", ex);
     setPostList([]);
     const getData = async () => {
       // const profileRes = await postMyProfile({});

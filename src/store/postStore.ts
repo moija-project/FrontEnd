@@ -50,6 +50,8 @@ export const postDetailState = atom<postDetailResType>({
     first_write: "",
     changed: false,
     category: "etc",
+    gender: "",
+    role_in_post: "V",
   },
 });
 

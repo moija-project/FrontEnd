@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MemberItem from "./MemberItem";
-import { postPostBump } from "../../../api/service-api/clubPostApi";
+import {
+  getPostMembers,
+  postPostBump,
+} from "../../../api/service-api/clubPostApi";
 import { useRecoilValue } from "recoil";
 import { postDetailState } from "../../../store/postStore";
 import { hasPassed } from "../../../utils/datetime";
@@ -13,6 +16,7 @@ type ClubManageContainer = {
 export default function ClubManageContainer({ postId }: ClubManageContainer) {
   const postDetail = useRecoilValue(postDetailState);
   const [isActiveBumpBtn, setIsActiveBumpBtn] = useState(false);
+  const [members, setMembers] = useState<[]>([]);
   const handleBump = async () => {
     const res = await postPostBump({ post_id: postId });
     if (res?.data.isSuccess) setIsActiveBumpBtn(false);
@@ -21,31 +25,46 @@ export default function ClubManageContainer({ postId }: ClubManageContainer) {
 
   useEffect(() => {
     setIsActiveBumpBtn(hasPassed(postDetail.latest_write));
+
+    const getMembers = async () => {
+      const res = await getPostMembers(postId);
+      setMembers(res);
+    };
+    getMembers();
   }, [postDetail]);
 
   return (
     <Container>
-      {isActiveBumpBtn ? (
+      {postDetail.role_in_post === "L" && isActiveBumpBtn && (
         <Button isActivated onClick={handleBump}>
           모집글 끌어올리기
         </Button>
-      ) : (
+      )}
+      {postDetail.role_in_post === "L" && !isActiveBumpBtn && (
         <Button isActivated={false} disabled>
           30시간 지난 후에 끌올이 가능해요
         </Button>
       )}
+
       <BoxContainer>
         <HeaderWrapper>
           <HeaderTitle>모집 인원</HeaderTitle>
-          <PeopleCnt>총 3명</PeopleCnt>
+          <PeopleCnt>총 {members.length}명</PeopleCnt>
         </HeaderWrapper>
         <InstructionText>
           멤버의 개인 평가를 하고 싶으면 멤버 닉네임을 클릭해보세요
         </InstructionText>
         <MemberListWrapper>
-          <MemberItem isLeader />
-          <MemberItem isMe />
-          <MemberItem />
+          {members.map((member, i) => (
+            <MemberItem
+              isLeader={i === 0}
+              isMe
+              nickname={member}
+              userId={postDetail.user_id}
+            />
+          ))}
+          {/* <MemberItem nickname="dsfdsfa" userId="dfs" />
+          <MemberItem nickname="aaa" userId="dfasd" /> */}
         </MemberListWrapper>
       </BoxContainer>
     </Container>

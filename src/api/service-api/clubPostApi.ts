@@ -31,7 +31,7 @@ export const getPostDetail = async (
   const url = `/post/page`;
   try {
     // fix 이거 unauth로 해도되는지 고민!
-    const res = await axiosUnAuth.get(url, { params });
+    const res = await axiosAuth.get(url, { params });
     return res.data.result;
   } catch (error) {
     console.error(error);
@@ -89,7 +89,6 @@ export const patchPost = async (data: PostWriteReqType, post_id: number) => {
 };
 
 export const getPostQuestion = async (body: {
-  user_id: string;
   post_id: number;
 }): Promise<ClubConditionType[] | undefined> => {
   const url = `/post/question/${body.post_id}`;
@@ -147,6 +146,17 @@ export const postChangeClubState = async (
   try {
     const res = await axiosAuth.post(url);
     return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// 해당 포스트의 참여 멤버 보기
+export const getPostMembers = async (post_id: number) => {
+  const url = `/my/member/${post_id}`;
+  try {
+    const res = await axiosAuth.post(url);
+    return res.data.result;
   } catch (error) {
     console.error(error);
   }

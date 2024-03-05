@@ -44,7 +44,7 @@ export default function PhotoContainer() {
         <AddPhotoButton
           id="addImg"
           type="file"
-          accept="image/*"
+          accept=".png, .jpg, .jpeg"
           onChange={(e) => onUploadImage(e)}
         />
         <AddPhotoLabel htmlFor="addImg">

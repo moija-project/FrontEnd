@@ -5,50 +5,40 @@ import PreviewProfile from "../../../components/PreviewProfile";
 import { getPostDetail } from "../../../api/service-api/clubPostApi";
 import { postDetailResType } from "../../../interfaces/post-type";
 import { changeDateExprssion } from "../../../utils/datetime";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { postDetailState } from "../../../store/postStore";
 import { myProfileInfoState } from "../../../store/userStore";
 
-export default function ClubDetailContent() {
-  const postDetail = useRecoilValue(postDetailState);
+type ClubDetailContentProps = {
+  postId: number;
+};
+
+export default function ClubDetailContent({ postId }: ClubDetailContentProps) {
+  // const postDetail = useRecoilValue(postDetailState);
   const myProfile = useRecoilValue(myProfileInfoState);
+  const [postDetail, setPostDetail] =
+    useRecoilState<postDetailResType>(postDetailState);
   let writer;
-
-  // const [postDetail, setPostDetail] = useState<postDetailResType>();
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const data = await getPostDetail({ post_id: postId });
-  //     setPostDetail(data);
-  //   };
-  //   getData();
-  // }, []);
-
-  // 작성자가 본인이면 PreviewProfile 은 본인
-  useEffect(() => {
-    if (postDetail.user_id === "testman1") {
-      //fix
-    }
-  }, []);
 
   return (
     <Container>
       <Carousel />
       {/* <PreviewProfile /> */}
       {/* fix : 본인이면 본인 프로필로 , 아니면 남의 프로필로 */}
-      {postDetail.user_id === "testman1" ? (
+      {/* {postDetail.user_id === myProfile.user_id ? (
         <PreviewProfile profileData={myProfile} />
-      ) : (
-        <PreviewProfile
-          profileData={{
-            user_id: postDetail.user_id,
-            nickname: postDetail.leader_nickname,
-            bornIn: postDetail.born_in,
-            reliabilityUser: postDetail.reliability_user,
-            profilePhotoUrl: postDetail.profile_photo ?? "",
-            gender: "여",
-          }}
-        />
-      )}
+      ) : ( */}
+      <PreviewProfile
+        profileData={{
+          user_id: postDetail.user_id,
+          nickname: postDetail.leader_nickname,
+          birth_year: postDetail.born_in,
+          reliability_user: postDetail.reliability_user,
+          photo_profile: postDetail.profile_photo ?? "",
+          gender: postDetail.gender,
+        }}
+      />
+      {/* )} */}
       <Line />
       <PostHeader>
         <LeftWrapper>
@@ -67,7 +57,12 @@ export default function ClubDetailContent() {
           <State isRecruiting={postDetail?.state_recruit ?? false}>
             {postDetail?.state_recruit ? "모집중" : "모집종료"}
           </State>
-          <CheckText>가입 조건 있음</CheckText>
+          <CheckText>
+            가입 조건{" "}
+            {postDetail.num_condition && postDetail.num_condition > 0
+              ? "있음"
+              : "없음"}
+          </CheckText>
         </RightWrapper>
       </PostHeader>
       <Content>{postDetail?.contents}</Content>

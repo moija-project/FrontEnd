@@ -25,3 +25,14 @@ export const postLogin = async (
     console.error(error);
   }
 };
+
+// 로그아웃
+export const postLogout = async () => {
+  const url = `/user/logout`;
+  try {
+    const res = await axiosAuth.get(url);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};

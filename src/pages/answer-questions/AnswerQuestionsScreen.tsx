@@ -25,7 +25,6 @@ export default function AnswerQuestionsScreen() {
       return;
     }
     let data: AnsweringReqType = {
-      user_id: "testman1",
       num_answer: answers?.length ?? 0,
       is_ask: true,
       answers: answers ?? [],
@@ -41,7 +40,6 @@ export default function AnswerQuestionsScreen() {
     const getData = async () => {
       // 질문 세팅 (보여주기)
       const res = await getPostQuestion({
-        user_id: "testman1", //fix
         post_id: Number(postId),
       });
       if (res === undefined || res.length === 0) return;
@@ -52,7 +50,6 @@ export default function AnswerQuestionsScreen() {
 
   useEffect(() => {
     setAnswers(postQuestion?.map((item) => item.answer ?? ""));
-    console.log(answers);
   }, [postQuestion]);
   return (
     <CommonContainer>

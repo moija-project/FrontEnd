@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ChatRequestStoreType } from "../interfaces/mypage-type";
@@ -17,6 +17,9 @@ export default function PreviewChatRequest({
   const moveToReadRequestDetail = () => {
     navigate("/readRequestDetail", { state: { data } });
   };
+  useEffect(() => {
+    console.log("@@ ", data);
+  }, [data]);
   return (
     <>
       {data?.type === "received" ? (

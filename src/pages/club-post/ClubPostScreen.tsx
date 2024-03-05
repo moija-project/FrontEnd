@@ -35,6 +35,7 @@ export default function ClubPostScreen() {
         postImg.forEach((img) => {
           formData.append("image", img);
         });
+
       const res = await postPostWrite(formData);
       console.log(res);
       if (res?.data.isSuccess) {

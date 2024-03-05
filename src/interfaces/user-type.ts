@@ -8,10 +8,11 @@ export type ProfileType = {
 
 // 프로필 조회 응답 타입
 export type ProfileResType = {
+  user_id: string;
   nickname: string;
-  bornIn: string;
-  reliabilityUser: number;
-  profilePhotoUrl: string;
+  birth_year: string;
+  reliability_user: number;
+  photo_profile: string;
   gender: string;
 };
 

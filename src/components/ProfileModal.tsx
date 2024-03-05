@@ -6,6 +6,12 @@ import { faHeart, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { MyProfileType, ProfileResType } from "../interfaces/user-type";
 import { useRecoilState } from "recoil";
 import { myProfileInfoState } from "../store/userStore";
+import {
+  patchMyProfileImg,
+  patchMyProfileNickname,
+  postMyProfile,
+} from "../api/service-api/profileApi";
+import useUserProfile from "../hook/useUserProfile";
 
 type ProfileModalProps = {
   setOpen: (open: boolean) => void;
@@ -18,6 +24,7 @@ export default function ProfileModal({
 }: ProfileModalProps) {
   let defaultNickname = profileData?.nickname;
   const [postImg, setPostImg] = useState<any>();
+  // const
   const [previewImg, setPreviewImg] = useState<any>();
   const [inpuNickname, setInputNickname] = useState(defaultNickname);
   const [myProfile, setMyProfile] = useRecoilState(myProfileInfoState);
@@ -42,10 +49,35 @@ export default function ProfileModal({
   const handleModal = (close: boolean) => {
     close && setOpen(false);
   };
-  const handleEditSubmit = () => {
+  const handleEditSubmit = async () => {
+    console.log(inpuNickname === defaultNickname);
+    let formData = new FormData();
+    formData.append("file", postImg);
     if (window.confirm("수정하시겠습니까?")) {
       // 수정하기
-      alert("수정되었습니다!");
+      let nicknameRes;
+      if (inpuNickname && inpuNickname !== defaultNickname) {
+        nicknameRes = await patchMyProfileNickname(inpuNickname);
+        console.log(nicknameRes);
+      }
+      const imgRes = await patchMyProfileImg(formData);
+
+      if (
+        (inpuNickname === defaultNickname && imgRes?.data.isSuccess) ||
+        (inpuNickname !== defaultNickname &&
+          nicknameRes?.data.isSuccess &&
+          imgRes?.data.isSuccess)
+      ) {
+        setMyProfile({
+          ...myProfile,
+          photo_profile: previewImg,
+          nickname: inpuNickname ?? defaultNickname ?? "",
+        });
+        alert("수정되었습니다!");
+        setOpen(false);
+      } else {
+        alert("프로필 수정에 문제가 생겼습니다.");
+      }
     }
   };
   const _renderColoredHeart = (score: number) => {
@@ -78,23 +110,32 @@ export default function ProfileModal({
     );
   };
 
+  useEffect(() => {
+    setPreviewImg(
+      !profileData?.photo_profile || profileData.photo_profile === ""
+        ? require("../assets/images/default-img-01.png")
+        : profileData.photo_profile
+    );
+  }, []);
+
   return (
     <Modal setClose={handleModal} open>
       <Container>
         <ProfileImgWrapper>
           <ProfileImg
             src={
-              !profileData?.profilePhotoUrl ||
-              profileData.profilePhotoUrl === ""
-                ? require("../assets/images/default-img-01.png")
-                : profileData.profilePhotoUrl
+              // !profileData?.photo_profile || profileData.photo_profile === ""
+              //   ? require("../assets/images/default-img-01.png")
+              //   : profileData.photo_profile
+              previewImg
             }
           />
 
-          {isUser && (
+          {myProfile.user_id === profileData?.user_id && (
             <>
               <input
                 type="file"
+                accept=".png, .jpg, .jpeg"
                 style={{ display: "none" }}
                 id="file_btn"
                 onChange={(e) => onUploadImage(e)}
@@ -108,13 +149,15 @@ export default function ProfileModal({
         <Nickname
           type="text"
           placeholder={defaultNickname}
-          // disabled
+          disabled={!(myProfile.user_id === profileData?.user_id)}
           onChange={(e) => setInputNickname(e.target.value)}
           value={inpuNickname}
           defaultValue={profileData?.nickname}
         />
 
-        <Birth>{profileData?.bornIn}</Birth>
+        <Birth>
+          {profileData?.gender} {profileData?.birth_year}
+        </Birth>
         <CredWrapper>
           <CredTitle>신뢰도 점수</CredTitle>
           <ScoreWrapper>
@@ -123,11 +166,13 @@ export default function ProfileModal({
               {_renderColoredHeart(2.5)}
             </HeartContainer> */}
             <MyScore>
-              {profileData?.reliabilityUser} 점 <TotalScore> / 5점</TotalScore>
+              {profileData?.reliability_user} 점 <TotalScore> / 5점</TotalScore>
             </MyScore>
           </ScoreWrapper>
         </CredWrapper>
-        {isUser && <EditButton onClick={handleEditSubmit}>수정하기</EditButton>}
+        {myProfile.user_id === profileData?.user_id && (
+          <EditButton onClick={handleEditSubmit}>수정하기</EditButton>
+        )}
       </Container>
     </Modal>
   );

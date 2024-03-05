@@ -22,6 +22,7 @@ import ClubReviseScreen from "./pages/club-post-revise/ClubReviseScreen";
 import CompleteSignupScreen from "./pages/sign-up/CompleteSignupScreen";
 import axios from "axios";
 import MorePostListScreen from "./pages/mypage/MorePostListScreen";
+import ChatRoomScreen from "./pages/chat-room/ChatRoomScreen";
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
       <BrowserRouter>
         <RecoilRoot>
           <React.Suspense fallback={<div>loading..</div>}>
-            <Header />
+            {window.location.pathname !== "/chatRoom" && <Header />}
+
             <DefaultScrollTop />
             <GlobalStyle />
             <Routes>
@@ -74,6 +76,9 @@ function App() {
                 path="/readRequestDetail"
                 element={<ReadRequestDetailScreen />}
               />
+
+              {/* 채팅 */}
+              <Route path="/chatRoom" element={<ChatRoomScreen />} />
               <Route path="/*" element={<NotFoundScreen />} />
             </Routes>
           </React.Suspense>

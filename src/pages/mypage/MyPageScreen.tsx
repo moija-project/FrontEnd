@@ -14,6 +14,8 @@ import {
   postScrapList,
 } from "../../api/service-api/mypageApi";
 import {
+  fetchMyHostListState,
+  fetchMyJoinListState,
   fetchMyScrapListState,
   fetchRequestListState,
 } from "../../store/mypageStore";
@@ -22,11 +24,11 @@ import { ChatRequestStoreType } from "../../interfaces/mypage-type";
 export default function MyPageScreen() {
   const userInfo = useRecoilValue(myProfileInfoState);
   const [requestList, setRequestList] = useRecoilState(fetchRequestListState);
-  const [scrapList, setScrapList] = useRecoilState(fetchMyScrapListState);
 
   useEffect(() => {
     const fetchList = async () => {
       const requestRes = await postReceivedChatRequest({});
+      console.log("## ", requestRes);
       // const scrapRes = await postScrapList();
 
       let transformedArray: ChatRequestStoreType[] = [];

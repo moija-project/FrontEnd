@@ -23,10 +23,9 @@ export default function ClubDetailScreen() {
     const getData = async () => {
       const res = await getPostDetail({ post_id: Number(postId) });
       const questionRes = await getPostQuestion({
-        user_id: "testman1",
         post_id: Number(postId),
-      }); // fix
-
+      });
+      console.log(res);
       res && setPostDetail(res);
       questionRes && setQuestions(questionRes);
     };
@@ -37,7 +36,7 @@ export default function ClubDetailScreen() {
     <Container>
       <ContentWrapper>
         <MainContainer>
-          <ClubDetailContent />
+          <ClubDetailContent postId={Number(postId)} />
           <ButtonsContainer postId={Number(postId)} />
         </MainContainer>
         <RightContainer>

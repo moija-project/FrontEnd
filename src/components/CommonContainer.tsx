@@ -5,15 +5,17 @@ import styled from "styled-components";
 type CommonContainerProps = {
   children?: ReactNode;
   containerStyle?: React.CSSProperties;
+  boxStyle?: React.CSSProperties;
 };
 
 export default function CommonContainer({
   children,
   containerStyle,
+  boxStyle,
 }: CommonContainerProps) {
   return (
     <Container>
-      <BoxContainer>
+      <BoxContainer style={boxStyle}>
         <MainContainer style={containerStyle}>{children}</MainContainer>
       </BoxContainer>
     </Container>

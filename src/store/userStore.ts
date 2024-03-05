@@ -52,13 +52,12 @@ export const myProfileInfoState = atom<MyProfileType>({
   key: "myProfileInfoState",
   // 로그인 하면 이 setState 해서 바꾸기!!!! fix
   default: {
-    user_id: "testman1", // fix
-    profilePhotoUrl:
-      "https://i.pinimg.com/564x/0f/3a/f0/0f3af0afcdc7865344e24c0744f1ad0d.jpg",
-    nickname: "테스트맨1",
-    gender: "여",
-    bornIn: "01년생",
-    reliabilityUser: 2.5,
+    user_id: "", // fix
+    photo_profile: "",
+    nickname: "",
+    gender: "",
+    birth_year: "",
+    reliability_user: 0,
   },
   effects_UNSTABLE: [persistAtom],
 });

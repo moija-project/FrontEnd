@@ -5,6 +5,7 @@ import QuestionContainer from "./QuestionContainer";
 type ReviewContentContainerProps = {
   setSumScore: (sum: number) => void;
   type: "peer" | "club";
+  postId: string;
 };
 
 const peerReviewList = [
@@ -25,6 +26,7 @@ const clubReviewList = [
 export default function ReviewContentContainer({
   setSumScore,
   type,
+  postId,
 }: ReviewContentContainerProps) {
   const [scoresList, setScoresList] = useState(
     Array.from({ length: 5 }, () => 0)

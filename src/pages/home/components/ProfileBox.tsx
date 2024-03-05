@@ -3,23 +3,53 @@ import styled from "styled-components";
 import ProfileWrapper from "./ProfileWrapper";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { accessTokenState, isLoggedInState } from "../../../store/userStore";
+import {
+  accessTokenState,
+  isLoggedInState,
+  myProfileInfoState,
+} from "../../../store/userStore";
 import { removeCookie } from "../../../utils/cookie";
+import { postLogout } from "../../../api/service-api/userApi";
 
 export default function ProfileBox() {
   const navigate = useNavigate();
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [isLoggedin, setIsLoggedin] = useRecoilState(isLoggedInState);
+  const [myProfile, setMyProfile] = useRecoilState(myProfileInfoState);
 
   const moveToMypage = () => {
-    navigate("/mypage");
+    if (localStorage.getItem("accessToken")) navigate("/mypage");
+    else {
+      window.alert("로그인을 다시해주세요");
+      navigate("/login");
+    }
+  };
+
+  const getLogout = async () => {
+    const res = await postLogout();
+    if (res?.status === 200) {
+      localStorage.removeItem("accessToken");
+      removeCookie("REFRESH_TOKEN");
+      setMyProfile({
+        nickname: "",
+        user_id: "",
+        birth_year: "",
+        photo_profile: "",
+        reliability_user: 0,
+        gender: "",
+      });
+      setIsLoggedin(false);
+    } else {
+      console.log("logout error");
+    }
   };
 
   const handleLogout = () => {
     if (window.confirm("정말 로그아웃 하실 건가요?")) {
-      localStorage.removeItem("accessToken");
-      removeCookie("REFRESH_TOKEN");
-      setIsLoggedin(false);
+      getLogout();
+      // localStorage.removeItem("accessToken");
+      // removeCookie("REFRESH_TOKEN");
+      // setIsLoggedin(false);
     }
   };
   return (
