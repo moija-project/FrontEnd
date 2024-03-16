@@ -12,11 +12,11 @@ import useUserProfile from "../hook/useUserProfile";
 axios.defaults.withCredentials = true;
 
 const axiosUnAuth = axios.create({
-  // baseURL: BASE_URL,
+  // baseURL: process.env.REACT_APP_API_BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 const axiosAuth = axios.create({
-  // baseURL: BASE_URL,
+  // baseURL: process.env.REACT_APP_API_BASE_URL,
   headers: {
     // "Content-Type": "application/json",
   },
@@ -31,6 +31,7 @@ const extractNewTokenFromHeader = (headers: any): string | null => {
 
 axiosAuth.interceptors.request.use(
   (config) => {
+    console.log("===", config.data);
     const ACCESS_TOKEN = localStorage.getItem("accessToken") ?? "";
     try {
       if (ACCESS_TOKEN) {
@@ -60,6 +61,12 @@ axiosAuth.interceptors.request.use(
 
 axiosAuth.interceptors.response.use(
   (response) => {
+    console.log("--", response.data);
+    if (!response.data.isSuccess) {
+      localStorage.removeItem("accessToken");
+      console.log("*** , ", response.headers);
+      return Promise.reject(new Error("Unsuccessful response"));
+    }
     const newToken = extractTokenFromHeader(response.headers);
     if (newToken) {
       console.log("--- ", newToken);
@@ -68,29 +75,33 @@ axiosAuth.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    console.log("errrrrrr");
-    if (
-      error.response?.status === 503 ||
-      error.response?.status === 500 ||
-      error.response?.status === 401
-    ) {
-      const newToken = extractTokenFromHeader(error.response.headers);
-      if (newToken && error.config) {
-        localStorage.setItem("accessToken", newToken);
-        error.config.headers.Authorization = `Bearer ${newToken}`;
+    console.log("errrrrrr", error);
+    // if (
+    //   error.response?.status === 503 ||
+    //   error.response?.status === 500 ||
+    //   error.response?.status === 401
+    // ) {
+    if (!error.response) {
+      console.log("^^");
+      return;
+    }
+    const newToken = extractTokenFromHeader(error.response.headers);
+    if (newToken && error.config) {
+      localStorage.setItem("accessToken", newToken);
+      error.config.headers.Authorization = `Bearer ${newToken}`;
 
-        try {
-          const updatedResponse = await axios.request(error.config);
-          console.log("Updated Response:", updatedResponse);
-          return updatedResponse;
-        } catch (requestError) {
-          localStorage.removeItem("accessToken");
-          useUserProfile({});
-          console.error("Failed to reattempt request:", requestError);
-          return Promise.reject(requestError);
-        }
+      try {
+        const updatedResponse = await axios.request(error.config);
+        console.log("Updated Response:", updatedResponse);
+        return updatedResponse;
+      } catch (requestError) {
+        localStorage.removeItem("accessToken");
+        useUserProfile({});
+        console.error("Failed to reattempt request:", requestError);
+        return Promise.reject(requestError);
       }
     }
+    // }
     console.log("erorrrrrr");
     localStorage.removeItem("accessToken");
     useUserProfile({});

@@ -49,6 +49,8 @@ export default function ClubPostScreen() {
           conditions: [],
         });
         navigate("/clubList");
+      } else if (res?.status === 200 && !res.data.isSuccess) {
+        window.alert(res.data.message);
       }
       // 요청 성공 시 ui 보여지게
     };

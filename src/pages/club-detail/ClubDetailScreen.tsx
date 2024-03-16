@@ -31,6 +31,9 @@ export default function ClubDetailScreen() {
     };
     getData();
   }, [postId]);
+  useEffect(() => {
+    console.log("%%% ", postDetail);
+  }, [postDetail]);
 
   return (
     <Container>
@@ -40,8 +43,8 @@ export default function ClubDetailScreen() {
           <ButtonsContainer postId={Number(postId)} />
         </MainContainer>
         <RightContainer>
-          <LikeScrapContainer postId={Number(postId)} />
-          <ClubManageContainer postId={Number(postId)} />
+          {/* <LikeScrapContainer postId={Number(postId)} /> */}
+          {/* <ClubManageContainer postId={Number(postId)} /> */}
         </RightContainer>
       </ContentWrapper>
     </Container>

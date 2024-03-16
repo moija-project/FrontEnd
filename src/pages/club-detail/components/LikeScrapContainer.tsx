@@ -19,14 +19,8 @@ type LikeScrapContainerProps = {
 export default function LikeScrapContainer({
   postId,
 }: LikeScrapContainerProps) {
-  // const post = useRecoilValue(postDetailState);
   const [postDetail, setPostDetail] = useRecoilState(postDetailState);
-  // const like = useRecoilValue(fetchPostDetailAtom({ post_id: postId }))?.likes;
 
-  // const postPostLikeToggle =async (vote : number) => { // 0:취소 / 1:등록
-  //   const res = await postPostLike({vote , post_id : postId})
-  //   if (res?.isSuccess) {}
-  // }
   const onClickLike = async () => {
     let newDetail = { ...postDetail };
     const vote = postDetail.myliked ? 0 : 1;
@@ -41,7 +35,6 @@ export default function LikeScrapContainer({
   const onClickScrap = async () => {
     let newPostDetail = { ...postDetail };
     const clip = postDetail.mycliped ? 0 : 1;
-
     const res = await postPostClip({ post_id: postId, clip });
     if (!res?.isSuccess) return;
     newPostDetail.mycliped = !newPostDetail.mycliped;

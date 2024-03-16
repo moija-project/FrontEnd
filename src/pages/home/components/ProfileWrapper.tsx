@@ -6,7 +6,6 @@ import { myProfileInfoState } from "../../../store/userStore";
 export default function ProfileWrapper() {
   const myProfile = useRecoilValue(myProfileInfoState);
 
-  console.log("!@# ", myProfile.photo_profile);
   return (
     <ProfileContainer>
       <ProfileImage

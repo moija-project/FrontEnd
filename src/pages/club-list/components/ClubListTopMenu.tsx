@@ -1,14 +1,20 @@
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faCaretUp,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { ViewType } from "../../../interfaces/post-type";
+import { SearchType, ViewType } from "../../../interfaces/post-type";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "../../../store/userStore";
 
 type ClubListTopMenuProps = {
   setViewType: (cate: ViewType) => void;
+  searchType: SearchType;
+  setSearchType: (type: SearchType) => void;
 };
 
 const viewItems: { data: ViewType; name: string }[] = [
@@ -17,8 +23,21 @@ const viewItems: { data: ViewType; name: string }[] = [
   { data: "most_like", name: "좋아요순" },
 ];
 
-export default function ClubListTopMenu({ setViewType }: ClubListTopMenuProps) {
+const searchTypesList: { id: SearchType; name: string }[] = [
+  { id: "title", name: "제목" },
+  { id: "contents", name: "내용" },
+  { id: "leader", name: "작성자" },
+  { id: "all", name: "전체" },
+];
+
+export default function ClubListTopMenu({
+  setViewType,
+  searchType,
+  setSearchType,
+}: ClubListTopMenuProps) {
   const [activeView, setActiveView] = useState<ViewType>("latest");
+  const [isDropdownViewed, setIsDropdownViewed] = useState(false);
+  // const
   const isLoggedin = useRecoilValue(isLoggedInState);
 
   const navigate = useNavigate();
@@ -34,19 +53,50 @@ export default function ClubListTopMenu({ setViewType }: ClubListTopMenuProps) {
     setActiveView(type);
     setViewType(type);
   };
+  const handleClickSearchType = (value: SearchType) => {
+    setSearchType(value);
+    setIsDropdownViewed(false);
+  };
+  const changeToTypeName = (id: SearchType) => {
+    let typename;
+    searchTypesList.forEach((item) => {
+      if (item.id === id) {
+        typename = item.name;
+      }
+    });
+    return typename;
+  };
   return (
     <Container>
       <TopWrapper>
         <PostButton onClick={onClickPost}>글쓰기</PostButton>
         <InputWrapper>
-          <InputBox></InputBox>
+          <SearchTypeWrapper>
+            <TypeWrapper onClick={() => setIsDropdownViewed(!isDropdownViewed)}>
+              <SearchTypeText>{changeToTypeName(searchType)}</SearchTypeText>
+              {isDropdownViewed ? (
+                <FontAwesomeIcon icon={faCaretUp} color="#8F8F8F" />
+              ) : (
+                <FontAwesomeIcon icon={faCaretDown} color="#8F8F8F" />
+              )}
+            </TypeWrapper>
+            {isDropdownViewed && (
+              <DropDownBox>
+                {searchTypesList.map((type, i) => (
+                  <DropdownType
+                    key={`searchType-${type.id}-${i}`}
+                    onClick={(e) => handleClickSearchType(type.id)}
+                    isSelected={type.id === searchType}
+                  >
+                    {type.name}
+                  </DropdownType>
+                ))}
+              </DropDownBox>
+            )}
+          </SearchTypeWrapper>
+          <InputBox />
           <SearchButton>
-            <FontAwesomeIcon
-              style={{ position: "absolute", top: 8, right: 12 }}
-              icon={faMagnifyingGlass}
-              //   size="2xs"
-              color="#8F8F8F"
-            />
+            <FontAwesomeIcon icon={faMagnifyingGlass} color="#8F8F8F" />
           </SearchButton>
         </InputWrapper>
       </TopWrapper>
@@ -72,6 +122,37 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const SearchTypeWrapper = styled.div`
+  position: relative;
+  cursor: pointer;
+`;
+const TypeWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.4rem;
+  align-items: center;
+  width: 3.3rem;
+`;
+const DropDownBox = styled.ul`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  right: 0.25rem;
+  width: 3.5rem;
+  gap: 0.9rem;
+  background-color: white;
+  border: 1px solid var(--light-gray02);
+  padding: 0.7rem 0.4rem;
+`;
+const DropdownType = styled.li<{ isSelected: boolean }>`
+  color: ${({ isSelected }) =>
+    isSelected ? "var(--purple)" : "var(--gray01)"};
+  font-size: 0.8rem;
+`;
+const SearchTypeText = styled.span`
+  font-size: 0.8rem;
+  color: var(--gray01);
+`;
 const TopWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -88,16 +169,21 @@ const PostButton = styled.button`
 `;
 const InputWrapper = styled.div`
   min-width: 120px;
-  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 1rem;
+  border: 1px solid var(--light-gray03);
+  border-radius: 80px;
 `;
 const InputBox = styled.input`
   font-weight: 400;
   background-color: white;
-  /* width: 250px; */
   min-width: 120px;
-  padding: 8px 30px 8px 0.625rem;
+  border: none;
+  /* padding: 8px 30px 8px 0.625rem;
   border: 1px solid var(--light-gray03);
-  border-radius: 80px;
+  border-radius: 80px; */
 `;
 const SearchButton = styled.button``;
 const FilterWrapper = styled.ul`

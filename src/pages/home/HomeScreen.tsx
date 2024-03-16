@@ -9,17 +9,14 @@ import { getPostList } from "../../api/service-api/clubPostApi";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState, myProfileInfoState } from "../../store/userStore";
 import { postMyProfile } from "../../api/service-api/profileApi";
+import axios from "axios";
 
 export default function HomeScreen() {
   const isLoggedin = useRecoilValue(isLoggedInState);
-  const ex = useRecoilValue(myProfileInfoState);
   const [postList, setPostList] = useState<postListResType[]>([]);
   useEffect(() => {
-    console.log("##home : ", ex);
     setPostList([]);
     const getData = async () => {
-      // const profileRes = await postMyProfile({});
-      // console.log("---------------------", profileRes);
       const res = await getPostList({
         category: "all",
         view_type: "latest",
@@ -31,7 +28,11 @@ export default function HomeScreen() {
   return (
     <Container>
       <LeftContainer>
-        {isLoggedin ? <ProfileBox /> : <LoginBox />}
+        {isLoggedin && localStorage.getItem("accessToken") ? (
+          <ProfileBox />
+        ) : (
+          <LoginBox />
+        )}
       </LeftContainer>
       <MiddleContainer>
         <MiddleTitle>모임 모집</MiddleTitle>

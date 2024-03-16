@@ -63,6 +63,11 @@ export const fetchPostDetailAtom = selectorFamily({
   },
 });
 
+export const fetchPostListState = atom<postListResType[]>({
+  key: "fetchPostListState",
+  default: [],
+});
+
 export const fetchPostListAtom = selectorFamily({
   key: "fetchPostListState",
   get: (params: postListParamsType) => async () => {

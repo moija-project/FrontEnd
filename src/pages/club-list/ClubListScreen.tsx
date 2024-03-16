@@ -7,69 +7,87 @@ import { getPostList } from "../../api/service-api/clubPostApi";
 import axios from "axios";
 import {
   CategoryType,
+  SearchType,
   ViewType,
+  postListParamsType,
   postListResType,
 } from "../../interfaces/post-type";
 import { useQuery } from "react-query";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { fetchPostListAtom, fetchPostListState } from "../../store/postStore";
+import { useInView } from "react-intersection-observer";
 
 export default function ClubListScreen() {
+  const [postCate, setPostCate] = useState<CategoryType>("all");
+  const [postView, setPostView] = useState<ViewType>("latest");
+  const [page, setPage] = useState(0);
+  const [keyword, setKeyword] = useState();
+  const [searchType, setSearchType] = useState<SearchType>("title");
+  const [ref, inView] = useInView({ threshold: 1 });
   const [postList, setPostList] = useState<postListResType[]>([]);
-  const [postCate, setPostCate] = useState<CategoryType>();
-  const [postView, setPostView] = useState<ViewType>();
+  // const postList = useRecoilValue(fetchPostListAtom({}));
+  // const [list, setList] = useRecoilState(fetchPostListState);
 
-  // const fetchList = async () => {
-  //   // const res = await getPostList({
-  //   //   category: postCate ?? "all",
-  //   //   view_type: postView ?? "latest",
-  //   // });
-  //   // res && setPostList(res);
-  //   const res = (
-  //     await fetch("https://jsonplaceholder.typicode.com/posts")
-  //   ).json();
-  //   return res;
-  // };
-  // const { status, data, error } = useQuery("clubList", fetchList, {
-  //   onSuccess: (data) => console.log(data),
-  //   onError: (e) => console.log(e),
-  // });
-
-  // if (status === "loading") {
-  //   return <span>Loading...</span>;
-  // } else if (status === "error") {
-  //   return <span>ERROR</span>;
-  // }
+  const getData = async (params: postListParamsType) => {
+    const res = await getPostList(params);
+    res && setPostList([...postList, ...res]);
+  };
 
   useEffect(() => {
-    setPostList([]);
-    const getData = async () => {
-      const res = await getPostList({
-        category: postCate ?? "all",
-        view_type: postView ?? "latest",
+    if (inView && postList) {
+      getData({
+        category: postCate,
+        view_type: postView,
+        keyword,
+        page,
+        search_type: searchType,
       });
-      res && setPostList(res);
-    };
-    getData();
-  }, [postCate, postView]);
+      setPage(page + 1);
+    }
+  }, [inView]);
+
+  useEffect(() => {
+    getData({
+      category: postCate,
+      view_type: postView,
+      keyword,
+      page,
+      search_type: searchType,
+    });
+  }, []);
+
   return (
     <Container>
       <MenuNavBar setCate={(cate) => setPostCate(cate)} />
       <ContentContainer>
-        <ClubListTopMenu setViewType={(type) => setPostView(type)} />
-        {postList && postList.length ? (
-          postList.map((v, i) =>
-            i === 0 ? (
-              <PreviewPost postItem={v} key={`post-item-${i}`} isFirst={true} />
-            ) : (
-              <PreviewPost
-                postItem={v}
-                key={`post-item-${i}`}
-                isFirst={false}
-              />
+        <ClubListTopMenu
+          setViewType={(type) => setPostView(type)}
+          searchType={searchType}
+          setSearchType={setSearchType}
+        />
+        <div>
+          {postList && postList.length ? (
+            postList.map((v, i) =>
+              i === 0 ? (
+                <PreviewPost
+                  postItem={v}
+                  key={`post-item-${i}`}
+                  isFirst={true}
+                />
+              ) : (
+                <PreviewPost
+                  postItem={v}
+                  key={`post-item-${i}`}
+                  isFirst={false}
+                />
+              )
             )
-          )
-        ) : (
-          <EmptyText>해당 카테고리에 관한 글이 없습니다.</EmptyText>
-        )}
+          ) : (
+            <EmptyText>해당 카테고리에 관한 글이 없습니다.</EmptyText>
+          )}
+          <div style={{ height: 100, width: "100%" }}></div>
+          <div ref={ref}></div>
+        </div>
       </ContentContainer>
     </Container>
   );

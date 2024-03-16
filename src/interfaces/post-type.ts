@@ -9,6 +9,8 @@ export type CategoryType =
 
 // 보기 순 타입
 export type ViewType = "latest" | "most_view" | "most_like";
+// 검색 범위 타입
+export type SearchType = "title" | "contents" | "leader" | "all";
 
 // 게시물 리스트 검색&필터링 (카테고리, 보기순서, 검색어)
 export type FilterListType = {
@@ -34,26 +36,7 @@ export type PostWriteReqType = {
   penalty: number;
   conditions: ClubConditionType[];
 };
-/*
- {
-	"title": "테스트 페이지 ??모임 구함",
-	"contents": "안녕하세요 저희는 누구고 토익 어디서 악기연주를 할 모임을 어쩌구 해서 모든 내용(2000자까지 가능)",
-    "category": "hobby",
-	"leader_id": "testman1",
-	"num_condition": 2,
-    "penalty": 0,
-	"is_changed": false,
-	"conditions": [
-	{
-		"question": "당신의 포지션은요?",
-		"answer": null
-	},
-	{
-		"question": "당신의 경력은요?",
-		"answer": null
-	}]
-}
- */
+
 export type PostWriterProfileType = {
   born_in: string;
   leader_nickname: string;
@@ -65,8 +48,11 @@ export type PostWriterProfileType = {
 };
 
 export type postListParamsType = {
-  category: CategoryType;
-  view_type: ViewType;
+  category?: CategoryType;
+  view_type?: ViewType;
+  keyword?: string;
+  search_type?: SearchType;
+  page?: number;
 };
 export type getPostDetailParamsType = {
   post_id: number;

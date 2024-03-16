@@ -29,9 +29,17 @@ export const getPostDetail = async (
   params: getPostDetailParamsType
 ): Promise<postDetailResType | undefined> => {
   const url = `/post/page`;
+  let res;
   try {
+    if (localStorage.getItem("accessToken")) {
+      res = await axiosAuth.post(url, { params });
+      console.log(res.config.url);
+    } else {
+      res = await axiosUnAuth.get(url, { params });
+    }
     // fix 이거 unauth로 해도되는지 고민!
-    const res = await axiosAuth.get(url, { params });
+    // const res = await axiosAuth.get(url, { params });
+    console.log(" >>> ", res);
     return res.data.result;
   } catch (error) {
     console.error(error);
