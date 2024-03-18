@@ -82,11 +82,11 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
         <NonColoredButton onClick={moveToRevise}>수정하기</NonColoredButton>
         <RedBorderButton onClick={handleDelete}>삭제하기</RedBorderButton>
       </SettingWrapper> */}
-      {/* {(postDetail.role_in_post === "M" || postDetail.role_in_post === "L") && (
+      {(postDetail.role_in_post === "M" || postDetail.role_in_post === "L") && (
         <ColoredButton onClick={moveToClubCredReview}>
           모임 신뢰도 평가하기
         </ColoredButton>
-      )} */}
+      )}
 
       {postDetail.role_in_post === "L" && postDetail.state_recruit && (
         <ColoredButton onClick={() => handleClubState("stop")}>
@@ -99,11 +99,11 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
         </NonColoredButton>
       )}
 
-      {/* {postDetail.role_in_post === "V" && postDetail.state_recruit && (
+      {postDetail.role_in_post === "V" && postDetail.state_recruit && (
         <ColoredButton onClick={moveToAnswerQuestions}>
           1대1 채팅 요청하기
         </ColoredButton>
-      )} */}
+      )}
 
       {postDetail.role_in_post === "V" && !postDetail.state_recruit && (
         <DisabledButton disabled>모집이 종료됐어요</DisabledButton>

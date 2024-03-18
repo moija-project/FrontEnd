@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { myProfileInfoState } from "../store/userStore";
-import { MyProfileType } from "../interfaces/user-type";
 import { postMyProfile } from "../api/service-api/profileApi";
 
 type useUserProfileType = {

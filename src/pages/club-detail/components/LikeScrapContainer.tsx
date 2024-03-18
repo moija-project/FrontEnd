@@ -68,7 +68,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: center;
   gap: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 30px; 
 `;
 const ButtonWrapper = styled.button<{ isChecked: boolean }>`
   display: flex;

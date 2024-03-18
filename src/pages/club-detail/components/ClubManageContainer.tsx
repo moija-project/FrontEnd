@@ -8,6 +8,8 @@ import {
 import { useRecoilValue } from "recoil";
 import { postDetailState } from "../../../store/postStore";
 import { hasPassed } from "../../../utils/datetime";
+import { MembersResType } from "../../../interfaces/post-type";
+import { myProfileInfoState } from "../../../store/userStore";
 
 type ClubManageContainer = {
   postId: number;
@@ -15,8 +17,9 @@ type ClubManageContainer = {
 
 export default function ClubManageContainer({ postId }: ClubManageContainer) {
   const postDetail = useRecoilValue(postDetailState);
+  const myProfile = useRecoilValue(myProfileInfoState)
   const [isActiveBumpBtn, setIsActiveBumpBtn] = useState(false);
-  const [members, setMembers] = useState<[]>([]);
+  const [members, setMembers] = useState<MembersResType[]>([]);
   const handleBump = async () => {
     const res = await postPostBump({ post_id: postId });
     if (res?.data.isSuccess) setIsActiveBumpBtn(false);
@@ -54,19 +57,19 @@ export default function ClubManageContainer({ postId }: ClubManageContainer) {
         <InstructionText>
           멤버의 개인 평가를 하고 싶으면 멤버 닉네임을 클릭해보세요
         </InstructionText>
-        <MemberListWrapper>
-          {members.map((member, i) => (
+        <MemberListWrapper>      
+                    
+          {members.length && members.map((member, i) => (
             <MemberItem
               isLeader={i === 0}
-              isMe
-              nickname={member}
-              userId={postDetail.user_id}
+              isMe={member.user_id === myProfile.user_id}
+              nickname={member.nickname}
+              userId={member.user_id}
             />
-          ))}
-          {/* <MemberItem nickname="dsfdsfa" userId="dfs" />
-          <MemberItem nickname="aaa" userId="dfasd" /> */}
+          ))}           
         </MemberListWrapper>
       </BoxContainer>
+      
     </Container>
   );
 }

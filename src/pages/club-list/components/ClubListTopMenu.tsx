@@ -15,6 +15,8 @@ type ClubListTopMenuProps = {
   setViewType: (cate: ViewType) => void;
   searchType: SearchType;
   setSearchType: (type: SearchType) => void;
+  setKeyword : (word : string) => void ;
+  onSearch : () => void 
 };
 
 const viewItems: { data: ViewType; name: string }[] = [
@@ -34,6 +36,8 @@ export default function ClubListTopMenu({
   setViewType,
   searchType,
   setSearchType,
+  setKeyword,
+  onSearch
 }: ClubListTopMenuProps) {
   const [activeView, setActiveView] = useState<ViewType>("latest");
   const [isDropdownViewed, setIsDropdownViewed] = useState(false);
@@ -94,8 +98,10 @@ export default function ClubListTopMenu({
               </DropDownBox>
             )}
           </SearchTypeWrapper>
-          <InputBox />
-          <SearchButton>
+          <InputBox type="text" onChange={(e) => setKeyword(e.target.value)} onKeyDown={(e) => {
+            if(e.key === 'Enter') onSearch()
+          }}/>
+          <SearchButton onClick={onSearch}>
             <FontAwesomeIcon icon={faMagnifyingGlass} color="#8F8F8F" />
           </SearchButton>
         </InputWrapper>
@@ -181,9 +187,6 @@ const InputBox = styled.input`
   background-color: white;
   min-width: 120px;
   border: none;
-  /* padding: 8px 30px 8px 0.625rem;
-  border: 1px solid var(--light-gray03);
-  border-radius: 80px; */
 `;
 const SearchButton = styled.button``;
 const FilterWrapper = styled.ul`

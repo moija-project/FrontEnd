@@ -37,7 +37,6 @@ export default function ClubPostScreen() {
         });
 
       const res = await postPostWrite(formData);
-      console.log(res);
       if (res?.data.isSuccess) {
         setWritePost({
           title: "",

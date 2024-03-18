@@ -31,7 +31,6 @@ const extractNewTokenFromHeader = (headers: any): string | null => {
 
 axiosAuth.interceptors.request.use(
   (config) => {
-    console.log("===", config.data);
     const ACCESS_TOKEN = localStorage.getItem("accessToken") ?? "";
     try {
       if (ACCESS_TOKEN) {
@@ -45,7 +44,7 @@ axiosAuth.interceptors.request.use(
     return config;
   },
   (error: AxiosError) => {
-    console.log("))))) ", error.response?.headers);
+    console.log("setting axios request ::  ", error.response?.headers);
     if (error.status === 401 || error.status === 500) {
       localStorage.setItem(
         "accessToken",
@@ -61,21 +60,53 @@ axiosAuth.interceptors.request.use(
 
 axiosAuth.interceptors.response.use(
   (response) => {
-    console.log("--", response.data);
+    console.log("axios auth response : ", response.data);
+    // if (!response.data.isSuccess) {
+    //   localStorage.removeItem("accessToken");
+    //   console.log("*** , ", response.headers);
+    //   return Promise.reject(new Error("Unsuccessful response"));
+    // }
+
     if (!response.data.isSuccess) {
-      localStorage.removeItem("accessToken");
-      console.log("*** , ", response.headers);
+      // 응답이 실패일 경우 처리
+      const errorCode = response.data.code;
+
+      // 특정 에러 코드에 따른 처리
+      switch (errorCode) {
+        case 4006:
+        case 4020:
+        case 4000:
+          // 특정 에러 코드에 대한 처리 (새로운 토큰 추출 등)
+          const newToken = extractTokenFromHeader(response.headers);
+          if (!newToken) {
+            localStorage.removeItem("accessToken");
+            useUserProfile({});
+          }
+          else {
+            // 새로운 토큰이 있는 경우 localStorage에 저장
+            localStorage.setItem("accessToken", newToken);
+
+            // 새로운 토큰을 사용하여 재시도
+            return axios.request(response.config);
+          }
+          break;
+        default:
+          // 기타 처리
+          break;
+      }
+
+      // 특정 에러 코드에 대한 처리가 없으면 에러 반환
       return Promise.reject(new Error("Unsuccessful response"));
     }
+
     const newToken = extractTokenFromHeader(response.headers);
     if (newToken) {
-      console.log("--- ", newToken);
+      console.log("axios auth response :  ", newToken);
       localStorage.setItem("accessToken", newToken);
     }
     return response;
   },
   async (error: AxiosError) => {
-    console.log("errrrrrr", error);
     // if (
     //   error.response?.status === 503 ||
     //   error.response?.status === 500 ||

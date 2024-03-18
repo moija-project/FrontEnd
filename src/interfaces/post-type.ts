@@ -108,3 +108,10 @@ export type AnsweringReqType = {
   is_ask: boolean;
   answers: string[] | [];
 };
+
+// 모임 인원 정보
+export type MembersResType = {
+  nickname : string ,
+  grant : boolean ,
+  user_id : string ,
+}

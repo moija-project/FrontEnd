@@ -16,9 +16,9 @@ export type ProfileResType = {
   gender: string;
 };
 
-export type MyProfileType = ProfileResType & {
-  user_id: string;
-};
+// export type MyProfileType = ProfileResType & {
+//   user_id: string;
+// };
 
 // 회원가입
 export type SignupReqType = {

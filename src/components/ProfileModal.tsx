@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { MyProfileType, ProfileResType } from "../interfaces/user-type";
+import {  ProfileResType } from "../interfaces/user-type";
 import { useRecoilState } from "recoil";
 import { myProfileInfoState } from "../store/userStore";
 import {
@@ -15,7 +15,7 @@ import useUserProfile from "../hook/useUserProfile";
 
 type ProfileModalProps = {
   setOpen: (open: boolean) => void;
-  profileData?: MyProfileType;
+  profileData?: ProfileResType;
 };
 
 export default function ProfileModal({

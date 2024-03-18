@@ -27,10 +27,8 @@ export default function MyPageScreen() {
 
   useEffect(() => {
     const fetchList = async () => {
-      const requestRes = await postReceivedChatRequest({});
-      console.log("## ", requestRes);
-      // const scrapRes = await postScrapList();
-
+      const requestRes = await postReceivedChatRequest({});     
+      console.log(requestRes)
       let transformedArray: ChatRequestStoreType[] = [];
       requestRes?.forEach((post) => {
         post.users.forEach((user) => {
@@ -45,7 +43,6 @@ export default function MyPageScreen() {
         });
       });
       setRequestList(transformedArray);
-      // setScrapList(scrapRes ?? []);
     };
     fetchList();
   }, []);

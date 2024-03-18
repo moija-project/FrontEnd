@@ -22,7 +22,7 @@ export default function MemberItem({
   const postDetail = useRecoilValue(postDetailState);
   const navigate = useNavigate();
   const moveToCredReview = () => {
-    // if (isMe) return;
+    if (isMe) return;
     navigate("/credReview", { state: { type: "peer", peerId: userId } });
   };
   return (
@@ -48,6 +48,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 20px;
+  cursor: pointer;
 `;
 const RoleIcon = styled.div`
   width: 25px;

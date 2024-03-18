@@ -21,18 +21,42 @@ export default function ClubListScreen() {
   const [postCate, setPostCate] = useState<CategoryType>("all");
   const [postView, setPostView] = useState<ViewType>("latest");
   const [page, setPage] = useState(0);
-  const [keyword, setKeyword] = useState();
+  const [keyword, setKeyword] = useState<string>();
   const [searchType, setSearchType] = useState<SearchType>("title");
   const [ref, inView] = useInView({ threshold: 1 });
   const [postList, setPostList] = useState<postListResType[]>([]);
-  // const postList = useRecoilValue(fetchPostListAtom({}));
-  // const [list, setList] = useRecoilState(fetchPostListState);
 
   const getData = async (params: postListParamsType) => {
     const res = await getPostList(params);
     res && setPostList([...postList, ...res]);
   };
 
+  const handleSearch = () => {
+    setPostList([])
+    setPage(0)
+    getData({
+      category: postCate,
+      view_type: postView,
+      keyword,
+      page,
+      search_type: searchType,
+    })  
+  }
+
+
+  useEffect(() => {
+    setPostList([])
+    setPage(0)
+    getData({
+      category: postCate,
+      view_type: postView,
+      keyword,
+      page,
+      search_type: searchType,
+    })    
+  },[postCate , postView])
+
+  // 페이지네이션
   useEffect(() => {
     if (inView && postList) {
       getData({
@@ -46,15 +70,6 @@ export default function ClubListScreen() {
     }
   }, [inView]);
 
-  useEffect(() => {
-    getData({
-      category: postCate,
-      view_type: postView,
-      keyword,
-      page,
-      search_type: searchType,
-    });
-  }, []);
 
   return (
     <Container>
@@ -64,6 +79,8 @@ export default function ClubListScreen() {
           setViewType={(type) => setPostView(type)}
           searchType={searchType}
           setSearchType={setSearchType}
+          setKeyword={(word) => setKeyword(word)}
+          onSearch={handleSearch}
         />
         <div>
           {postList && postList.length ? (

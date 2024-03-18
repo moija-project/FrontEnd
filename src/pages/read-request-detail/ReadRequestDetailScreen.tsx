@@ -39,6 +39,7 @@ export default function ReadRequestDetailScreen() {
     const getData = async () => {
       if (!reqData) return;
       const res = await postReceivedChatRequestDetail(reqData.waiting_id);
+      console.log(res)
       setReqDetail(res);
     };
     getData();

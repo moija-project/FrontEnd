@@ -3,14 +3,13 @@ import styled from "styled-components";
 import Modal from "./Modal";
 import ProfileModal from "./ProfileModal";
 import {
-  MyProfileType,
   ProfileResType,
   ProfileType,
 } from "../interfaces/user-type";
 
 type PreviewProfileProps = {
   hasBorder?: boolean;
-  profileData?: MyProfileType;
+  profileData?: ProfileResType;
 };
 
 const defaultImg = require("../assets/images/default-img-01.png");

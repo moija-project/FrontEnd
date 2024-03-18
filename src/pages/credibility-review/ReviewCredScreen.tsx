@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PreviewProfile from "../../components/PreviewProfile";
 import ReviewContentContainer from "./components/ReviewContentContainer";
+import { postReviewClub } from "../../api/service-api/clubPostApi";
 
 /*
 type - 'peer' / 'club' 
@@ -20,12 +21,26 @@ export default function ReviewCredScreen() {
     setTotalScore(sum);
   };
 
+  const postClubReview = async () => {
+    const res = await postReviewClub(postId,totalScore) ;
+    return res.isSuccess
+  }
+
   const handleSubmit = () => {
     // Post api 로 데이터 보내기
     // 게시물 상세 페이지로 이동
+    let res ;
     if (window.confirm("신뢰도 평가를 제출하시겠습니까?")) {
-      alert("제출되었습니다!");
-      navigate("/clubList");
+      if (type === 'club') { // 모임 평가
+        res = postClubReview()
+      } else { // 개인 평가
+
+      }
+
+      if (res) {
+        alert("제출되었습니다!");
+        navigate("/clubList");
+      }
     }
   };
 

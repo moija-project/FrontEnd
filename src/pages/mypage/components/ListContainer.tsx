@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import {
   postListIWrote,
+  postMyJoinedClub,
   postScrapList,
 } from "../../../api/service-api/mypageApi";
 import { postListResType } from "../../../interfaces/post-type";
@@ -50,11 +51,14 @@ export default function ListContainer({ listType }: ListContainerProps) {
       let res;
       if (listType === "host") {
         res = await postListIWrote({});
-        if (res) setHostList(res);
+        res && setHostList(res);
       } else if (listType === "scrap") {
         res = await postScrapList();
-        if (res) setScrapList(res);
-      } else {
+        res && setScrapList(res);
+      } else { // join
+        // res = await postMyJoinedClub({}) ;
+        // res && setJoinList(res)
+        // console.log(res)
       }
       // setPostList(res);
     };

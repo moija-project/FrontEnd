@@ -30,16 +30,12 @@ export const getPostDetail = async (
 ): Promise<postDetailResType | undefined> => {
   const url = `/post/page`;
   let res;
-  try {
+  try {    
     if (localStorage.getItem("accessToken")) {
-      res = await axiosAuth.post(url, { params });
-      console.log(res.config.url);
+      res = await axiosAuth.post(url, null ,{ params });
     } else {
       res = await axiosUnAuth.get(url, { params });
-    }
-    // fix 이거 unauth로 해도되는지 고민!
-    // const res = await axiosAuth.get(url, { params });
-    console.log(" >>> ", res);
+    }    
     return res.data.result;
   } catch (error) {
     console.error(error);
@@ -86,10 +82,16 @@ export const postPostClip = async (
 };
 
 // 게시글 수정
-export const patchPost = async (data: PostWriteReqType, post_id: number) => {
+export const patchPost = async (body: any, post_id: number) => {
+// export const patchPost = async (data: PostWriteReqType, post_id: number) => {
   const url = `/post/write/${post_id}`;
   try {
-    const res = await axiosAuth.patch(url, data);
+    // const res = await axiosAuth.patch(url, data);
+    const res = await axiosAuth.patch(url, body, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return res;
   } catch (error) {
     console.error(error);
@@ -169,3 +171,14 @@ export const getPostMembers = async (post_id: number) => {
     console.error(error);
   }
 };
+
+// 모임 평가하기
+export const postReviewClub = async(post_id : number ,score : number) => {
+  const url = `/post/grant/${post_id}` ;
+  try {
+    const res = await axiosAuth.post(url,{score})
+    return res.data
+  } catch (error) {
+    console.error(error)
+  }
+}

@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { MyProfileType } from "../interfaces/user-type";
+import { ProfileResType } from "../interfaces/user-type";
 import { recoilPersist } from "recoil-persist";
 
 // recoil - persist
@@ -48,11 +48,11 @@ export const myUserIdState = atom<string>({
 });
 
 // 본인 프로필
-export const myProfileInfoState = atom<MyProfileType>({
+export const myProfileInfoState = atom<ProfileResType>({
   key: "myProfileInfoState",
   // 로그인 하면 이 setState 해서 바꾸기!!!! fix
   default: {
-    user_id: "", // fix
+    user_id: "", 
     photo_profile: "",
     nickname: "",
     gender: "",

@@ -22,18 +22,16 @@ export default function ClubDetailScreen() {
   useEffect(() => {
     const getData = async () => {
       const res = await getPostDetail({ post_id: Number(postId) });
+      console.log(res)
       const questionRes = await getPostQuestion({
         post_id: Number(postId),
       });
-      console.log(res);
       res && setPostDetail(res);
       questionRes && setQuestions(questionRes);
     };
     getData();
   }, [postId]);
-  useEffect(() => {
-    console.log("%%% ", postDetail);
-  }, [postDetail]);
+
 
   return (
     <Container>
@@ -43,8 +41,10 @@ export default function ClubDetailScreen() {
           <ButtonsContainer postId={Number(postId)} />
         </MainContainer>
         <RightContainer>
-          {/* <LikeScrapContainer postId={Number(postId)} /> */}
-          {/* <ClubManageContainer postId={Number(postId)} /> */}
+          <LikeScrapContainer postId={Number(postId)} />
+          {localStorage.getItem("accessToken") && postDetail.role_in_post !== 'V' && (
+          <ClubManageContainer postId={Number(postId)} />
+          )}
         </RightContainer>
       </ContentWrapper>
     </Container>
@@ -86,7 +86,7 @@ const MainContainer = styled.div`
 
 const RightContainer = styled.div`
   position: sticky;
-  top: 10%;
+  top: 20%;
   right: 80px;
   flex: 0 0 30%;
   max-width: 450px;
