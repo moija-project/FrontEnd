@@ -75,6 +75,7 @@ export default function LoginScreen() {
           placeholder="Id"
           onChange={(e) => handleId(e.target.value)}
           value={id}
+          onKeyDown={handleKeyDown}
         />
         <InputBox
           type="password"

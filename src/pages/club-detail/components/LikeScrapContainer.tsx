@@ -9,6 +9,7 @@ import {
 } from "../../../api/service-api/clubPostApi";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { fetchPostDetailAtom, postDetailState } from "../../../store/postStore";
+import { useNavigate } from "react-router-dom";
 
 // !!! 로그인했을 때만 클릭 가능하도록!!
 
@@ -19,9 +20,15 @@ type LikeScrapContainerProps = {
 export default function LikeScrapContainer({
   postId,
 }: LikeScrapContainerProps) {
+  const navigate = useNavigate();
   const [postDetail, setPostDetail] = useRecoilState(postDetailState);
 
   const onClickLike = async () => {
+    if (!localStorage.getItem("accessToken")) {
+      alert("로그인 먼저 해주세요.");
+      navigate("/login");
+      return;
+    }
     let newDetail = { ...postDetail };
     const vote = postDetail.myliked ? 0 : 1;
 
@@ -33,11 +40,17 @@ export default function LikeScrapContainer({
     setPostDetail(newDetail);
   };
   const onClickScrap = async () => {
+    if (!localStorage.getItem("accessToken")) {
+      alert("로그인 먼저 해주세요.");
+      navigate("/login");
+      return;
+    }
     let newPostDetail = { ...postDetail };
     const clip = postDetail.mycliped ? 0 : 1;
     const res = await postPostClip({ post_id: postId, clip });
     if (!res?.isSuccess) return;
     newPostDetail.mycliped = !newPostDetail.mycliped;
+    setPostDetail(newPostDetail);
   };
 
   return (
@@ -68,7 +81,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: center;
   gap: 30px;
-  margin-bottom: 30px; 
+  margin-bottom: 30px;
 `;
 const ButtonWrapper = styled.button<{ isChecked: boolean }>`
   display: flex;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import styled from "styled-components";
 import Modal from "./Modal";
 import ProfileModal from "./ProfileModal";
@@ -12,7 +12,7 @@ import { getUserProfile } from "../api/service-api/profileApi";
 type PreviewProfileProps = {
   hasBorder?: boolean;
   profileData?: ProfileResType; // 본인 프로필
-  user_id? : string ; // 타인 
+  user_id?: string; // 타인
 };
 
 const defaultImg = require("../assets/images/default-img-01.png");
@@ -20,24 +20,24 @@ const defaultImg = require("../assets/images/default-img-01.png");
 export default function PreviewProfile({
   hasBorder = false,
   profileData,
-  user_id ,
+  user_id,
 }: PreviewProfileProps) {
   const [showModal, setShowModal] = useState(false);
-  const [profile , setProfile] = useState<ProfileResType>()
+  const [profile, setProfile] = useState<ProfileResType>();
   const handleClickProfile = () => {
     setShowModal(!showModal);
   };
 
   useEffect(() => {
-    if (profileData) setProfile(profileData)
-    if (user_id) {
+    if (profileData) setProfile(profileData);
+    else if (user_id) {
       const getUserData = async () => {
-        const res = await getUserProfile(user_id) ;
-        setProfile(res)
-      }
-      getUserData() 
+        const res = await getUserProfile(user_id);
+        setProfile(res);
+      };
+      getUserData();
     }
-  },[user_id])
+  }, [user_id, profileData]);
 
   return (
     <Container hasBorder={hasBorder}>
@@ -47,16 +47,11 @@ export default function PreviewProfile({
           profileData={profile ?? undefined}
         />
       )}
-
+      <div>{user_id}</div>
       <ProfileImg
         onClick={handleClickProfile}
         src={profile?.photo_profile || defaultImg}
       />
-      {/* <ProfileImg
-        onClick={handleClickProfile}
-        src={require("../assets/images/default-img-01.png")}
-      /> */}
-      {/* </button> */}
       <ProfileContentWrapper>
         <Nickname>{profile?.nickname ?? "nickname"}</Nickname>
         <Content>

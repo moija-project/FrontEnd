@@ -71,7 +71,6 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
 
   return (
     <Container>
-      {/* {postDetail.user_id === myUserid && ( */}
       {postDetail.role_in_post === "L" && (
         <SettingWrapper>
           <NonColoredButton onClick={moveToRevise}>수정하기</NonColoredButton>
@@ -96,11 +95,13 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
         </NonColoredButton>
       )}
 
-      {localStorage.getItem("accessToken") && postDetail.role_in_post === "V" && postDetail.state_recruit && (
-        <ColoredButton onClick={moveToAnswerQuestions}>
-          1대1 채팅 요청하기
-        </ColoredButton>
-      )}
+      {localStorage.getItem("accessToken") &&
+        postDetail.role_in_post === "V" &&
+        postDetail.state_recruit && (
+          <ColoredButton onClick={moveToAnswerQuestions}>
+            1대1 채팅 요청하기
+          </ColoredButton>
+        )}
 
       {postDetail.role_in_post === "V" && !postDetail.state_recruit && (
         <DisabledButton disabled>모집이 종료됐어요</DisabledButton>

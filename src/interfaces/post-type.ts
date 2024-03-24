@@ -43,7 +43,7 @@ export type PostWriterProfileType = {
   profile_photo: string | null;
   reliability_user: number;
   userNickname: string;
-  user_id: string;
+  leader_id: string;
   gender: string;
 };
 
@@ -111,7 +111,7 @@ export type AnsweringReqType = {
 
 // 모임 인원 정보
 export type MembersResType = {
-  nickname : string ,
-  grant : boolean ,
-  user_id : string ,
-}
+  nickname: string;
+  grant: boolean;
+  user_id: string;
+};

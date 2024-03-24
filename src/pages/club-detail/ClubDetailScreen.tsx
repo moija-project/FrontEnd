@@ -21,29 +21,35 @@ export default function ClubDetailScreen() {
   useEffect(() => {
     const getData = async () => {
       const res = await getPostDetail({ post_id: Number(postId) });
-      console.log("상세페이지 : ", res)
-      const questionRes = await getPostQuestion({
-        post_id: Number(postId),
-      });
+      console.log("상세페이지 : ", res);
+      console.log("상세페이지 - detail: ", res?.leader_id);
       res && setPostDetail(res);
-      questionRes && setQuestions(questionRes);
+      if (localStorage.getItem("accessToken")) {
+        const questionRes = await getPostQuestion({
+          post_id: Number(postId),
+        });
+        questionRes && setQuestions(questionRes);
+      }
     };
     getData();
   }, [postId]);
-
 
   return (
     <Container>
       <ContentWrapper>
         <MainContainer>
-          <ClubDetailContent postId={Number(postId)} />
+          <ClubDetailContent
+            postId={Number(postId)}
+            userId={postDetail.leader_id}
+          />
           <ButtonsContainer postId={Number(postId)} />
         </MainContainer>
         <RightContainer>
           <LikeScrapContainer postId={Number(postId)} />
-          {localStorage.getItem("accessToken") && postDetail.role_in_post !== 'V' && (
-          <ClubManageContainer postId={Number(postId)} />
-          )}
+          {localStorage.getItem("accessToken") &&
+            postDetail.role_in_post !== "V" && (
+              <ClubManageContainer postId={Number(postId)} />
+            )}
         </RightContainer>
       </ContentWrapper>
     </Container>

@@ -41,7 +41,7 @@ export const postDetailState = atom<postDetailResType>({
     myliked: false,
     mycliped: false,
     userNickname: "",
-    user_id: "",
+    leader_id: "",
     born_in: "",
     reliability_user: 0,
     profile_photo: "",

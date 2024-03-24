@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import styled from "styled-components";
 import Carousel from "./Carousel";
 import PreviewProfile from "../../../components/PreviewProfile";
@@ -11,26 +11,22 @@ import { myProfileInfoState } from "../../../store/userStore";
 
 type ClubDetailContentProps = {
   postId: number;
+  userId: string;
 };
 
-export default function ClubDetailContent({ postId }: ClubDetailContentProps) {
-  // const postDetail = useRecoilValue(postDetailState);
-  const myProfile = useRecoilValue(myProfileInfoState);
+export default function ClubDetailContent({
+  postId,
+  userId,
+}: ClubDetailContentProps) {
   const [postDetail, setPostDetail] =
     useRecoilState<postDetailResType>(postDetailState);
-  let writer;
 
   return (
     <Container>
       <Carousel />
-      {/* <PreviewProfile /> */}
-      {/* fix : 본인이면 본인 프로필로 , 아니면 남의 프로필로 */}
-      {/* {postDetail.user_id === myProfile.user_id ? (
-        <PreviewProfile profileData={myProfile} />
-      ) : ( */}
       <PreviewProfile
         profileData={{
-          user_id: postDetail.user_id,
+          user_id: postDetail.leader_id,
           nickname: postDetail.leader_nickname,
           birth_year: postDetail.born_in,
           reliability_user: postDetail.reliability_user,
@@ -38,7 +34,6 @@ export default function ClubDetailContent({ postId }: ClubDetailContentProps) {
           gender: postDetail.gender,
         }}
       />
-      {/* )} */}
       <Line />
       <PostHeader>
         <LeftWrapper>
