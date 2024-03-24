@@ -18,7 +18,7 @@ export const getPostList = async (
 ): Promise<postListResType[] | undefined> => {
   const url = `/post/list`;
   try {
-    const response = await axiosUnAuth.get(url, { params }); // fix?!
+    const response = await axiosAuth.get(url, { params }); // fix?!
     return response.data.result;
   } catch (error) {
     console.error("**ERROR**", error);
@@ -178,6 +178,28 @@ export const postReviewClub = async(post_id : number ,score : number) => {
   try {
     const res = await axiosAuth.post(url,{score})
     return res.data
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 개인 평가하기
+export const postReviewUser = async (score:number, granted : string) => { // granted : 평가받는 사람 
+  const url = `/user/grant` ;
+  try {
+    const res = await axiosAuth.post(url, {score , granted})
+    return res.data
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 포스트 이이디로 포스트 제목 
+export const getPostTitle = async (post_id:string) => {
+  const url = `/post/title/${post_id}` ;
+  try {
+    const res = await axiosAuth.get(url);
+    return res.data.result.title
   } catch (error) {
     console.error(error)
   }

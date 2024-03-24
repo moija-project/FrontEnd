@@ -1,4 +1,4 @@
-import { ProfileResType } from "../../interfaces/user-type";
+import { ProfileResType, UserProfileResType } from "../../interfaces/user-type";
 import { axiosAuth } from "../settingAxios";
 
 // 내 프로필 보기
@@ -41,3 +41,16 @@ export const patchMyProfileNickname = async (new_nickname: string) => {
     console.error(error);
   }
 };
+
+// userId 로 유저 프로필 조회
+export const getUserProfile = async (user_id:string) : Promise<
+UserProfileResType | undefined
+> => {
+  const url = `/user/profile` ;
+  try {
+    const res = await axiosAuth.post(url , {user_id})
+    return res.data.result
+  } catch (error) {
+    console.error(error)
+  }
+}

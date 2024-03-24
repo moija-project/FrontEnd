@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommonContainer from "../../components/CommonContainer";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PreviewProfile from "../../components/PreviewProfile";
 import ReviewContentContainer from "./components/ReviewContentContainer";
-import { postReviewClub } from "../../api/service-api/clubPostApi";
+import { postReviewClub, postReviewUser } from "../../api/service-api/clubPostApi";
 
 /*
 type - 'peer' / 'club' 
@@ -16,6 +16,7 @@ export default function ReviewCredScreen() {
   const [totalScore, setTotalScore] = useState(0);
   let type = state.type;
   let postId = state.postId;
+  let peerId = state.peerId; // 동료 평가일 경우
 
   const handleSumScore = (sum: number) => {
     setTotalScore(sum);
@@ -23,6 +24,11 @@ export default function ReviewCredScreen() {
 
   const postClubReview = async () => {
     const res = await postReviewClub(postId,totalScore) ;
+    return res.isSuccess
+  }
+  const postPeerReview = async () => {
+    if (!peerId)return
+    const res = await postReviewUser(totalScore, peerId)
     return res.isSuccess
   }
 
@@ -34,24 +40,29 @@ export default function ReviewCredScreen() {
       if (type === 'club') { // 모임 평가
         res = postClubReview()
       } else { // 개인 평가
-
+        res = postPeerReview() 
+        console.log(res)
       }
 
-      if (res) {
-        alert("제출되었습니다!");
-        navigate("/clubList");
-      }
+    }
+    if (res) {
+      alert("제출되었습니다!");
+      navigate("/clubList");
+    } else {
+      alert("제출을 실패했습니다. 다시 시도해주세요.")
     }
   };
+
 
   return (
     <CommonContainer>
       <Title>{type === "peer" ? "개인" : "모임"} 신뢰도 평가하기</Title>
-      {type === "peer" && <PreviewProfile hasBorder />}
+      {type === "peer" && <PreviewProfile hasBorder user_id={peerId}/>}
       <ReviewContentContainer
         postId={state.postId}
         type={type}
         setSumScore={handleSumScore}
+        peerId={peerId}
       />
 
       <TotalScoreWrapper>

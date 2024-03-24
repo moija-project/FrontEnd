@@ -40,11 +40,12 @@ export default function PhotoContainer() {
         <PhotoTitle>사진</PhotoTitle>
         <PhotoInstruction>(최대 5장)</PhotoInstruction>
       </PhotoTitleWrapper>
-      <PhotosContainer>
+      <PhotosContainer>        
         <AddPhotoButton
           id="addImg"
           type="file"
           accept=".png, .jpg, .jpeg"
+          onClick={() => console.log("click")}
           onChange={(e) => onUploadImage(e)}
         />
         <AddPhotoLabel htmlFor="addImg">
@@ -92,7 +93,8 @@ const PhotosContainer = styled.div`
   margin-top: 20px;
 `;
 const AddPhotoButton = styled.input`
-  display: none;
+width: 0;
+height: 0;
 `;
 const AddPhotoLabel = styled.label`
   width: 80px;

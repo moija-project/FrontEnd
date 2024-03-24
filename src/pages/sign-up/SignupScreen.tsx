@@ -129,7 +129,6 @@ export default function SignupScreen() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    console.log("##");
     if (
       isId &&
       isPw &&
@@ -183,9 +182,6 @@ export default function SignupScreen() {
       );
     }
   }, [phoneNum]);
-  useEffect(() => {
-    console.log(birth);
-  }, [birth]);
 
   return (
     <CommonContainer>

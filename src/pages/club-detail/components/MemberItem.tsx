@@ -9,8 +9,10 @@ import { postDetailState } from "../../../store/postStore";
 type MemberItemProps = {
   isLeader?: boolean;
   isMe?: boolean;
+  hasReviewed : boolean;
   nickname: string;
   userId: string;
+  postId : number
 };
 
 export default function MemberItem({
@@ -18,12 +20,18 @@ export default function MemberItem({
   isMe = false,
   nickname,
   userId,
+  postId,
+  hasReviewed
 }: MemberItemProps) {
   const postDetail = useRecoilValue(postDetailState);
   const navigate = useNavigate();
   const moveToCredReview = () => {
     if (isMe) return;
-    navigate("/credReview", { state: { type: "peer", peerId: userId } });
+    if (hasReviewed) {
+      alert("이미 평가했습니다!")
+      return
+    }
+    navigate("/credReview", { state: { type: "peer", peerId: userId , postId} });
   };
   return (
     <Container>

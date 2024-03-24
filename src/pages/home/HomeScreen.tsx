@@ -10,6 +10,7 @@ import { useRecoilValue } from "recoil";
 import { isLoggedInState, myProfileInfoState } from "../../store/userStore";
 import { postMyProfile } from "../../api/service-api/profileApi";
 import axios from "axios";
+import { axiosAuth } from "../../api/settingAxios";
 
 export default function HomeScreen() {
   const isLoggedin = useRecoilValue(isLoggedInState);
@@ -38,7 +39,7 @@ export default function HomeScreen() {
         <MiddleTitle>모임 모집</MiddleTitle>
         <MiddleInstruction>관심있는 모임에 참여해보세요</MiddleInstruction>
         <ClubListWrapper>
-          {postList
+          {postList.length ? postList
             .slice(0, 10)
             .map((v, i) =>
               i === 0 ? (
@@ -50,7 +51,8 @@ export default function HomeScreen() {
               ) : (
                 <PreviewPost key={`home-post-item-${i}`} postItem={v} />
               )
-            )}
+            ) : (<NoNotificationMsg>아직 등록된 게시글이 없어요</NoNotificationMsg>)}
+          
         </ClubListWrapper>
       </MiddleContainer>
       <RightContainer>

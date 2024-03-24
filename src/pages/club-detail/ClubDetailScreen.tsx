@@ -12,7 +12,6 @@ import {
   getPostQuestion,
 } from "../../api/service-api/clubPostApi";
 import { postDetailResType } from "../../interfaces/post-type";
-import { myUserIdState } from "../../store/userStore";
 
 export default function ClubDetailScreen() {
   const { postId } = useParams();
@@ -22,7 +21,7 @@ export default function ClubDetailScreen() {
   useEffect(() => {
     const getData = async () => {
       const res = await getPostDetail({ post_id: Number(postId) });
-      console.log(res)
+      console.log("상세페이지 : ", res)
       const questionRes = await getPostQuestion({
         post_id: Number(postId),
       });

@@ -50,7 +50,6 @@ export default function ProfileModal({
     close && setOpen(false);
   };
   const handleEditSubmit = async () => {
-    console.log(inpuNickname === defaultNickname);
     let formData = new FormData();
     formData.append("file", postImg);
     if (window.confirm("수정하시겠습니까?")) {
@@ -58,7 +57,6 @@ export default function ProfileModal({
       let nicknameRes;
       if (inpuNickname && inpuNickname !== defaultNickname) {
         nicknameRes = await patchMyProfileNickname(inpuNickname);
-        console.log(nicknameRes);
       }
       const imgRes = await patchMyProfileImg(formData);
 

@@ -78,10 +78,7 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
           <RedBorderButton onClick={handleDelete}>삭제하기</RedBorderButton>
         </SettingWrapper>
       )}
-      {/* <SettingWrapper>
-        <NonColoredButton onClick={moveToRevise}>수정하기</NonColoredButton>
-        <RedBorderButton onClick={handleDelete}>삭제하기</RedBorderButton>
-      </SettingWrapper> */}
+
       {(postDetail.role_in_post === "M" || postDetail.role_in_post === "L") && (
         <ColoredButton onClick={moveToClubCredReview}>
           모임 신뢰도 평가하기
@@ -99,7 +96,7 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
         </NonColoredButton>
       )}
 
-      {postDetail.role_in_post === "V" && postDetail.state_recruit && (
+      {localStorage.getItem("accessToken") && postDetail.role_in_post === "V" && postDetail.state_recruit && (
         <ColoredButton onClick={moveToAnswerQuestions}>
           1대1 채팅 요청하기
         </ColoredButton>

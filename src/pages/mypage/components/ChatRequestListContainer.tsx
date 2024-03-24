@@ -6,9 +6,7 @@ import { fetchRequestListState } from "../../../store/mypageStore";
 
 export default function ChatRequestListContainer() {
   const list = useRecoilValue(fetchRequestListState);
-  useEffect(() => {
-    console.log(list);
-  }, [list]);
+
   return (
     <Container>
       <RequestContainer>

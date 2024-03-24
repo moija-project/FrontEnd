@@ -75,7 +75,6 @@ axiosAuth.interceptors.response.use(
       switch (errorCode) {
         case 4006:
         case 4020:
-        case 4000:
           // 특정 에러 코드에 대한 처리 (새로운 토큰 추출 등)
           const newToken = extractTokenFromHeader(response.headers);
           if (!newToken) {
@@ -112,11 +111,7 @@ axiosAuth.interceptors.response.use(
     //   error.response?.status === 500 ||
     //   error.response?.status === 401
     // ) {
-    if (!error.response) {
-      console.log("^^");
-      return;
-    }
-    const newToken = extractTokenFromHeader(error.response.headers);
+    const newToken = extractTokenFromHeader(error.response?.headers);
     if (newToken && error.config) {
       localStorage.setItem("accessToken", newToken);
       error.config.headers.Authorization = `Bearer ${newToken}`;
@@ -133,9 +128,7 @@ axiosAuth.interceptors.response.use(
       }
     }
     // }
-    console.log("erorrrrrr");
-    localStorage.removeItem("accessToken");
-    useUserProfile({});
+    console.log("erorrrrrr : " , error.response?.status );    
     return Promise.reject(error);
   }
 );

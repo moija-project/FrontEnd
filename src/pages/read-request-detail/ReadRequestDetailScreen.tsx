@@ -39,7 +39,6 @@ export default function ReadRequestDetailScreen() {
     const getData = async () => {
       if (!reqData) return;
       const res = await postReceivedChatRequestDetail(reqData.waiting_id);
-      console.log(res)
       setReqDetail(res);
     };
     getData();
@@ -55,7 +54,7 @@ export default function ReadRequestDetailScreen() {
         을 보고 <br />
         1대1 채팅을 요청했어요!
       </Title>
-      <PreviewProfile hasBorder />
+      <PreviewProfile hasBorder user_id={reqDetail?.user_id}/>
       <ReadReplyContainer
         // fix !
         nickname={reqDetail?.nickname ?? ""}

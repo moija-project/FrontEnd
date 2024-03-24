@@ -13,7 +13,6 @@ export default function useUserProfile({
   const [userProfile, setUserProfile] = useRecoilState(myProfileInfoState);
   const fetchProfile = async () => {
     const res = await postMyProfile({});
-    console.log(res);
     setUserProfile(res ?? userProfile);
   };
   useEffect(() => {

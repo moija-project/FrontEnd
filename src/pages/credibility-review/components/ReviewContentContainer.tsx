@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import QuestionContainer from "./QuestionContainer";
+import { getPostTitle } from "../../../api/service-api/clubPostApi";
+import { getUserProfile } from "../../../api/service-api/profileApi";
+import { UserProfileResType } from "../../../interfaces/user-type";
 
 type ReviewContentContainerProps = {
   setSumScore: (sum: number) => void;
   type: "peer" | "club";
   postId: string;
+  peerId? : string ;
 };
 
 const peerReviewList = [
@@ -27,10 +31,13 @@ export default function ReviewContentContainer({
   setSumScore,
   type,
   postId,
+  peerId,
 }: ReviewContentContainerProps) {
   const [scoresList, setScoresList] = useState(
     Array.from({ length: 5 }, () => 0)
   );
+  const [postTitle, setPostTitle] = useState()
+  const [peer, setPeer] = useState<UserProfileResType>()
   const handleScore = (score: number, num: number) => {
     const scoresArr = [...scoresList];
     scoresArr[num] = score;
@@ -41,16 +48,36 @@ export default function ReviewContentContainer({
     const sum = scoresList.reduce((prev, cur) => prev + cur);
     setSumScore(Number(sum.toFixed(1)));
   }, [scoresList]);
+
+  useEffect(() => {
+    const getTitle = async () => {
+      const res = await getPostTitle(postId)
+      setPostTitle(res)
+    }
+    getTitle()
+  },[postTitle])
+
+  useEffect(() => {
+    if (peerId) {
+      const getUserData = async () => {
+        const res = await getUserProfile(peerId) ;
+        console.log("peer : " , res)
+        setPeer(res)
+      }
+      getUserData() 
+    }
+  },[peerId])
+
   return (
     <Container>
       {type === "peer" ? (
         <Title>
-          <ClubName>모임게시물제목</ClubName> 에서
-          <br /> 평가받는사람닉네임 님의 참여 태도를 평가해주세요!
+          <ClubName>{postTitle}</ClubName> 에서
+          <br /> {peer?.nickname} 님의 참여 태도를 평가해주세요!
         </Title>
       ) : (
         <Title>
-          <ClubName>모임게시물제목</ClubName> 에서 잘 활동하셨나요?
+          <ClubName>{postTitle}</ClubName> 에서 잘 활동하셨나요?
           <br /> 모임이 어땠는지 평가해주세요!
         </Title>
       )}

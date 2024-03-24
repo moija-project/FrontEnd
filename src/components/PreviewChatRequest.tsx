@@ -17,9 +17,7 @@ export default function PreviewChatRequest({
   const moveToReadRequestDetail = () => {
     navigate("/readRequestDetail", { state: { data } });
   };
-  useEffect(() => {
-    console.log("@@ ", data);
-  }, [data]);
+
   return (
     <>
       {data?.type === "received" ? (

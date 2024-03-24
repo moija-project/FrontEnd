@@ -27,4 +27,6 @@ export type ReadReceivedAnsResType = {
   genaration: string;
   qnas: ClubConditionType[];
   _ask: boolean;
+  user_id : string ;
+  // 더 있긴 한데 이건 다시 한번 더 보기  
 };

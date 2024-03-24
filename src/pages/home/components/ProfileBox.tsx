@@ -40,7 +40,6 @@ export default function ProfileBox() {
       });
       setIsLoggedin(false);
     } else {
-      console.log("logout error");
     }
   };
 

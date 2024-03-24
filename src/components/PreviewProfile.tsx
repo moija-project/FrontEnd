@@ -5,11 +5,14 @@ import ProfileModal from "./ProfileModal";
 import {
   ProfileResType,
   ProfileType,
+  UserProfileResType,
 } from "../interfaces/user-type";
+import { getUserProfile } from "../api/service-api/profileApi";
 
 type PreviewProfileProps = {
   hasBorder?: boolean;
-  profileData?: ProfileResType;
+  profileData?: ProfileResType; // 본인 프로필
+  user_id? : string ; // 타인 
 };
 
 const defaultImg = require("../assets/images/default-img-01.png");
@@ -17,26 +20,37 @@ const defaultImg = require("../assets/images/default-img-01.png");
 export default function PreviewProfile({
   hasBorder = false,
   profileData,
+  user_id ,
 }: PreviewProfileProps) {
   const [showModal, setShowModal] = useState(false);
+  const [profile , setProfile] = useState<ProfileResType>()
   const handleClickProfile = () => {
     setShowModal(!showModal);
   };
-  // useEffect(() => {
-  //   console.log(profileData);
-  // }, [profileData]);
+
+  useEffect(() => {
+    if (profileData) setProfile(profileData)
+    if (user_id) {
+      const getUserData = async () => {
+        const res = await getUserProfile(user_id) ;
+        setProfile(res)
+      }
+      getUserData() 
+    }
+  },[user_id])
+
   return (
     <Container hasBorder={hasBorder}>
       {showModal && (
         <ProfileModal
           setOpen={(open) => setShowModal(open)}
-          profileData={profileData ?? undefined}
+          profileData={profile ?? undefined}
         />
       )}
 
       <ProfileImg
         onClick={handleClickProfile}
-        src={profileData?.photo_profile || defaultImg}
+        src={profile?.photo_profile || defaultImg}
       />
       {/* <ProfileImg
         onClick={handleClickProfile}
@@ -44,14 +58,14 @@ export default function PreviewProfile({
       /> */}
       {/* </button> */}
       <ProfileContentWrapper>
-        <Nickname>{profileData?.nickname ?? "nickname"}</Nickname>
+        <Nickname>{profile?.nickname ?? "nickname"}</Nickname>
         <Content>
-          {profileData?.gender} {profileData?.birth_year}
+          {profile?.gender} {profile?.birth_year}
         </Content>
       </ProfileContentWrapper>
       <CredibilityWrapper>
         <CredibilityTitle>신뢰도 점수</CredibilityTitle>
-        <CredibilityScore>{profileData?.reliability_user}점</CredibilityScore>
+        <CredibilityScore>{profile?.reliability_user}점</CredibilityScore>
       </CredibilityWrapper>
     </Container>
   );

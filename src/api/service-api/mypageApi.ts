@@ -51,6 +51,7 @@ export const postReceivedChatRequestDetail = async (
   const url = `/my/waiting/${waiting_id}`;
   try {
     const res = await axiosAuth.post(url);
+    console.log("받은 요청 상세 확인 : " , res) 
     return res.data.result;
   } catch (error) {
     console.error(error);
@@ -73,7 +74,7 @@ export const postMyJoinedClub = async ({}) => {
   const url = `/my/joined-team`;
   try {
     const res = await axiosAuth.post(url);
-    return res.data;
+    return res.data.result;
   } catch (error) {
     console.error(error);
   }

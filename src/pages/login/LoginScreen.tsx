@@ -32,14 +32,12 @@ export default function LoginScreen() {
   };
   const fetchProfile = async () => {
     const res = await postMyProfile({});
-    console.log("profile api", res);
     res && setUserProfile(res);
   };
   const handleSubmit = async () => {
     // 로그인 처리
     if (!activeSubBtn) return;
     const res = await postLogin(id, pw);
-    console.log(res);
     if (res?.isSuccess && res.result) {
       // setAccessToken(res.result.accessToken);
       localStorage.setItem("accessToken", res.result.accessToken);
@@ -51,6 +49,12 @@ export default function LoginScreen() {
       navigate("/");
     } else {
       window.alert(res?.message);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit();
     }
   };
 
@@ -78,6 +82,7 @@ export default function LoginScreen() {
           placeholder="Password"
           onChange={(e) => handlePw(e.target.value)}
           value={pw}
+          onKeyDown={handleKeyDown}
         />
       </InputContainer>
       <SubmitButton
