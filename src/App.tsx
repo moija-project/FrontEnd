@@ -23,6 +23,7 @@ import CompleteSignupScreen from "./pages/sign-up/CompleteSignupScreen";
 import axios from "axios";
 import MorePostListScreen from "./pages/mypage/MorePostListScreen";
 import ChatRoomScreen from "./pages/chat-room/ChatRoomScreen";
+import { PrivateRoute } from "./PrivateRoute";
 
 function App() {
   return (
@@ -35,9 +36,9 @@ function App() {
             <DefaultScrollTop />
             <GlobalStyle />
             <Routes>
+              {/* ###        비로그인 가능       */}
               <Route path="/" element={<HomeScreen />} />
               <Route path="/login" element={<LoginScreen />} />
-
               {/* 회원가입 */}
               <Route
                 path="/regulation"
@@ -48,34 +49,33 @@ function App() {
                 path="/completeSignup"
                 element={<CompleteSignupScreen />}
               />
-
               <Route path="/clubList" element={<ClubListScreen />} />
-
-              <Route path="/mypage" element={<MyPageScreen />} />
-              <Route
-                path="/mypage-morePost/:type"
-                element={<MorePostListScreen />}
-              />
-
-              <Route path="/postClub" element={<ClubPostScreen />} />
-              <Route path="/reviseClub" element={<ClubReviseScreen />} />
-
               <Route
                 path="/clubDetail/:postId"
                 element={<ClubDetailScreen />}
               />
-              <Route
-                path="/answerQuestions/:postId"
-                element={<AnswerQuestionsScreen />}
-              />
-
-              {/**신뢰도 평가 하는 페이지 */}
-              <Route path="/credReview" element={<ReviewCredScreen />} />
-
-              <Route
-                path="/readRequestDetail"
-                element={<ReadRequestDetailScreen />}
-              />
+              {/*  */}
+              {/*  */}
+              {/* ###        로그인 시에만       */}
+              <Route element={<PrivateRoute />}>
+                <Route path="/postClub" element={<ClubPostScreen />} />
+                <Route path="/reviseClub" element={<ClubReviseScreen />} />
+                <Route path="/mypage" element={<MyPageScreen />} />
+                <Route
+                  path="/mypage-morePost/:type"
+                  element={<MorePostListScreen />}
+                />
+                <Route
+                  path="/answerQuestions/:postId"
+                  element={<AnswerQuestionsScreen />}
+                />
+                {/**신뢰도 평가 하는 페이지 */}
+                <Route path="/credReview" element={<ReviewCredScreen />} />
+                <Route
+                  path="/readRequestDetail"
+                  element={<ReadRequestDetailScreen />}
+                />
+              </Route>
 
               {/* 채팅 */}
               <Route path="/chatRoom" element={<ChatRoomScreen />} />

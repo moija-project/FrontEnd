@@ -60,12 +60,7 @@ axiosAuth.interceptors.request.use(
 
 axiosAuth.interceptors.response.use(
   (response) => {
-    console.log("axios auth response : ", response.data);
-    // if (!response.data.isSuccess) {
-    //   localStorage.removeItem("accessToken");
-    //   console.log("*** , ", response.headers);
-    //   return Promise.reject(new Error("Unsuccessful response"));
-    // }
+    console.log("axios auth response : ", response.data)
 
     if (!response.data.isSuccess) {
       // 응답이 실패일 경우 처리
@@ -105,12 +100,7 @@ axiosAuth.interceptors.response.use(
     }
     return response;
   },
-  async (error: AxiosError) => {
-    // if (
-    //   error.response?.status === 503 ||
-    //   error.response?.status === 500 ||
-    //   error.response?.status === 401
-    // ) {
+  async (error: AxiosError) => {    
     const newToken = extractTokenFromHeader(error.response?.headers);
     if (newToken && error.config) {
       localStorage.setItem("accessToken", newToken);
@@ -127,7 +117,6 @@ axiosAuth.interceptors.response.use(
         return Promise.reject(requestError);
       }
     }
-    // }
     console.log("erorrrrrr : " , error.response?.status );    
     return Promise.reject(error);
   }
@@ -142,25 +131,5 @@ function extractTokenFromHeader(headers: any): string | null {
   return null;
 }
 
-// axiosAuth.interceptors.response.use(
-//   (response) => {
-//     // 응답에서 토큰 추출
-//     const authorizationHeader = response.headers["Authorization"];
-//     if (authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
-//       const newToken = authorizationHeader.split("Bearer ")[1];
-
-//       // 추출한 토큰을 로컬 스토리지에 저장하거나, 상태 관리 라이브러리를 사용하여 저장
-//       localStorage.setItem("accessToken", newToken);
-
-//       // 추출한 토큰을 다음 요청의 헤더에 추가
-//       axiosAuth.defaults.headers["Authorization"] = `Bearer ${newToken}`;
-//     }
-
-//     return response;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
 
 export { axiosUnAuth, axiosAuth };
