@@ -47,7 +47,6 @@ export default function PreviewProfile({
           profileData={profile ?? undefined}
         />
       )}
-      <div>{user_id}</div>
       <ProfileImg
         onClick={handleClickProfile}
         src={profile?.photo_profile || defaultImg}
