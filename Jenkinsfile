@@ -22,7 +22,7 @@ pipeline {
 		stage("Tag and Push") {
 			steps {
                 docker.withRegistry('https://registry.hub.docker.com', 'docker-credentials')
-                             app.push("${BUILD_DATE_FORMATTED, "yyyy:MM:dd"}-develop")
+                             app.push("${BUILD_DATE_FORMATTED}-develop")
                              app.push("latest")
 
 			}
