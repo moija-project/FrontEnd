@@ -15,18 +15,16 @@ pipeline {
 		}
 		stage("Build") {
 			steps {
-                script {
-					docker.build('shinyenggwak/front')
-				}
+
+				docker.build('shinyenggwak/front')
 			}
 		}
 		stage("Tag and Push") {
 			steps {
-                script {
-					docker.withRegistry('https://registry.hub.docker.com', 'docker-credentials')
-                                 app.push("${env.BUILD_NUMBER}")
-                                 app.push("latest")
-				}
+                docker.withRegistry('https://registry.hub.docker.com', 'docker-credentials')
+                             app.push("${BUILD_DATE_FORMATTED, "yyyy:MM:dd"}-develop")
+                             app.push("latest")
+
 			}
 		}
 	}
