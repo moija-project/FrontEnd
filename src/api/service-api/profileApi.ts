@@ -35,7 +35,8 @@ export const patchMyProfileImg = async (body: any) => {
 export const patchMyProfileNickname = async (new_nickname: string) => {
   const url = `/my/profile/edit/nick`;
   try {
-    const res = await axiosAuth.patch(url, new_nickname);
+    const res = await axiosAuth.patch(url, { new_nickname: new_nickname });
+    // const res = await axiosAuth.patch(url, {new_nickname});
     return res;
   } catch (error) {
     console.error(error);
@@ -43,14 +44,14 @@ export const patchMyProfileNickname = async (new_nickname: string) => {
 };
 
 // userId 로 유저 프로필 조회
-export const getUserProfile = async (user_id:string) : Promise<
-UserProfileResType | undefined
-> => {
-  const url = `/user/profile` ;
+export const getUserProfile = async (
+  user_id: string
+): Promise<UserProfileResType | undefined> => {
+  const url = `/user/profile`;
   try {
-    const res = await axiosAuth.post(url , {user_id})
-    return res.data.result
+    const res = await axiosAuth.post(url, { user_id });
+    return res.data.result;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};

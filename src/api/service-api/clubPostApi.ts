@@ -30,12 +30,12 @@ export const getPostDetail = async (
 ): Promise<postDetailResType | undefined> => {
   const url = `/post/page`;
   let res;
-  try {    
+  try {
     if (localStorage.getItem("accessToken")) {
-      res = await axiosAuth.post(url, null ,{ params });
+      res = await axiosAuth.post(url, null, { params });
     } else {
       res = await axiosUnAuth.get(url, { params });
-    }    
+    }
     return res.data.result;
   } catch (error) {
     console.error(error);
@@ -83,7 +83,7 @@ export const postPostClip = async (
 
 // 게시글 수정
 export const patchPost = async (body: any, post_id: number) => {
-// export const patchPost = async (data: PostWriteReqType, post_id: number) => {
+  // export const patchPost = async (data: PostWriteReqType, post_id: number) => {
   const url = `/post/write/${post_id}`;
   try {
     // const res = await axiosAuth.patch(url, data);
@@ -110,13 +110,10 @@ export const getPostQuestion = async (body: {
   }
 };
 
-export const deletePostDetail = async (data: {
-  user_id: string;
-  post_id: number;
-}) => {
-  const url = `/post/delete/${data.post_id}`;
+export const deletePostDetail = async (post_id: number) => {
+  const url = `/post/delete/${post_id}`;
   try {
-    const res = await axiosAuth.delete(url, { data });
+    const res = await axiosAuth.delete(url);
     return res;
   } catch (error) {
     console.error(error);
@@ -173,34 +170,35 @@ export const getPostMembers = async (post_id: number) => {
 };
 
 // 모임 평가하기
-export const postReviewClub = async(post_id : number ,score : number) => {
-  const url = `/post/grant/${post_id}` ;
+export const postReviewClub = async (post_id: number, score: number) => {
+  const url = `/post/grant/${post_id}`;
   try {
-    const res = await axiosAuth.post(url,{score})
-    return res.data
+    const res = await axiosAuth.post(url, { score });
+    return res.data;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 // 개인 평가하기
-export const postReviewUser = async (score:number, granted : string) => { // granted : 평가받는 사람 
-  const url = `/user/grant` ;
+export const postReviewUser = async (score: number, granted: string) => {
+  // granted : 평가받는 사람
+  const url = `/user/grant`;
   try {
-    const res = await axiosAuth.post(url, {score , granted})
-    return res.data
+    const res = await axiosAuth.post(url, { score, granted });
+    return res.data;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
-// 포스트 이이디로 포스트 제목 
-export const getPostTitle = async (post_id:string) => {
-  const url = `/post/title/${post_id}` ;
+// 포스트 이이디로 포스트 제목
+export const getPostTitle = async (post_id: string) => {
+  const url = `/post/title/${post_id}`;
   try {
     const res = await axiosAuth.get(url);
-    return res.data.result.title
+    return res.data.result.title;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};

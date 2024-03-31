@@ -40,6 +40,7 @@ export default function ProfileBox() {
       });
       setIsLoggedin(false);
     } else {
+      localStorage.removeItem("accessToken");
     }
   };
 

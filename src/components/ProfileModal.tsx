@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import {  ProfileResType } from "../interfaces/user-type";
+import { ProfileResType } from "../interfaces/user-type";
 import { useRecoilState } from "recoil";
 import { myProfileInfoState } from "../store/userStore";
 import {
@@ -74,6 +74,7 @@ export default function ProfileModal({
         alert("수정되었습니다!");
         setOpen(false);
       } else {
+        console.log("nick name response :: ", nicknameRes);
         alert("프로필 수정에 문제가 생겼습니다.");
       }
     }

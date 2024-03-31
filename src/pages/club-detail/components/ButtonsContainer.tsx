@@ -58,10 +58,7 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
   };
   const handleDelete = () => {
     const deleteData = async () => {
-      const res = await deletePostDetail({
-        user_id: "testman1",
-        post_id: postId,
-      });
+      const res = await deletePostDetail(postId);
       if (res?.data.isSuccess) navigate("/clubList");
     };
     if (window.confirm("정말 게시물을 삭제하시겠습니까? ")) {

@@ -3,7 +3,11 @@ import styled from "styled-components";
 import PostContent from "./components/PostContent";
 import CreateQuestionnaire from "./components/CreateQuestionnaire";
 import CommonContainer from "../../components/CommonContainer";
-import { postDetailState, postPhotoState, writePostState } from "../../store/postStore";
+import {
+  postDetailState,
+  postPhotoState,
+  writePostState,
+} from "../../store/postStore";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { patchPost } from "../../api/service-api/clubPostApi";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -26,7 +30,6 @@ export default function ClubReviseScreen() {
       };
     });
   };
-
 
   const handleSubmit = () => {
     const postClub = async () => {
@@ -57,11 +60,11 @@ export default function ClubReviseScreen() {
       }
       // 요청 성공 시 ui 보여지게
     };
+
     if (window.confirm("게시물을 등록하시겠습니까?")) {
       postClub();
     }
   };
-
 
   const preventClose = (event: BeforeUnloadEvent) => {
     event.preventDefault();
