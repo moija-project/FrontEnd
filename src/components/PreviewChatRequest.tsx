@@ -38,7 +38,7 @@ export default function PreviewChatRequest({
               ? data.nickname.slice(0, 8) + ".."
               : data.nickname}
           </ColoredText>
-          님이 1대1 채팅 요청을 보냈어요
+          님이 참여 요청을 보냈어요
         </MessageItem>
       ) : (
         <MessageItem onClick={moveToReadRequestDetail}>

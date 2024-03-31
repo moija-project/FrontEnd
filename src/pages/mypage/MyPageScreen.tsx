@@ -27,7 +27,7 @@ export default function MyPageScreen() {
 
   useEffect(() => {
     const fetchList = async () => {
-      const requestRes = await postReceivedChatRequest({});     
+      const requestRes = await postReceivedChatRequest({});
       let transformedArray: ChatRequestStoreType[] = [];
       requestRes?.forEach((post) => {
         post.users.forEach((user) => {
@@ -51,7 +51,7 @@ export default function MyPageScreen() {
       <Title>마이페이지</Title>
       <PreviewProfile hasBorder profileData={userInfo} />
 
-      <ListContainer listType="chat-list" />
+      {/* <ListContainer listType="chat-list" /> */}
       <ListContainer listType="host" />
       <ListContainer listType="join" />
       <ListContainer listType="scrap" />

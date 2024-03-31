@@ -57,7 +57,7 @@ export default function ProfileBox() {
       <ProfileWrapper />
       <ButtonWrapper>
         <BoxButton isColored={true} onClick={moveToMypage}>
-          채팅 목록
+          마이페이지
         </BoxButton>
         <BoxButton onClick={handleLogout} isColored={false}>
           로그아웃

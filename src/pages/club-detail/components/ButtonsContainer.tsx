@@ -41,9 +41,9 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
       postId
     );
     if (res?.data.isSuccess) {
-      window.alert("1대1 채팅 요청됐습니다!");
+      window.alert("참여 요청됐습니다!");
       navigate("/clubList");
-    } else window.alert("1대1 채팅 요청에 실패했습니다. 다시 시도해주세요.");
+    } else window.alert("참여 요청에 실패했습니다. 다시 시도해주세요.");
   };
   const moveToAnswerQuestions = () => {
     if (!postDetail.num_condition) {
@@ -96,7 +96,7 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
         postDetail.role_in_post === "V" &&
         postDetail.state_recruit && (
           <ColoredButton onClick={moveToAnswerQuestions}>
-            1대1 채팅 요청하기
+            참여 요청하기
           </ColoredButton>
         )}
 

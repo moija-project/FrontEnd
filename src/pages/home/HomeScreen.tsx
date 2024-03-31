@@ -39,32 +39,25 @@ export default function HomeScreen() {
         <MiddleTitle>모임 모집</MiddleTitle>
         <MiddleInstruction>관심있는 모임에 참여해보세요</MiddleInstruction>
         <ClubListWrapper>
-          {postList.length ? postList
-            .slice(0, 10)
-            .map((v, i) =>
-              i === 0 ? (
-                <PreviewPost
-                  key={`home-post-item-${i}`}
-                  postItem={v}
-                  isFirst={true}
-                />
-              ) : (
-                <PreviewPost key={`home-post-item-${i}`} postItem={v} />
+          {postList.length ? (
+            postList
+              .slice(0, 10)
+              .map((v, i) =>
+                i === 0 ? (
+                  <PreviewPost
+                    key={`home-post-item-${i}`}
+                    postItem={v}
+                    isFirst={true}
+                  />
+                ) : (
+                  <PreviewPost key={`home-post-item-${i}`} postItem={v} />
+                )
               )
-            ) : (<NoNotificationMsg>아직 등록된 게시글이 없어요</NoNotificationMsg>)}
-          
+          ) : (
+            <NoNotificationMsg>아직 등록된 게시글이 없어요</NoNotificationMsg>
+          )}
         </ClubListWrapper>
       </MiddleContainer>
-      <RightContainer>
-        <RightTitle>알림</RightTitle>
-        {/* <NoNotificationMsg>알림이 없어요</NoNotificationMsg> */}
-        <div style={{ marginTop: 25 }}>
-          {[1, 2, 3, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(
-            (v, i) =>
-              i === 0 ? <NotificationBox isFirst={true} /> : <NotificationBox />
-          )}
-        </div>
-      </RightContainer>
     </Container>
   );
 }

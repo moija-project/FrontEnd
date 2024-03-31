@@ -35,7 +35,7 @@ export default function ListContainer({ listType }: ListContainerProps) {
       : listType === "scrap"
       ? "내가 스크랩한 모임"
       : listType === "chat-request"
-      ? "1대1 채팅 요청"
+      ? "참여 요청"
       : listType === "chat-list"
       ? "1대1 채팅 목록"
       : "";
@@ -47,16 +47,17 @@ export default function ListContainer({ listType }: ListContainerProps) {
   };
 
   useEffect(() => {
-    const getData = async () => {  
+    const getData = async () => {
       if (listType === "host") {
         let res = await postListIWrote({});
         res && setHostList(res);
       } else if (listType === "scrap") {
         let res = await postScrapList();
         res && setScrapList(res);
-      } else if (listType === 'join') { // join
-        let res = await postMyJoinedClub({})
-        res && setJoinList(res)
+      } else if (listType === "join") {
+        // join
+        let res = await postMyJoinedClub({});
+        res && setJoinList(res);
       }
     };
     getData();
