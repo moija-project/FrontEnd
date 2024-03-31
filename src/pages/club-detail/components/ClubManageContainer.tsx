@@ -17,7 +17,7 @@ type ClubManageContainer = {
 
 export default function ClubManageContainer({ postId }: ClubManageContainer) {
   const postDetail = useRecoilValue(postDetailState);
-  const myProfile = useRecoilValue(myProfileInfoState)
+  const myProfile = useRecoilValue(myProfileInfoState);
   const [isActiveBumpBtn, setIsActiveBumpBtn] = useState(false);
   const [members, setMembers] = useState<MembersResType[]>([]);
   const handleBump = async () => {
@@ -31,7 +31,7 @@ export default function ClubManageContainer({ postId }: ClubManageContainer) {
 
     const getMembers = async () => {
       const res = await getPostMembers(postId);
-      console.log("상세페이지 - 멤버들 보기 : " , res)
+      console.log("상세페이지 - 멤버들 보기 : ", res);
       setMembers(res);
     };
     getMembers();
@@ -53,26 +53,25 @@ export default function ClubManageContainer({ postId }: ClubManageContainer) {
       <BoxContainer>
         <HeaderWrapper>
           <HeaderTitle>모집 인원</HeaderTitle>
-          <PeopleCnt>총 {members.length ?? 0}명</PeopleCnt>
+          <PeopleCnt>총 {members?.length ?? 0}명</PeopleCnt>
         </HeaderWrapper>
         <InstructionText>
           멤버의 개인 평가를 하고 싶으면 멤버 닉네임을 클릭해보세요
         </InstructionText>
-        <MemberListWrapper>      
-                    
-          {members.length && members.map((member, i) => (
-            <MemberItem
-            hasReviewed={member.grant}
-              isLeader={i === 0}
-              isMe={member.user_id === myProfile.user_id}
-              nickname={member.nickname}
-              userId={member.user_id}
-              postId={postId}
-            />
-          ))}           
+        <MemberListWrapper>
+          {members?.length &&
+            members.map((member, i) => (
+              <MemberItem
+                hasReviewed={member.grant}
+                isLeader={i === 0}
+                isMe={member.user_id === myProfile.user_id}
+                nickname={member.nickname}
+                userId={member.user_id}
+                postId={postId}
+              />
+            ))}
         </MemberListWrapper>
       </BoxContainer>
-      
     </Container>
   );
 }

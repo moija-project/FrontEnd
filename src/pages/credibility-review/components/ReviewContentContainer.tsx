@@ -4,12 +4,13 @@ import QuestionContainer from "./QuestionContainer";
 import { getPostTitle } from "../../../api/service-api/clubPostApi";
 import { getUserProfile } from "../../../api/service-api/profileApi";
 import { UserProfileResType } from "../../../interfaces/user-type";
+import { Link, useNavigate } from "react-router-dom";
 
 type ReviewContentContainerProps = {
   setSumScore: (sum: number) => void;
   type: "peer" | "club";
   postId: string;
-  peerId? : string ;
+  peerId?: string;
 };
 
 const peerReviewList = [
@@ -33,16 +34,22 @@ export default function ReviewContentContainer({
   postId,
   peerId,
 }: ReviewContentContainerProps) {
+  const navigate = useNavigate();
   const [scoresList, setScoresList] = useState(
     Array.from({ length: 5 }, () => 0)
   );
-  const [postTitle, setPostTitle] = useState()
-  const [peer, setPeer] = useState<UserProfileResType>()
+  const [postTitle, setPostTitle] = useState();
+  const [peer, setPeer] = useState<UserProfileResType>();
   const handleScore = (score: number, num: number) => {
     const scoresArr = [...scoresList];
     scoresArr[num] = score;
     setScoresList(scoresArr);
   };
+
+  const moveToPost = () => {
+    navigate(`/clubDetail/${postId}`);
+  };
+
   useEffect(() => {
     if (scoresList.includes(0)) return;
     const sum = scoresList.reduce((prev, cur) => prev + cur);
@@ -51,33 +58,42 @@ export default function ReviewContentContainer({
 
   useEffect(() => {
     const getTitle = async () => {
-      const res = await getPostTitle(postId)
-      setPostTitle(res)
-    }
-    getTitle()
-  },[postTitle])
+      const res = await getPostTitle(postId);
+      setPostTitle(res);
+    };
+    getTitle();
+  }, [postTitle]);
 
   useEffect(() => {
     if (peerId) {
       const getUserData = async () => {
-        const res = await getUserProfile(peerId) ;
-        console.log("peer : " , res)
-        setPeer(res)
-      }
-      getUserData() 
+        const res = await getUserProfile(peerId);
+        setPeer(res);
+      };
+      getUserData();
     }
-  },[peerId])
+  }, [peerId]);
 
   return (
     <Container>
       {type === "peer" ? (
         <Title>
-          <ClubName>{postTitle}</ClubName> 에서
+          <ClubName>
+            <Link to={`/clubDetail/${postId}`} target="_blank">
+              {postTitle}
+            </Link>
+          </ClubName>{" "}
+          에서
           <br /> {peer?.nickname} 님의 참여 태도를 평가해주세요!
         </Title>
       ) : (
         <Title>
-          <ClubName>{postTitle}</ClubName> 에서 잘 활동하셨나요?
+          <ClubName>
+            <Link to={`/clubDetail/${postId}`} target="_blank">
+              {postTitle}
+            </Link>
+          </ClubName>{" "}
+          에서 잘 활동하셨나요?
           <br /> 모임이 어땠는지 평가해주세요!
         </Title>
       )}
