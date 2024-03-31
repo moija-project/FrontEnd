@@ -15,7 +15,10 @@ export default function Header({ RightOption }: HeaderProps) {
 
   const [openToggleBar, setOpenToggleBar] = useState(false);
   const navigate = useNavigate();
-  const moveToHome = () => navigate("/");
+  const moveToHome = () => {
+    if (path === "/") window.location.reload();
+    else navigate("/");
+  };
 
   return (
     <>
