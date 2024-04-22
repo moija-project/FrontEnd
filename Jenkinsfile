@@ -61,6 +61,8 @@ pipeline {
                     def dockerfile = "./app/Dockerfile"
                     def image = "${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest"
 
+                    sh 'apk add --no-cache git'
+
                     sh "git clone https://github.com/moija-project/FrontEnd.git ./app"
                     sh "cd ./app && git checkout sy-development"
 
