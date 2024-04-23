@@ -24,6 +24,7 @@ import axios from "axios";
 import MorePostListScreen from "./pages/mypage/MorePostListScreen";
 import ChatRoomScreen from "./pages/chat-room/ChatRoomScreen";
 import { PrivateRoute } from "./PrivateRoute";
+import ChatListScreen from "./pages/chat-list/ChatListScreen";
 
 function App() {
   return (
@@ -78,7 +79,12 @@ function App() {
               </Route>
 
               {/* 채팅 */}
-              <Route path="/chatRoom" element={<ChatRoomScreen />} />
+              <Route path="/chatList" element={<ChatListScreen />} />
+              <Route
+                path="/chatRoom/:chatRoomId"
+                element={<ChatRoomScreen />}
+              />
+
               <Route path="/*" element={<NotFoundScreen />} />
             </Routes>
           </React.Suspense>

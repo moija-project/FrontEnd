@@ -13,6 +13,8 @@ export default function MsgInputWrapper({ setMsg, msg }: MsgInputWrapperProps) {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    // 보내지는 로직
+    setMsg("");
   };
   return (
     <InputWrapper>
