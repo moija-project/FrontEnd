@@ -25,6 +25,7 @@ export default function CommonContainer({
 const Container = styled.div`
   background-color: var(--background-color);
   min-height: 100vh;
+  height: 100%;
 `;
 const BoxContainer = styled.div`
   min-height: 100vh;
