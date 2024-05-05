@@ -18,7 +18,7 @@ export default function ProfileBox() {
   const [myProfile, setMyProfile] = useRecoilState(myProfileInfoState);
 
   const moveToMypage = () => {
-    if (localStorage.getItem("accessToken")) navigate("/mypage");
+    if (localStorage.getItem("accessToken")) navigate("/chatList");
     else {
       window.alert("로그인을 다시해주세요");
       navigate("/login");

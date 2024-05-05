@@ -6,7 +6,12 @@ const imgUrl =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4iPRF0B7snYyA5v9Rn76ptVODPWbnb0Tt0dK6n523A&s";
 const chatRoomId = 1; // 임시
 
-export default function ChatListItem() {
+type ChatListItemProps = {
+  chatName: string;
+  postId: number;
+};
+
+export default function ChatListItem({ chatName, postId }: ChatListItemProps) {
   const navigate = useNavigate();
 
   const moveToChatRoom = () => {
@@ -17,7 +22,7 @@ export default function ChatListItem() {
       <Image src={imgUrl} />
       <RightWrapper>
         <TextWrapper>
-          <Title>게시물제목</Title>
+          <Title>{chatName}</Title>
           <LastMessage>마지막 채팅 메시지</LastMessage>
         </TextWrapper>
         <TimeWrapper>

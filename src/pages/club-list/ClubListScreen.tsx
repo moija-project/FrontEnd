@@ -12,7 +12,6 @@ import {
   postListParamsType,
   postListResType,
 } from "../../interfaces/post-type";
-import { useQuery } from "react-query";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { fetchPostListAtom, fetchPostListState } from "../../store/postStore";
 import { useInView } from "react-intersection-observer";
@@ -32,29 +31,28 @@ export default function ClubListScreen() {
   };
 
   const handleSearch = () => {
-    setPostList([])
-    setPage(0)
+    setPostList([]);
+    setPage(0);
     getData({
       category: postCate,
       view_type: postView,
       keyword,
       page,
       search_type: searchType,
-    })  
-  }
-
+    });
+  };
 
   useEffect(() => {
-    setPostList([])
-    setPage(0)
+    setPostList([]);
+    setPage(0);
     getData({
       category: postCate,
       view_type: postView,
       keyword,
       page,
       search_type: searchType,
-    })    
-  },[postCate , postView])
+    });
+  }, [postCate, postView]);
 
   // 페이지네이션
   useEffect(() => {
@@ -69,7 +67,6 @@ export default function ClubListScreen() {
       setPage(page + 1);
     }
   }, [inView]);
-
 
   return (
     <Container>

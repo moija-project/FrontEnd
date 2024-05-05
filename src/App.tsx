@@ -76,14 +76,13 @@ function App() {
                   path="/readRequestDetail"
                   element={<ReadRequestDetailScreen />}
                 />
+                {/* 채팅 */}
+                <Route path="/chatList" element={<ChatListScreen />} />
+                <Route
+                  path="/chatRoom/:chatRoomId"
+                  element={<ChatRoomScreen />}
+                />
               </Route>
-
-              {/* 채팅 */}
-              <Route path="/chatList" element={<ChatListScreen />} />
-              <Route
-                path="/chatRoom/:chatRoomId"
-                element={<ChatRoomScreen />}
-              />
 
               <Route path="/*" element={<NotFoundScreen />} />
             </Routes>
@@ -99,5 +98,5 @@ export default App;
 const Container = styled.div`
   background-color: #f0f0f0;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 `;

@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CommonContainer from "../../components/CommonContainer";
 import ChatListItem from "./components/ChatListItem";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { chatListState } from "../../store/chatStore";
+import { useFetchChatList } from "../../api/service-api/chat/useFetchChatList";
 
 export default function ChatListScreen() {
+  const chatList = useRecoilValue(chatListState);
+  const { data, isLoading } = useFetchChatList();
+
   return (
     <CommonContainer
       boxStyle={{ width: 500, padding: 0 }}
@@ -11,8 +17,14 @@ export default function ChatListScreen() {
     >
       <Title>채팅방 리스트</Title>
       <ListContainer>
-        <ChatListItem />
-        <ChatListItem />
+        {data &&
+          data.map((item, i) => (
+            <ChatListItem
+              chatName={item.chatName}
+              postId={item.postId}
+              key={`chat-list-item-${i}`}
+            />
+          ))}
       </ListContainer>
     </CommonContainer>
   );

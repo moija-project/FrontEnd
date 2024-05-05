@@ -12,7 +12,7 @@ const queryClient = new QueryClient();
 root.render(
   // <React.StrictMode>
   <QueryClientProvider client={queryClient}>
-    <ReactQueryDevtools initialIsOpen={true} />
+    {/* <ReactQueryDevtools initialIsOpen={true} /> */}
 
     <App />
   </QueryClientProvider>
