@@ -1,17 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ChatListItemResType } from "../../../interfaces/chat-type";
 
 const imgUrl =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4iPRF0B7snYyA5v9Rn76ptVODPWbnb0Tt0dK6n523A&s";
 const chatRoomId = 1; // 임시
 
 type ChatListItemProps = {
-  chatName: string;
-  postId: number;
+  chatInfo: ChatListItemResType;
 };
 
-export default function ChatListItem({ chatName, postId }: ChatListItemProps) {
+export default function ChatListItem({ chatInfo }: ChatListItemProps) {
   const navigate = useNavigate();
 
   const moveToChatRoom = () => {
@@ -22,12 +22,12 @@ export default function ChatListItem({ chatName, postId }: ChatListItemProps) {
       <Image src={imgUrl} />
       <RightWrapper>
         <TextWrapper>
-          <Title>{chatName}</Title>
-          <LastMessage>마지막 채팅 메시지</LastMessage>
+          <Title>{chatInfo.chatRoom.chatName}</Title>
+          <LastMessage>{chatInfo.lastChat}</LastMessage>
         </TextWrapper>
         <TimeWrapper>
           <TimeText>1시간 전</TimeText>
-          <NewCnt>4</NewCnt>
+          {chatInfo.nonRead !== 0 && <NewCnt>{chatInfo.nonRead}</NewCnt>}
         </TimeWrapper>
       </RightWrapper>
     </Container>
@@ -68,12 +68,20 @@ const TextWrapper = styled.div`
 `;
 
 const Title = styled.h2`
+  width: 90%;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
   font-size: 1rem;
   font-weight: 500;
+  white-space: nowrap;
+  height: 18px;
 `;
 const LastMessage = styled.span`
   font-size: 0.875rem;
   color: var(--gray01);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 18px;
 `;
 const TimeWrapper = styled.div`
   display: flex;
@@ -84,6 +92,8 @@ const TimeWrapper = styled.div`
 const TimeText = styled.span`
   font-size: 0.6rem;
   color: var(--purple);
+  width: 100%;
+  white-space: nowrap;
 `;
 const NewCnt = styled.span`
   line-height: 1rem;

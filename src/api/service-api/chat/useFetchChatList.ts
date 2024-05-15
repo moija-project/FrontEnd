@@ -1,11 +1,11 @@
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { axiosAuth } from "../../settingAxios";
 import { useSetRecoilState } from "recoil";
 import { chatListState } from "../../../store/chatStore";
-import { ChatListResType } from "../../../interfaces/chat-type";
+import { ChatListItemResType } from "../../../interfaces/chat-type";
 
 // 채팅방 목록 조회
-const postChatList = async (): Promise<ChatListResType[] | undefined> => {
+const postChatList = async (): Promise<ChatListItemResType[] | undefined> => {
   const url = `/message/box`;
   try {
     const res = await axiosAuth.post(url);

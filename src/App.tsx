@@ -33,7 +33,6 @@ function App() {
         <RecoilRoot>
           <React.Suspense fallback={<div>loading..</div>}>
             {window.location.pathname !== "/chatRoom" && <Header />}
-
             <DefaultScrollTop />
             <GlobalStyle />
             <Routes>
@@ -99,4 +98,6 @@ const Container = styled.div`
   background-color: #f0f0f0;
   width: 100vw;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 `;

@@ -13,13 +13,18 @@ axios.defaults.withCredentials = true;
 
 const axiosUnAuth = axios.create({
   // baseURL: process.env.REACT_APP_API_BASE_URL,
-  headers: { "Content-Type": "application/json" },
+  headers: {
+    "Content-Type": "application/json",
+    // "Access-Control-Allow-Origin": `http://localhost:3000`,
+    // "Access-Control-Allow-Credentials": true,
+  },
+
+  // baseURL: "http://mo.ija.kro.kr",
 });
 const axiosAuth = axios.create({
   // baseURL: process.env.REACT_APP_API_BASE_URL,
-  headers: {
-    // "Content-Type": "application/json",
-  },
+  // baseURL: "http://mo.ija.kro.kr",
+  headers: {},
 });
 
 // 응답 헤더에서 새로운 토큰을 추출하는 함수
@@ -45,7 +50,8 @@ axiosAuth.interceptors.request.use(
   },
   (error: AxiosError) => {
     console.log("setting axios request ::  ", error.response?.headers);
-    if (error.status === 401 || error.status === 500) {
+    if (error.status) {
+      // if (error.status === 401 || error.status === 500) {
       localStorage.setItem(
         "accessToken",
         extractNewTokenFromHeader(error.config?.headers) ?? ""
@@ -60,7 +66,7 @@ axiosAuth.interceptors.request.use(
 
 axiosAuth.interceptors.response.use(
   (response) => {
-    console.log("axios auth response : ", response.data)
+    console.log("axios auth response : ", response.data);
 
     if (!response.data.isSuccess) {
       // 응답이 실패일 경우 처리
@@ -75,8 +81,7 @@ axiosAuth.interceptors.response.use(
           if (!newToken) {
             localStorage.removeItem("accessToken");
             useUserProfile({});
-          }
-          else {
+          } else {
             // 새로운 토큰이 있는 경우 localStorage에 저장
             localStorage.setItem("accessToken", newToken);
 
@@ -100,7 +105,7 @@ axiosAuth.interceptors.response.use(
     }
     return response;
   },
-  async (error: AxiosError) => {    
+  async (error: AxiosError) => {
     const newToken = extractTokenFromHeader(error.response?.headers);
     if (newToken && error.config) {
       localStorage.setItem("accessToken", newToken);
@@ -117,7 +122,7 @@ axiosAuth.interceptors.response.use(
         return Promise.reject(requestError);
       }
     }
-    console.log("erorrrrrr : " , error.response?.status );    
+    console.log("erorrrrrr : ", error.response?.status);
     return Promise.reject(error);
   }
 );
@@ -130,6 +135,5 @@ function extractTokenFromHeader(headers: any): string | null {
   }
   return null;
 }
-
 
 export { axiosUnAuth, axiosAuth };

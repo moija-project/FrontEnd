@@ -7,9 +7,10 @@ import { chatListState } from "../../store/chatStore";
 import { useFetchChatList } from "../../api/service-api/chat/useFetchChatList";
 
 export default function ChatListScreen() {
-  const chatList = useRecoilValue(chatListState);
   const { data, isLoading } = useFetchChatList();
-
+  useEffect(() => {
+    console.log("채팅 목록 데이터", data);
+  }, [data]);
   return (
     <CommonContainer
       boxStyle={{ width: 500, padding: 0 }}
@@ -18,13 +19,12 @@ export default function ChatListScreen() {
       <Title>채팅방 리스트</Title>
       <ListContainer>
         {data &&
-          data.map((item, i) => (
-            <ChatListItem
-              chatName={item.chatName}
-              postId={item.postId}
-              key={`chat-list-item-${i}`}
-            />
-          ))}
+          data.map(
+            (item, i) =>
+              item.chatRoom.chatRoomId && (
+                <ChatListItem chatInfo={item} key={`chat-list-item-${i}`} />
+              )
+          )}
       </ListContainer>
     </CommonContainer>
   );

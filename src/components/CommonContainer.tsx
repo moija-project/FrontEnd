@@ -32,6 +32,7 @@ const BoxContainer = styled.div`
   background-color: white;
   padding: 2.19rem 3.125rem;
   display: flex;
+  flex: auto;
   flex-wrap: wrap;
   max-width: 800px;
   margin: auto;

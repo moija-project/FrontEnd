@@ -1,7 +1,7 @@
 import { atom } from "recoil";
-import { ChatListResType } from "../interfaces/chat-type";
+import { ChatListItemResType } from "../interfaces/chat-type";
 
-export const chatListState = atom<ChatListResType[]>({
+export const chatListState = atom<ChatListItemResType[]>({
   key: "chatListState",
   default: [],
 });
