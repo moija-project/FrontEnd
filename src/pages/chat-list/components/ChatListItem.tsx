@@ -15,7 +15,7 @@ export default function ChatListItem({ chatInfo }: ChatListItemProps) {
   const navigate = useNavigate();
 
   const moveToChatRoom = () => {
-    navigate(`/chatRoom/${chatRoomId}`);
+    navigate(`/chatRoom/${chatInfo.chatRoom.chatRoomId}`);
   };
   return (
     <Container onClick={moveToChatRoom}>
