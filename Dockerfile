@@ -9,6 +9,6 @@ COPY src .
 
 EXPOSE 3000
 
-COPY ./build ./build
+COPY build ../build
 
 CMD ["npm", "start"]
