@@ -64,9 +64,9 @@
     ]
   },
   "devDependencies": {
+    "@types/http-proxy-middleware": "^1.0.0",
     "@types/react": "18.2.48",
     "@types/react-slick": "0.23.13",
     "@types/sockjs-client": "^1.5.4"
-  },
-  "proxy": "http://mo.ija.kro.kr"
+  }
 }
