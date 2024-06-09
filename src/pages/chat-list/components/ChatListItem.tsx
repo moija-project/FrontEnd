@@ -40,6 +40,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   padding: 0.6rem;
   gap: 0.6rem;
   border-radius: 6px;
@@ -56,15 +57,17 @@ const Image = styled.img`
 `;
 
 const RightWrapper = styled.div`
+  width: 100%;
+  gap: 0;
   flex: 1;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
 `;
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  max-width: 80%;
 `;
 
 const Title = styled.h2`
@@ -81,7 +84,9 @@ const LastMessage = styled.span`
   color: var(--gray01);
   white-space: nowrap;
   text-overflow: ellipsis;
+  overflow: auto;
   height: 18px;
+  width: 100%;
 `;
 const TimeWrapper = styled.div`
   display: flex;
