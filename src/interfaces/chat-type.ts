@@ -10,3 +10,15 @@ export type ChatListItemChatRoomType = {
   chatRoomId: string;
   recruitId: number;
 };
+
+// 채팅방 메시지 조회
+export type ChatMessageListType = {
+  chatRoomId: string;
+  message: string;
+  userId: string;
+  regDate: number[];
+};
+
+export type ChatMessageListResType = {
+  msg: ChatMessageListType[];
+};

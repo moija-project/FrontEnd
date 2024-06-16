@@ -13,11 +13,30 @@ module.exports = function (app) {
   );
 
   app.use(
-    "/stomp/ws", // 두 번째 프록시 경로
+    "/stomp/chat", // 두 번째 프록시 경로
+    // "/stomp/ws", // 두 번째 프록시 경로
     createProxyMiddleware({
-      target: "http://localhost:15672",
+      target: "http://mo.ija.kro.kr",
+      // target: "http://localhost:8093",
       changeOrigin: true,
       ws: true, // WebSocket 지원
+    })
+  );
+
+  app.use(
+    "/pub/chat",
+    createProxyMiddleware({
+      target: "http://mo.ija.kro.kr",
+      changeOrigin: true,
+      ws: true,
+    })
+  );
+  app.use(
+    "/exchange/chat",
+    createProxyMiddleware({
+      target: "http://mo.ija.kro.kr",
+      changeOrigin: true,
+      ws: true,
     })
   );
 };

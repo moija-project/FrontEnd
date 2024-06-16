@@ -1,72 +1,83 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CommonContainer from "../../components/CommonContainer";
 import styled from "styled-components";
 import ChatRoomHeader from "./components/ChatRoomHeader";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import TextMsgBox from "./components/TextMsgBox";
 import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
-import { Client, Message, Stomp } from "@stomp/stompjs";
+import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
+import MsgInputWrapper from "./components/MsgInputWrapper";
+import { useFetchPrevChatMessages } from "../../api/service-api/chat/useFetchPrevChatMessages";
+import { useRecoilValue } from "recoil";
+import { myProfileInfoState } from "../../store/userStore";
+
+type ChatListItem = {
+  sendUserId: string;
+  message: string;
+  date: number[];
+  nickname: string;
+};
 
 export default function ChatRoomScreen() {
-  // const client = useRef<CompatClient>();
   const { chatRoomId } = useParams();
-  const [txtMessage, setTxtMessage] = useState("");
-  const [socket, setSocket] = useState<any>(null);
-  const [stompClient, setStompClient] = useState<any>(null);
-  const [chatList, setChatList] = useState<any[]>([]); // 채팅 기록
-  const [chat, setChat] = useState(""); // 입력된 chat을 받을 변수
+  const [stompClient, setStompClient] = useState<CompatClient>();
+  const [chatList, setChatList] = useState<ChatListItem[]>([]); // 채팅 기록
+  const [txtMessage, setTxtMessage] = useState(""); // 입력하는 채팅 문자
+
+  const userInfo = useRecoilValue(myProfileInfoState);
+
+  const chattingsRef = useRef<any>(null);
+
+  const { refetch, data } = useFetchPrevChatMessages(chatRoomId ?? "");
+
+  const handleSendMsg = () => {
+    if (!stompClient) return;
+    stompClient?.publish({
+      destination: `/pub/chat.message.${chatRoomId}`,
+      body: JSON.stringify({
+        memberId: userInfo.user_id,
+        message: txtMessage,
+        nickname: userInfo.nickname,
+      }),
+    });
+  };
 
   useEffect(() => {
-    // const client = new Client({
-    //   brokerURL: "ws://mo.ija.kro.kr/stomp/ws",
-    //   onConnect: () => {
-    //     client.subscribe(
-    //       `/pub/chat.enter.${chatRoomId}`,
-    //       (message: Message) => {
-    //         console.log("메시지: ", message);
-    //         setChatList((prev) => [...prev, message.body]);
-    //       }
-    //     );
-    //   },
-    //   onDisconnect: () => {
-    //     console.log("Disconnected");
-    //   },
-    // });
-
-    // client.activate();
-    // setStompClient(client);
-
-    // return () => {
-    //   if (client) {
-    //     client.deactivate();
-    //   }
-    // };
-
-    // const sock = new SockJS(`http://localhost:8093/stomp/ws`);
-    const sock = new SockJS(`http://localhost:15672/stomp/ws`);
-    // const sock = new SockJS(`http://mo.ija.kro.kr/stomp/ws`);
+    const sock = new SockJS(`/stomp/chat`);
     const stompClient = Stomp.over(sock);
     stompClient.connect({}, () => {
-      console.log("hello");
-      stompClient.subscribe(`/pub/chat.enter.${chatRoomId}`, (message: any) => {
-        // setMessages((prevMessages) => [...prevMessages, message.body]);
-        console.log("!!!!!!!!!! 메시지 :: ", message);
-      });
+      stompClient.subscribe(
+        `/exchange/chat.exchange/room.${chatRoomId}`,
+        (message: IMessage) => {
+          let newMsgItem: ChatListItem = {
+            sendUserId: JSON.parse(message.body).memberId,
+            message: JSON.parse(message.body).message,
+            date: JSON.parse(message.body).regDate,
+            nickname: JSON.parse(message.body).nickname,
+          };
+          setChatList((prevMessages) => [...prevMessages, newMsgItem]);
+        }
+      );
     });
+
     setStompClient(stompClient);
+
+    refetch();
+
     return () => {
+      console.log("######close!!!");
       if (stompClient) {
-        stompClient.disconnect(() => console.log(">>ERROR<<"));
+        stompClient.disconnect();
       }
     };
   }, [chatRoomId]);
 
-  // useEffect(() => {
-  //   connect();
-  //   return () => disConnect();
-  // }, []);
+  useEffect(() => {
+    // 디폴트는 항상 가장 최신 즉, 가장 아래 로 포커스
+    if (chattingsRef.current) {
+      chattingsRef.current.scrollTop = chattingsRef.current.scrollHeight;
+    }
+  }, [chatList]);
 
   return (
     <CommonContainer
@@ -75,24 +86,31 @@ export default function ChatRoomScreen() {
     >
       <Container>
         <ChatRoomHeader />
-        <ChattingsContainer>
+        <ChattingsContainer ref={chattingsRef}>
           <ChattingsWrapper>
-            <TextMsgBox
-              text="dkssudgdkssudgdkssudgdkssudgdkssudgdkssudgdkssudgdkssudgdkssudgdkssudgdkssudgdkssudg"
-              time="12:40"
-              profile={{
-                name: "홍길동",
-                profileImg:
-                  "https://i.pinimg.com/736x/68/15/1e/68151e7ec66a2f5eddaacfd895e3bcd2.jpg",
-              }}
-            />
-            <TextMsgBox
-              text="dkssudgktpdydkssudgktpdydkssudgktpdydkssudgktpdydkssudgktpdydkssudgktpdydkssudgktpdydkssudgktpdydkssudgktpdy"
-              time="13:00"
-            />
+            {chatList.map((item, idx) => (
+              <TextMsgBox
+                key={`chat-msg_${idx}`}
+                text={item.message}
+                time={item.date[3] + ":" + item.date[4]}
+                profile={
+                  item.sendUserId === userInfo.user_id
+                    ? undefined
+                    : {
+                        name: item.nickname,
+                        profileImg:
+                          "https://i.pinimg.com/736x/68/15/1e/68151e7ec66a2f5eddaacfd895e3bcd2.jpg",
+                      }
+                }
+              />
+            ))}
           </ChattingsWrapper>
         </ChattingsContainer>
-        {/* <MsgInputWrapper setMsg={setTxtMessage} msg={txtMessage} /> */}
+        <MsgInputWrapper
+          onSend={handleSendMsg}
+          setMsg={setTxtMessage}
+          msg={txtMessage}
+        />
       </Container>
     </CommonContainer>
   );
