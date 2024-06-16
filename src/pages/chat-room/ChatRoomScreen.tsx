@@ -11,24 +11,29 @@ import { useFetchPrevChatMessages } from "../../api/service-api/chat/useFetchPre
 import { useRecoilValue } from "recoil";
 import { myProfileInfoState } from "../../store/userStore";
 
-type ChatListItem = {
+type ChatListItemType = {
   sendUserId: string;
   message: string;
-  date: number[];
+  date: string;
+  time: string;
   nickname: string;
 };
 
 export default function ChatRoomScreen() {
   const { chatRoomId } = useParams();
   const [stompClient, setStompClient] = useState<CompatClient>();
-  const [chatList, setChatList] = useState<ChatListItem[]>([]); // 채팅 기록
+  const [chatList, setChatList] = useState<ChatListItemType[]>([]); // 채팅 기록
   const [txtMessage, setTxtMessage] = useState(""); // 입력하는 채팅 문자
 
   const userInfo = useRecoilValue(myProfileInfoState);
 
   const chattingsRef = useRef<any>(null);
 
-  const { refetch, data } = useFetchPrevChatMessages(chatRoomId ?? "");
+  const { refetch, data } = useFetchPrevChatMessages({
+    chatRoomId: chatRoomId ?? "",
+    page_size: 20,
+    page_number: 0,
+  });
 
   const handleSendMsg = () => {
     if (!stompClient) return;
@@ -49,10 +54,22 @@ export default function ChatRoomScreen() {
       stompClient.subscribe(
         `/exchange/chat.exchange/room.${chatRoomId}`,
         (message: IMessage) => {
-          let newMsgItem: ChatListItem = {
+          let date =
+            JSON.parse(message.body).regDate[0] +
+            "-" +
+            String(JSON.parse(message.body).regDate[1]).padStart(2, "0") +
+            "-" +
+            String(JSON.parse(message.body).regDate[2]).padStart(2, "0");
+          let time =
+            String(JSON.parse(message.body).regDate[3]).padStart(2, "0") +
+            ":" +
+            String(JSON.parse(message.body).regDate[4]).padStart(2, "0");
+
+          let newMsgItem: ChatListItemType = {
             sendUserId: JSON.parse(message.body).memberId,
             message: JSON.parse(message.body).message,
-            date: JSON.parse(message.body).regDate,
+            date,
+            time,
             nickname: JSON.parse(message.body).nickname,
           };
           setChatList((prevMessages) => [...prevMessages, newMsgItem]);
@@ -79,6 +96,20 @@ export default function ChatRoomScreen() {
     }
   }, [chatList]);
 
+  useEffect(() => {
+    let prevChatList: ChatListItemType[] | [] = data
+      ? data?.map((chat, i) => ({
+          sendUserId: chat.memberId,
+          message: chat.message,
+          date: chat.regDate.slice(0, 10),
+          time: chat.regDate.slice(11, 16),
+          nickname: chat.nickname,
+        }))
+      : [];
+    let newChatList = [...prevChatList, ...chatList];
+    setChatList(newChatList);
+  }, [data]);
+
   return (
     <CommonContainer
       boxStyle={{ width: 500, padding: 0, flex: 1 }}
@@ -92,7 +123,7 @@ export default function ChatRoomScreen() {
               <TextMsgBox
                 key={`chat-msg_${idx}`}
                 text={item.message}
-                time={item.date[3] + ":" + item.date[4]}
+                time={item.time}
                 profile={
                   item.sendUserId === userInfo.user_id
                     ? undefined

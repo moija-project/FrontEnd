@@ -12,13 +12,15 @@ export type ChatListItemChatRoomType = {
 };
 
 // 채팅방 메시지 조회
-export type ChatMessageListType = {
+export type ChatMessageListReqType = {
   chatRoomId: string;
-  message: string;
-  userId: string;
-  regDate: number[];
+  page_size: number;
+  page_number: number;
 };
-
-export type ChatMessageListResType = {
-  msg: ChatMessageListType[];
+export type ChatMessageListType = {
+  message: string;
+  memberId: string;
+  nickname: string;
+  regDate: string;
+  type: string;
 };
