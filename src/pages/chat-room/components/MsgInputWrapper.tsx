@@ -6,15 +6,29 @@ import styled from "styled-components";
 type MsgInputWrapperProps = {
   setMsg: (msg: string) => void;
   msg: string;
+  onSend: () => void;
 };
 
-export default function MsgInputWrapper({ setMsg, msg }: MsgInputWrapperProps) {
+export default function MsgInputWrapper({
+  setMsg,
+  msg,
+  onSend,
+}: MsgInputWrapperProps) {
   const handleSendMsg = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     // 보내지는 로직
+    onSend();
     setMsg("");
+  };
+
+  const handlePressEnter = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      onSend();
+      setMsg("");
+    }
   };
   return (
     <InputWrapper>
@@ -23,7 +37,7 @@ export default function MsgInputWrapper({ setMsg, msg }: MsgInputWrapperProps) {
         onChange={(e) => setMsg(e.target.value)}
         value={msg}
       />
-      <SendBtn onClick={(e) => handleSendMsg(e)}>
+      <SendBtn onClick={handleSendMsg} onKeyDown={(e) => handlePressEnter(e)}>
         <FontAwesomeIcon icon={faPaperPlane} size="lg" color="#ffffff" />
       </SendBtn>
     </InputWrapper>

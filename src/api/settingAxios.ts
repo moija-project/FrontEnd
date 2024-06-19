@@ -12,7 +12,7 @@ import useUserProfile from "../hook/useUserProfile";
 axios.defaults.withCredentials = true;
 
 const axiosUnAuth = axios.create({
-  // baseURL: process.env.REACT_APP_API_BASE_URL,
+  baseURL: "/api",
   headers: {
     "Content-Type": "application/json",
     // "Access-Control-Allow-Origin": `http://localhost:3000`,
@@ -22,7 +22,7 @@ const axiosUnAuth = axios.create({
   // baseURL: "http://mo.ija.kro.kr",
 });
 const axiosAuth = axios.create({
-  // baseURL: process.env.REACT_APP_API_BASE_URL,
+  baseURL: "/api",
   // baseURL: "http://mo.ija.kro.kr",
   headers: {},
 });
