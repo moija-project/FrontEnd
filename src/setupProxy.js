@@ -19,7 +19,7 @@ module.exports = function (app) {
       target: "http://mo.ija.kro.kr",
       // target: "http://localhost:8093",
       changeOrigin: true,
-      ws: true, // WebSocket 지원
+      ws: false, // WebSocket 지원
     })
   );
 
@@ -28,7 +28,7 @@ module.exports = function (app) {
     createProxyMiddleware({
       target: "http://mo.ija.kro.kr",
       changeOrigin: true,
-      ws: true,
+      ws: false,
     })
   );
   app.use(
@@ -36,7 +36,7 @@ module.exports = function (app) {
     createProxyMiddleware({
       target: "http://mo.ija.kro.kr",
       changeOrigin: true,
-      ws: true,
+      ws: false,
     })
   );
 };
