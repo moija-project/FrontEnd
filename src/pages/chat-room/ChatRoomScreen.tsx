@@ -10,6 +10,7 @@ import MsgInputWrapper from "./components/MsgInputWrapper";
 import { useFetchPrevChatMessages } from "../../api/service-api/chat/useFetchPrevChatMessages";
 import { useRecoilValue } from "recoil";
 import { myProfileInfoState } from "../../store/userStore";
+import MyTextMsgBox from "./components/MyTextMsgBox";
 
 type ChatListItemType = {
   sendUserId: string;
@@ -36,7 +37,7 @@ export default function ChatRoomScreen() {
   });
 
   const handleSendMsg = () => {
-    if (!stompClient) return;
+    if (!stompClient || txtMessage.trim().length === 0) return;
     stompClient?.publish({
       destination: `/pub/chat.message.${chatRoomId}`,
       body: JSON.stringify({
@@ -82,7 +83,6 @@ export default function ChatRoomScreen() {
     refetch();
 
     return () => {
-      console.log("######close!!!");
       if (stompClient) {
         stompClient.disconnect();
       }
@@ -97,6 +97,7 @@ export default function ChatRoomScreen() {
   }, [chatList]);
 
   useEffect(() => {
+    // 페이지네이션으로 추가되는 chat list
     let prevChatList: ChatListItemType[] | [] = data
       ? data?.map((chat, i) => ({
           sendUserId: chat.memberId,
@@ -106,7 +107,7 @@ export default function ChatRoomScreen() {
           nickname: chat.nickname,
         }))
       : [];
-    let newChatList = [...prevChatList, ...chatList];
+    let newChatList = [...prevChatList.reverse(), ...chatList];
     setChatList(newChatList);
   }, [data]);
 
@@ -119,22 +120,25 @@ export default function ChatRoomScreen() {
         <ChatRoomHeader />
         <ChattingsContainer ref={chattingsRef}>
           <ChattingsWrapper>
-            {chatList.map((item, idx) => (
-              <TextMsgBox
-                key={`chat-msg_${idx}`}
-                text={item.message}
-                time={item.time}
-                profile={
-                  item.sendUserId === userInfo.user_id
-                    ? undefined
-                    : {
-                        name: item.nickname,
-                        profileImg:
-                          "https://i.pinimg.com/736x/68/15/1e/68151e7ec66a2f5eddaacfd895e3bcd2.jpg",
-                      }
-                }
-              />
-            ))}
+            {chatList.map((item, idx) =>
+              item.sendUserId === userInfo.user_id ? (
+                <MyTextMsgBox
+                  key={`chat-msg_${idx}`}
+                  text={item.message}
+                  time={item.time}
+                />
+              ) : (
+                <TextMsgBox
+                  key={`chat-msg_${idx}`}
+                  text={item.message}
+                  time={item.time}
+                  name={item.nickname}
+                  profileImg={
+                    "https://i.pinimg.com/736x/68/15/1e/68151e7ec66a2f5eddaacfd895e3bcd2.jpg"
+                  }
+                />
+              )
+            )}
           </ChattingsWrapper>
         </ChattingsContainer>
         <MsgInputWrapper
