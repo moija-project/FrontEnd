@@ -37,7 +37,7 @@ export default function TextMsgBox({
       <ChatContainer>
         <ProfileImg src={profileImg} />
         <ChatWrapper>
-          <ProfileName>name</ProfileName>
+          <ProfileName>{name}</ProfileName>
           <UserChatWrapper>
             <ChatBubble ref={textRef}>{text}</ChatBubble>
             <TimeText>{time}</TimeText>
@@ -64,7 +64,7 @@ const ChatWrapper = styled.div`
   gap: 0.7rem;
 `;
 const ProfileName = styled.span`
-  margin-left: 0.9rem;
+  margin-left: 0.4rem;
 `;
 const Container = styled.div`
   display: flex;
