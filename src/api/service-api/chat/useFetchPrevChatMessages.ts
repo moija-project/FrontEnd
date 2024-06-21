@@ -21,7 +21,7 @@ const fetchChatMessages = async (
 export const useFetchPrevChatMessages = (req: ChatMessageListReqType) => {
   // const setChatList = useSetRecoilState(chatListState);
   return useQuery({
-    queryKey: ["chat-msg-list"],
+    queryKey: ["chat-msg-list", `messages-${req.chatRoomId}`],
     queryFn: () => fetchChatMessages(req),
     enabled: false,
   });

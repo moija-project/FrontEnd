@@ -81,6 +81,7 @@ export default function ChatRoomScreen() {
       if (stompClient) {
         stompClient.disconnect();
       }
+      setChatList([]);
     };
   }, [chatRoomId]);
 
