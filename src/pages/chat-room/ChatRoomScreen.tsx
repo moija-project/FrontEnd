@@ -11,6 +11,7 @@ import { useFetchPrevChatMessages } from "../../api/service-api/chat/useFetchPre
 import { useRecoilValue } from "recoil";
 import { myProfileInfoState } from "../../store/userStore";
 import MyTextMsgBox from "./components/MyTextMsgBox";
+import { useInView } from "react-intersection-observer";
 
 type ChatListItemType = {
   sendUserId: string;
@@ -29,6 +30,8 @@ export default function ChatRoomScreen() {
   const userInfo = useRecoilValue(myProfileInfoState);
 
   const chattingsRef = useRef<any>(null);
+
+  const { ref, inView, entry } = useInView({ threshold: 0 });
 
   const { refetch, data } = useFetchPrevChatMessages({
     chatRoomId: chatRoomId ?? "",
@@ -55,16 +58,8 @@ export default function ChatRoomScreen() {
       stompClient.subscribe(
         `/exchange/chat.exchange/room.${chatRoomId}`,
         (message: IMessage) => {
-          let date =
-            JSON.parse(message.body).regDate[0] +
-            "-" +
-            String(JSON.parse(message.body).regDate[1]).padStart(2, "0") +
-            "-" +
-            String(JSON.parse(message.body).regDate[2]).padStart(2, "0");
-          let time =
-            String(JSON.parse(message.body).regDate[3]).padStart(2, "0") +
-            ":" +
-            String(JSON.parse(message.body).regDate[4]).padStart(2, "0");
+          let date = JSON.parse(message.body).regDate.slice(0, 10);
+          let time = JSON.parse(message.body).regDate.slice(11, 16);
 
           let newMsgItem: ChatListItemType = {
             sendUserId: JSON.parse(message.body).memberId,
@@ -119,7 +114,7 @@ export default function ChatRoomScreen() {
       <Container>
         <ChatRoomHeader />
         <ChattingsContainer ref={chattingsRef}>
-          <ChattingsWrapper>
+          <ChattingsWrapper ref={ref}>
             {chatList.map((item, idx) =>
               item.sendUserId === userInfo.user_id ? (
                 <MyTextMsgBox
