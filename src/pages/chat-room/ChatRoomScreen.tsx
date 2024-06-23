@@ -28,7 +28,6 @@ export default function ChatRoomScreen() {
   const [txtMessage, setTxtMessage] = useState(""); // 입력하는 채팅 문자
   const [hasMore, setHasMore] = useState(true);
   const [pageNum, setPageNum] = useState(0);
-  const [isInit, setIsInit] = useState(true); // 맨 처음에 chatlist 채워질때
 
   const userInfo = useRecoilValue(myProfileInfoState);
 
@@ -38,11 +37,18 @@ export default function ChatRoomScreen() {
     threshold: 1.0,
   });
 
-  const { refetch, data } = useFetchPrevChatMessages({
+  const { data, refetch } = useFetchPrevChatMessages({
     chatRoomId: chatRoomId ?? "",
-    page_size: 10,
+    page_size: 40,
     page_number: pageNum,
   });
+  // const { data, fetchNextPage, hasNextPage , isFetchingNextPage } = useFetchPrevChatMessages({
+  //   chatRoomId: chatRoomId ?? "",
+  //   page_size: 10,
+  //   page_number: 0,
+  // });
+
+  // const chatList = data?.pages.flat() || []
 
   // 메시지 보내기 클릭 혹은 엔터 쳤을 경우
   const handleSendMsg = () => {
@@ -100,10 +106,8 @@ export default function ChatRoomScreen() {
   }, [chatRoomId]);
 
   useEffect(() => {
-    if (!isInit || !chatList) return;
-    // 맨 처음에만 포커스 아래로
-    handleFocusBottom();
-  }, [isInit, chatList]);
+    if (chatList) handleFocusBottom();
+  }, [chatList]);
 
   useEffect(() => {
     // 페이지네이션으로 추가되는 chat list
@@ -118,15 +122,14 @@ export default function ChatRoomScreen() {
       : [];
     let newChatList = [...prevChatList.reverse(), ...chatList];
     setChatList(newChatList);
-    setIsInit(false);
   }, [data]);
 
   useEffect(() => console.log(">> ", chatList), [chatList]);
 
   useEffect(() => {
     console.log("--- ", inView);
-    if (inView && hasMore) {
-      // if (inView && data?.length !== 0) {
+    // if (inView && hasMore) {
+    if (inView && data?.length !== 0) {
       setPageNum((prevPageNum) => prevPageNum + 1);
     }
   }, [inView]);

@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 import {
   ChatMessageListReqType,
   ChatMessageListType,
@@ -19,10 +19,16 @@ const fetchChatMessages = async (
 };
 
 export const useFetchPrevChatMessages = (req: ChatMessageListReqType) => {
-  // const setChatList = useSetRecoilState(chatListState);
   return useQuery({
     queryKey: ["chat-msg-list", `messages-${req.chatRoomId}`],
     queryFn: () => fetchChatMessages(req),
-    enabled: false,
+    // queryFn: ({ pageParam = 1 }) =>
+    //   fetchChatMessages({ ...req, page_number: pageParam }),
+    // getNextPageParam: (lastPage, pages) => {
+    //   if (lastPage?.length === req.page_size) {
+    //     return pages.length;
+    //   }
+    //   return undefined;
+    // },
   });
 };
