@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CommonContainer from "../../components/CommonContainer";
 import styled from "styled-components";
 import ChatRoomHeader from "./components/ChatRoomHeader";
@@ -7,11 +7,14 @@ import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
 import MsgInputWrapper from "./components/MsgInputWrapper";
-import { useFetchPrevChatMessages } from "../../api/service-api/chat/useFetchPrevChatMessages";
+import {
+  fetchChatMessages,
+  useFetchPrevChatMessages,
+} from "../../api/service-api/chat/useFetchPrevChatMessages";
 import { useRecoilValue } from "recoil";
 import { myProfileInfoState } from "../../store/userStore";
 import MyTextMsgBox from "./components/MyTextMsgBox";
-import { useInView } from "react-intersection-observer";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 type ChatListItemType = {
   sendUserId: string;
@@ -26,16 +29,11 @@ export default function ChatRoomScreen() {
   const [stompClient, setStompClient] = useState<CompatClient>();
   const [chatList, setChatList] = useState<ChatListItemType[]>([]); // 채팅 기록
   const [txtMessage, setTxtMessage] = useState(""); // 입력하는 채팅 문자
-  const [hasMore, setHasMore] = useState(true);
   const [pageNum, setPageNum] = useState(0);
 
   const userInfo = useRecoilValue(myProfileInfoState);
 
   const chattingsRef = useRef<any>(null);
-
-  const { ref, inView, entry } = useInView({
-    threshold: 1.0,
-  });
 
   const { data, refetch } = useFetchPrevChatMessages({
     chatRoomId: chatRoomId ?? "",
@@ -53,7 +51,9 @@ export default function ChatRoomScreen() {
   // 메시지 보내기 클릭 혹은 엔터 쳤을 경우
   const handleSendMsg = () => {
     if (!stompClient || txtMessage.trim().length === 0) return;
-    stompClient?.publish({
+    // stompClient.connect({}, () => {
+    // });
+    stompClient.publish({
       destination: `/pub/chat.message.${chatRoomId}`,
       body: JSON.stringify({
         memberId: userInfo.user_id,
@@ -74,6 +74,7 @@ export default function ChatRoomScreen() {
   useEffect(() => {
     const sock = new SockJS(`/stomp/chat`);
     const stompClient = Stomp.over(sock);
+
     stompClient.connect({}, () => {
       stompClient.subscribe(
         `/exchange/chat.exchange/room.${chatRoomId}`,
@@ -93,9 +94,16 @@ export default function ChatRoomScreen() {
           handleFocusBottom(); // 메시지 보내면 포커스 아래로
         }
       );
+      // stompClient.publish({
+      //   destination: `/pub/chat.read.${chatRoomId}`,
+      //   body: JSON.stringify({
+      //     read: 1,
+      //   }),
+      // });
     });
 
     setStompClient(stompClient);
+    console.log("## ", stompClient);
 
     return () => {
       if (stompClient) {
@@ -108,6 +116,23 @@ export default function ChatRoomScreen() {
   useEffect(() => {
     if (chatList) handleFocusBottom();
   }, [chatList]);
+
+  const fetchMessages = async (page_number: number) => {
+    const res = await fetchChatMessages({
+      chatRoomId: chatRoomId ?? "",
+      page_size: 10,
+      page_number,
+    });
+    let newMessages = res?.map((chat, _) => ({
+      sendUserId: chat.memberId,
+      message: chat.message,
+      date: chat.regDate.slice(0, 10),
+      time: chat.regDate.slice(11, 16),
+      nickname: chat.nickname,
+    }));
+    // newMessages&&
+    //   setChatList((prev) => [...newMessages.reverse(), ...prev]);
+  };
 
   useEffect(() => {
     // 페이지네이션으로 추가되는 chat list
@@ -127,14 +152,6 @@ export default function ChatRoomScreen() {
   useEffect(() => console.log(">> ", chatList), [chatList]);
 
   useEffect(() => {
-    console.log("--- ", inView);
-    // if (inView && hasMore) {
-    if (inView && data?.length !== 0) {
-      setPageNum((prevPageNum) => prevPageNum + 1);
-    }
-  }, [inView]);
-
-  useEffect(() => {
     if (pageNum > 0) refetch();
 
     console.log("==== , ", pageNum);
@@ -150,28 +167,35 @@ export default function ChatRoomScreen() {
         <ChattingsContainer ref={chattingsRef}>
           <ChattingsWrapper>
             {/* for 무한스크롤 */}
-            {hasMore && <HasMoreWrapper ref={ref} />}
+            {/* {hasMore && <HasMoreWrapper ref={ref} />} */}
             {/*  */}
 
-            {chatList.map((item, idx) =>
-              item.sendUserId === userInfo.user_id ? (
-                <MyTextMsgBox
-                  key={`chat-msg_${idx}`}
-                  text={item.message}
-                  time={item.time}
-                />
-              ) : (
-                <TextMsgBox
-                  key={`chat-msg_${idx}`}
-                  text={item.message}
-                  time={item.time}
-                  name={item.nickname}
-                  profileImg={
-                    "https://i.pinimg.com/736x/68/15/1e/68151e7ec66a2f5eddaacfd895e3bcd2.jpg"
-                  }
-                />
-              )
-            )}
+            <InfiniteScroll
+              dataLength={chatList.length}
+              next={() => setPageNum(pageNum + 1)}
+              loader={<>loading...</>}
+              hasMore={data?.length !== 0}
+            >
+              {chatList.map((item, idx) =>
+                item.sendUserId === userInfo.user_id ? (
+                  <MyTextMsgBox
+                    key={`chat-msg_${idx}`}
+                    text={item.message}
+                    time={item.time}
+                  />
+                ) : (
+                  <TextMsgBox
+                    key={`chat-msg_${idx}`}
+                    text={item.message}
+                    time={item.time}
+                    name={item.nickname}
+                    profileImg={
+                      "https://i.pinimg.com/736x/68/15/1e/68151e7ec66a2f5eddaacfd895e3bcd2.jpg"
+                    }
+                  />
+                )
+              )}
+            </InfiniteScroll>
           </ChattingsWrapper>
         </ChattingsContainer>
         <MsgInputWrapper

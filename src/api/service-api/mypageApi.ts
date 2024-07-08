@@ -6,12 +6,12 @@ import { postListResType } from "../../interfaces/post-type";
 import { axiosAuth } from "../settingAxios";
 
 // 내가 쓴 글
-export const postListIWrote = async (data: {}): Promise<
-  postListResType[] | undefined
-> => {
+export const postListIWrote = async (
+  pageNo: number
+): Promise<postListResType[] | undefined> => {
   const url = `/my/team/list`;
   try {
-    const res = await axiosAuth.post(url, { user_id: "testman1" }); // fix
+    const res = await axiosAuth.post(url, null, { params: { pageNo } }); // fix
     return res.data.result;
   } catch (error) {
     console.error(error);
@@ -24,7 +24,7 @@ export const postScrapList = async (): Promise<
 > => {
   const url = `/my/clip`;
   try {
-    const res = await axiosAuth.post(url, { user_id: "testman1" }); // fix
+    const res = await axiosAuth.post(url, {}); // fix
     return res.data.result;
   } catch (error) {
     console.error(error);
@@ -37,7 +37,7 @@ export const postReceivedChatRequest = async (data: {}): Promise<
 > => {
   const url = `/my/waiting/list`;
   try {
-    const res = await axiosAuth.post(url, { user_id: "testman1" }); // fix
+    const res = await axiosAuth.post(url, {}); // fix
     return res.data.result;
   } catch (error) {
     console.error(error);
@@ -51,7 +51,7 @@ export const postReceivedChatRequestDetail = async (
   const url = `/my/waiting/${waiting_id}`;
   try {
     const res = await axiosAuth.post(url);
-    console.log("받은 요청 상세 확인 : " , res) 
+    console.log("받은 요청 상세 확인 : ", res);
     return res.data.result;
   } catch (error) {
     console.error(error);
@@ -70,10 +70,10 @@ export const postReceivedChatRequestAccept = async (waiting_id: number) => {
 };
 
 // 내가 참여한 모임 보기
-export const postMyJoinedClub = async ({}) => {
+export const postMyJoinedClub = async (pageNo: number) => {
   const url = `/my/joined-team`;
   try {
-    const res = await axiosAuth.post(url);
+    const res = await axiosAuth.post(url, null, { params: { pageNo } });
     return res.data.result;
   } catch (error) {
     console.error(error);

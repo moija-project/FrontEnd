@@ -6,7 +6,7 @@ import {
 import { axiosAuth } from "../../settingAxios";
 
 // 채팅방 이전 대화 목록 조회
-const fetchChatMessages = async (
+export const fetchChatMessages = async (
   req: ChatMessageListReqType
 ): Promise<ChatMessageListType[] | undefined> => {
   const url = `/message/list`;
