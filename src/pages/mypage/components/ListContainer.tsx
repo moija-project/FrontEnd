@@ -47,16 +47,17 @@ export default function ListContainer({ listType }: ListContainerProps) {
   };
 
   useEffect(() => {
-    const getData = async () => {  
+    const getData = async () => {
       if (listType === "host") {
-        let res = await postListIWrote({});
+        let res = await postListIWrote(0);
         res && setHostList(res);
       } else if (listType === "scrap") {
         let res = await postScrapList();
         res && setScrapList(res);
-      } else if (listType === 'join') { // join
-        let res = await postMyJoinedClub({})
-        res && setJoinList(res)
+      } else if (listType === "join") {
+        // join
+        let res = await postMyJoinedClub(0);
+        res && setJoinList(res);
       }
     };
     getData();

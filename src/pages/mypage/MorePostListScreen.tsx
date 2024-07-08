@@ -6,26 +6,43 @@ import PreviewPost from "../../components/PreviewPost";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilValue } from "recoil";
-import {
-  fetchMyHostListState,
-  fetchMyJoinListState,
-  fetchMyScrapListState,
-} from "../../store/mypageStore";
+import { fetchMyScrapListState } from "../../store/mypageStore";
 import { postListResType } from "../../interfaces/post-type";
+import InfiniteScroll from "react-infinite-scroll-component";
+import {
+  postListIWrote,
+  postMyJoinedClub,
+} from "../../api/service-api/mypageApi";
 
 export default function MorePostListScreen() {
   const { type } = useParams(); // host , join , scrap
   const navigate = useNavigate();
-  const myHostList = useRecoilValue(fetchMyHostListState);
-  const myJoinList = useRecoilValue(fetchMyJoinListState);
+  const [pageNum, setPageNum] = useState(0);
   const myScrapList = useRecoilValue(fetchMyScrapListState);
   const [postList, setPostList] = useState<postListResType[]>();
 
+  const fetchHostData = async () => {
+    const res = await postListIWrote(pageNum);
+    res && setPostList((prev) => (prev ? [...prev, ...res] : res));
+  };
+  const fetchJoinData = async () => {
+    const res = await postMyJoinedClub(pageNum);
+    res && setPostList((prev) => (prev ? [...prev, ...res] : res));
+  };
+
   useEffect(() => {
-    if (type === "host") setPostList(myHostList);
-    else if (type === "join") setPostList(myJoinList);
+    // if (type === "host") setPostList(myHostList);
+    // else if (type === "join") setPostList(myJoinList);
+    if (type === "host") fetchHostData();
+    else if (type === "join") fetchJoinData();
     else setPostList(myScrapList);
   }, [type]);
+
+  useEffect(() => {
+    if (pageNum === 0) return;
+    if (type === "host") fetchHostData();
+    else if (type === "join") fetchJoinData();
+  }, [pageNum]);
   return (
     <CommonContainer>
       <TitleWrapper>
@@ -42,7 +59,13 @@ export default function MorePostListScreen() {
             : ""}
         </Title>
       </TitleWrapper>
-      <ListWrapper>
+      {/* <ListWrapper> */}
+      <InfiniteScroll
+        dataLength={postList?.length ?? 0}
+        next={() => setPageNum(pageNum + 1)}
+        hasMore={true}
+        loader={<></>}
+      >
         {postList?.length === 0 || !postList ? (
           <NoneText>
             {type === "host"
@@ -55,7 +78,7 @@ export default function MorePostListScreen() {
             이 없어요
           </NoneText>
         ) : (
-          postList.map((item, idx) =>
+          postList?.map((item, idx) =>
             idx === 0 ? (
               <PreviewPost
                 key={`preview-post-${idx}`}
@@ -72,7 +95,8 @@ export default function MorePostListScreen() {
             )
           )
         )}
-      </ListWrapper>
+      </InfiniteScroll>
+      {/* </ListWrapper> */}
     </CommonContainer>
   );
 }

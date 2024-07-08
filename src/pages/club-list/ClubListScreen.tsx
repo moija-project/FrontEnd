@@ -68,6 +68,8 @@ export default function ClubListScreen() {
     }
   }, [inView]);
 
+  useEffect(() => console.log("## , ", keyword), [keyword]);
+
   return (
     <Container>
       <MenuNavBar setCate={(cate) => setPostCate(cate)} />
