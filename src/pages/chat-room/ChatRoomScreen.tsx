@@ -175,6 +175,7 @@ export default function ChatRoomScreen() {
               next={() => setPageNum(pageNum + 1)}
               loader={<>loading...</>}
               hasMore={data?.length !== 0}
+              style={{ display: "flex", flexDirection: "column", gap: 15 }}
             >
               {chatList.map((item, idx) =>
                 item.sendUserId === userInfo.user_id ? (

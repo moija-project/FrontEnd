@@ -35,7 +35,7 @@ export default function TextMsgBox({
   return (
     <Container>
       <ChatContainer>
-        <ProfileImg src={profileImg} />
+        {/* <ProfileImg src={profileImg} /> */}
         <ChatWrapper>
           <ProfileName>{name}</ProfileName>
           <UserChatWrapper>
