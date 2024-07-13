@@ -7,14 +7,22 @@ import NotificationBox from "./components/NotificationBox";
 import { postListResType } from "../../interfaces/post-type";
 import { getPostList } from "../../api/service-api/clubPostApi";
 import { useRecoilValue } from "recoil";
-import { isLoggedInState, myProfileInfoState } from "../../store/userStore";
+import {
+  isLoggedInState,
+  myProfileInfoState,
+  myUserIdState,
+} from "../../store/userStore";
 import { postMyProfile } from "../../api/service-api/profileApi";
 import axios from "axios";
 import { axiosAuth } from "../../api/settingAxios";
+import SockJS from "sockjs-client";
+import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
 
 export default function HomeScreen() {
   const isLoggedin = useRecoilValue(isLoggedInState);
   const [postList, setPostList] = useState<postListResType[]>([]);
+  const [stompClient, setStompClient] = useState<CompatClient>();
+  const userID = useRecoilValue(myUserIdState);
   useEffect(() => {
     setPostList([]);
     const getData = async () => {
@@ -26,6 +34,29 @@ export default function HomeScreen() {
     };
     getData();
   }, []);
+
+  // useEffect(() => {
+  //   const sock = new SockJS(`stomp/notify`);
+  //   const stompClient = Stomp.over(sock);
+
+  //   stompClient.connect({}, () => {
+  //     stompClient.subscribe(
+  //       `/exchange/notify.exchange/user.${userID}`,
+  //       (message: IMessage) => {
+  //         const parsedBody = JSON.parse(message.body);
+  //         console.log("########### , ", parsedBody);
+  //       }
+  //     );
+  //   });
+  //   console.log(">>>> , ", stompClient);
+  //   setStompClient(stompClient);
+
+  //   return () => {
+  //     if (stompClient) {
+  //       stompClient.disconnect();
+  //     }
+  //   };
+  // }, [userID]);
   return (
     <Container>
       <LeftContainer>
@@ -39,20 +70,23 @@ export default function HomeScreen() {
         <MiddleTitle>모임 모집</MiddleTitle>
         <MiddleInstruction>관심있는 모임에 참여해보세요</MiddleInstruction>
         <ClubListWrapper>
-          {postList.length ? postList
-            .slice(0, 10)
-            .map((v, i) =>
-              i === 0 ? (
-                <PreviewPost
-                  key={`home-post-item-${i}`}
-                  postItem={v}
-                  isFirst={true}
-                />
-              ) : (
-                <PreviewPost key={`home-post-item-${i}`} postItem={v} />
+          {postList.length ? (
+            postList
+              .slice(0, 10)
+              .map((v, i) =>
+                i === 0 ? (
+                  <PreviewPost
+                    key={`home-post-item-${i}`}
+                    postItem={v}
+                    isFirst={true}
+                  />
+                ) : (
+                  <PreviewPost key={`home-post-item-${i}`} postItem={v} />
+                )
               )
-            ) : (<NoNotificationMsg>아직 등록된 게시글이 없어요</NoNotificationMsg>)}
-          
+          ) : (
+            <NoNotificationMsg>아직 등록된 게시글이 없어요</NoNotificationMsg>
+          )}
         </ClubListWrapper>
       </MiddleContainer>
       <RightContainer>

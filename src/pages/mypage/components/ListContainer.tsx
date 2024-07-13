@@ -46,6 +46,14 @@ export default function ListContainer({ listType }: ListContainerProps) {
       navigate(`/mypage-morePost/${listType}`);
   };
 
+  const moveToMypage = () => {
+    if (localStorage.getItem("accessToken")) navigate("/chatList");
+    else {
+      window.alert("로그인을 다시해주세요");
+      navigate("/login");
+    }
+  };
+
   useEffect(() => {
     const getData = async () => {
       if (listType === "host") {
@@ -90,7 +98,9 @@ export default function ListContainer({ listType }: ListContainerProps) {
 
       {listType === "chat-list" && (
         <MoveToChatListButton>
-          <MoveToChatListText>채팅 목록 보기</MoveToChatListText>
+          <MoveToChatListText onClick={moveToMypage}>
+            채팅 목록 보기
+          </MoveToChatListText>
           <FontAwesomeIcon icon={faArrowRight} color="#FFFFFF" />
         </MoveToChatListButton>
       )}

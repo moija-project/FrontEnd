@@ -22,6 +22,16 @@ module.exports = function (app) {
       ws: false, // WebSocket 지원
     })
   );
+  app.use(
+    "/stomp/notify", // 두 번째 프록시 경로
+    // "/stomp/ws", // 두 번째 프록시 경로
+    createProxyMiddleware({
+      target: "http://mo.ija.kro.kr",
+      // target: "http://localhost:8093",
+      changeOrigin: true,
+      ws: false, // WebSocket 지원
+    })
+  );
 
   app.use(
     "/pub/chat",

@@ -5,7 +5,6 @@ type TextMsgBoxProps = {
   text: string;
   time: string;
   name: string;
-  profileImg: string;
 };
 
 /**
@@ -13,12 +12,7 @@ type TextMsgBoxProps = {
  * @param profile : {name , profileImg}  있으면 상대방 / 없으면 본인
  *
  */
-export default function TextMsgBox({
-  text,
-  time,
-  name,
-  profileImg,
-}: TextMsgBoxProps) {
+export default function TextMsgBox({ text, time, name }: TextMsgBoxProps) {
   const textRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (textRef.current) {

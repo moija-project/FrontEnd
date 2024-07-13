@@ -15,6 +15,7 @@ import { useRecoilValue } from "recoil";
 import { myProfileInfoState } from "../../store/userStore";
 import MyTextMsgBox from "./components/MyTextMsgBox";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useInView } from "react-intersection-observer";
 
 type ChatListItemType = {
   sendUserId: string;
@@ -30,21 +31,21 @@ export default function ChatRoomScreen() {
   const [chatList, setChatList] = useState<ChatListItemType[]>([]); // 채팅 기록
   const [txtMessage, setTxtMessage] = useState(""); // 입력하는 채팅 문자
   const [pageNum, setPageNum] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   const userInfo = useRecoilValue(myProfileInfoState);
 
   const chattingsRef = useRef<any>(null);
 
+  const { ref, inView, entry } = useInView({
+    threshold: 0.5,
+  });
+
   const { data, refetch } = useFetchPrevChatMessages({
     chatRoomId: chatRoomId ?? "",
-    page_size: 40,
+    page_size: 10,
     page_number: pageNum,
   });
-  // const { data, fetchNextPage, hasNextPage , isFetchingNextPage } = useFetchPrevChatMessages({
-  //   chatRoomId: chatRoomId ?? "",
-  //   page_size: 10,
-  //   page_number: 0,
-  // });
 
   // const chatList = data?.pages.flat() || []
 
@@ -69,6 +70,21 @@ export default function ChatRoomScreen() {
     if (chattingsRef.current) {
       chattingsRef.current.scrollTop = chattingsRef.current.scrollHeight;
     }
+  };
+  const fetchMessages = async (page_number: number) => {
+    const res = await fetchChatMessages({
+      chatRoomId: chatRoomId ?? "",
+      page_size: 10,
+      page_number,
+    });
+    let newMessages = res?.map((chat, _) => ({
+      sendUserId: chat.memberId,
+      message: chat.message,
+      date: chat.regDate.slice(0, 10),
+      time: chat.regDate.slice(11, 16),
+      nickname: chat.nickname,
+    }));
+    // newMessages && setChatList((prev) => [...newMessages?.reverse(), ...prev]);
   };
 
   useEffect(() => {
@@ -103,7 +119,6 @@ export default function ChatRoomScreen() {
     });
 
     setStompClient(stompClient);
-    console.log("## ", stompClient);
 
     return () => {
       if (stompClient) {
@@ -117,22 +132,19 @@ export default function ChatRoomScreen() {
     if (chatList) handleFocusBottom();
   }, [chatList]);
 
-  const fetchMessages = async (page_number: number) => {
-    const res = await fetchChatMessages({
-      chatRoomId: chatRoomId ?? "",
-      page_size: 10,
-      page_number,
-    });
-    let newMessages = res?.map((chat, _) => ({
-      sendUserId: chat.memberId,
-      message: chat.message,
-      date: chat.regDate.slice(0, 10),
-      time: chat.regDate.slice(11, 16),
-      nickname: chat.nickname,
-    }));
-    // newMessages&&
-    //   setChatList((prev) => [...newMessages.reverse(), ...prev]);
-  };
+  useEffect(() => {
+    console.log("--- ", pageNum);
+    // if (inView && hasMore) {
+    if (inView && hasMore) {
+      setPageNum((prevPageNum) => prevPageNum + 1);
+    }
+  }, [inView, hasMore]);
+
+  useEffect(() => {
+    if (data?.length === 0) {
+      setHasMore(false);
+    }
+  }, [data]);
 
   useEffect(() => {
     // 페이지네이션으로 추가되는 chat list
@@ -150,9 +162,11 @@ export default function ChatRoomScreen() {
   }, [data]);
 
   useEffect(() => console.log(">> ", chatList), [chatList]);
+  useEffect(() => console.log("*** inview ", inView), [inView]);
+  // useEffect(() => console.log("*** hasmore", hasMore), [hasMore]);
 
   useEffect(() => {
-    if (pageNum > 0) refetch();
+    if (pageNum > 0 && hasMore) refetch();
 
     console.log("==== , ", pageNum);
   }, [pageNum]);
@@ -167,36 +181,24 @@ export default function ChatRoomScreen() {
         <ChattingsContainer ref={chattingsRef}>
           <ChattingsWrapper>
             {/* for 무한스크롤 */}
-            {/* {hasMore && <HasMoreWrapper ref={ref} />} */}
+            {hasMore && chatList.length > 0 && <HasMoreWrapper ref={ref} />}
             {/*  */}
-
-            <InfiniteScroll
-              dataLength={chatList.length}
-              next={() => setPageNum(pageNum + 1)}
-              loader={<>loading...</>}
-              hasMore={data?.length !== 0}
-              style={{ display: "flex", flexDirection: "column", gap: 15 }}
-            >
-              {chatList.map((item, idx) =>
-                item.sendUserId === userInfo.user_id ? (
-                  <MyTextMsgBox
-                    key={`chat-msg_${idx}`}
-                    text={item.message}
-                    time={item.time}
-                  />
-                ) : (
-                  <TextMsgBox
-                    key={`chat-msg_${idx}`}
-                    text={item.message}
-                    time={item.time}
-                    name={item.nickname}
-                    profileImg={
-                      "https://i.pinimg.com/736x/68/15/1e/68151e7ec66a2f5eddaacfd895e3bcd2.jpg"
-                    }
-                  />
-                )
-              )}
-            </InfiniteScroll>
+            {chatList.map((item, idx) =>
+              item.sendUserId === userInfo.user_id ? (
+                <MyTextMsgBox
+                  key={`chat-msg_${idx}`}
+                  text={item.message}
+                  time={item.time}
+                />
+              ) : (
+                <TextMsgBox
+                  key={`chat-msg_${idx}`}
+                  text={item.message}
+                  time={item.time}
+                  name={item.nickname}
+                />
+              )
+            )}
           </ChattingsWrapper>
         </ChattingsContainer>
         <MsgInputWrapper
@@ -230,4 +232,5 @@ const ChattingsWrapper = styled.div`
 const HasMoreWrapper = styled.div`
   width: 100%;
   height: 20px;
+  background-color: pink;
 `;
