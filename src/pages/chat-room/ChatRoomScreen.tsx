@@ -3,7 +3,7 @@ import CommonContainer from "../../components/CommonContainer";
 import styled from "styled-components";
 import ChatRoomHeader from "./components/ChatRoomHeader";
 import TextMsgBox from "./components/TextMsgBox";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
 import MsgInputWrapper from "./components/MsgInputWrapper";
@@ -27,6 +27,7 @@ type ChatListItemType = {
 
 export default function ChatRoomScreen() {
   const { chatRoomId } = useParams();
+  const { state } = useLocation();
   const [stompClient, setStompClient] = useState<CompatClient>();
   const [chatList, setChatList] = useState<ChatListItemType[]>([]); // 채팅 기록
   const [txtMessage, setTxtMessage] = useState(""); // 입력하는 채팅 문자
@@ -34,6 +35,8 @@ export default function ChatRoomScreen() {
   const [hasMore, setHasMore] = useState(true);
 
   const userInfo = useRecoilValue(myProfileInfoState);
+
+  useEffect(() => console.log("!!!!!!!state!!!! ", state), [state]);
 
   const chattingsRef = useRef<any>(null);
 
@@ -110,12 +113,16 @@ export default function ChatRoomScreen() {
           handleFocusBottom(); // 메시지 보내면 포커스 아래로
         }
       );
-      // stompClient.publish({
-      //   destination: `/pub/chat.read.${chatRoomId}`,
-      //   body: JSON.stringify({
-      //     read: 1,
-      //   }),
-      // });
+    });
+
+    // 읽음 처리
+    stompClient.connect({}, () => {
+      stompClient.publish({
+        destination: `/pub/chat.read.${chatRoomId}`,
+        body: JSON.stringify({
+          read: 1,
+        }),
+      });
     });
 
     setStompClient(stompClient);
@@ -177,27 +184,31 @@ export default function ChatRoomScreen() {
       containerStyle={{ position: "relative", width: "100%" }}
     >
       <Container>
-        <ChatRoomHeader />
+        <ChatRoomHeader chatRoomId={chatRoomId ?? ""} />
         <ChattingsContainer ref={chattingsRef}>
           <ChattingsWrapper>
             {/* for 무한스크롤 */}
-            {hasMore && chatList.length > 0 && <HasMoreWrapper ref={ref} />}
+            {hasMore && chatList && chatList.length > 0 && (
+              <HasMoreWrapper ref={ref} />
+            )}
             {/*  */}
-            {chatList.map((item, idx) =>
-              item.sendUserId === userInfo.user_id ? (
-                <MyTextMsgBox
-                  key={`chat-msg_${idx}`}
-                  text={item.message}
-                  time={item.time}
-                />
-              ) : (
-                <TextMsgBox
-                  key={`chat-msg_${idx}`}
-                  text={item.message}
-                  time={item.time}
-                  name={item.nickname}
-                />
-              )
+            {chatList.map(
+              (item, idx) =>
+                item.sendUserId &&
+                (item.sendUserId === userInfo.user_id ? (
+                  <MyTextMsgBox
+                    key={`chat-msg_${idx}`}
+                    text={item.message}
+                    time={item.time}
+                  />
+                ) : (
+                  <TextMsgBox
+                    key={`chat-msg_${idx}`}
+                    text={item.message}
+                    time={item.time}
+                    name={item.nickname}
+                  />
+                ))
             )}
           </ChattingsWrapper>
         </ChattingsContainer>

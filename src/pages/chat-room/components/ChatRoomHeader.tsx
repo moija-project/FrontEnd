@@ -2,6 +2,7 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { getPostDetail } from "../../../api/service-api/clubPostApi";
 
 type ChatMenuType = "exit" | "invite" | "accuse";
 
@@ -10,11 +11,19 @@ const chatMenuList: { type: ChatMenuType; name: string }[] = [
   { type: "invite", name: "모임에 초대하기" },
   // {type : 'accuse' , name : '신고하기'},
 ];
+type ChatRoomHeaderProps = {
+  chatRoomId: string;
+};
 
-export default function ChatRoomHeader() {
+export default function ChatRoomHeader({ chatRoomId }: ChatRoomHeaderProps) {
   const menuRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
+
+  const getPostInfo = async () => {
+    const res = await getPostDetail({ post_id: Number(chatRoomId) });
+    console.log(" --^^-- ", res?.title);
+  };
 
   const handleOutsideClick = (e: MouseEvent) => {
     if (
@@ -32,6 +41,7 @@ export default function ChatRoomHeader() {
   };
 
   useEffect(() => {
+    getPostInfo();
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
