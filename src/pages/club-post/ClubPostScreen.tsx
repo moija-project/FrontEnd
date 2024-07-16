@@ -47,7 +47,7 @@ export default function ClubPostScreen() {
           penalty: 0,
           conditions: [],
         });
-        navigate("/clubList");
+        navigate("/clubList", { state: { reload: true } });
       } else if (res?.status === 200 && !res.data.isSuccess) {
         window.alert(res.data.message);
       }

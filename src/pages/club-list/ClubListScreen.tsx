@@ -12,6 +12,7 @@ import {
 
 import { useInView } from "react-intersection-observer";
 import { useClubPostList } from "../../api/service-api/clubPost/useClubPostList";
+import { useLocation } from "react-router-dom";
 
 export default function ClubListScreen() {
   const [postCate, setPostCate] = useState<CategoryType>("all");
@@ -21,6 +22,8 @@ export default function ClubListScreen() {
   const [searchType, setSearchType] = useState<SearchType>("title");
   const [ref, inView] = useInView({ threshold: 1 });
   const [postList, setPostList] = useState<(postListResType | undefined)[]>([]);
+
+  const { state } = useLocation();
 
   const { data, refetch, fetchNextPage, hasNextPage } = useClubPostList({
     category: postCate,
@@ -39,6 +42,10 @@ export default function ClubListScreen() {
     // 카테고리 혹은 정렬 클릭 시
     refetch();
   }, [postCate, postView, keyword]);
+
+  useEffect(() => {
+    if (state && state.reload) refetch();
+  }, [state]);
 
   // 페이지네이션
   useEffect(() => {

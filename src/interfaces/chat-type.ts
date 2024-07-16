@@ -24,3 +24,14 @@ export type ChatMessageListType = {
   regDate: string;
   type: string;
 };
+
+// chat room 생성
+export type CreateChatReqType = {
+  myUserId: string;
+  chat: {
+    userId: string; // 상대방 아이디
+    nickname: string;
+    postId: number;
+    postTitle: string;
+  };
+};

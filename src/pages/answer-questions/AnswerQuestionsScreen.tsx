@@ -42,6 +42,7 @@ export default function AnswerQuestionsScreen() {
       const res = await getPostQuestion({
         post_id: Number(postId),
       });
+      console.log("****가입조건질문****** ", res);
       if (res === undefined || res.length === 0) return;
       setPostQuestion(res);
     };
