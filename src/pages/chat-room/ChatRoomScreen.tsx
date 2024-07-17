@@ -36,8 +36,6 @@ export default function ChatRoomScreen() {
 
   const userInfo = useRecoilValue(myProfileInfoState);
 
-  useEffect(() => console.log("!!!!!!!state!!!! ", state), [state]);
-
   const chattingsRef = useRef<any>(null);
 
   const { ref, inView, entry } = useInView({
@@ -46,7 +44,7 @@ export default function ChatRoomScreen() {
 
   const { data, refetch } = useFetchPrevChatMessages({
     chatRoomId: chatRoomId ?? "",
-    page_size: 10,
+    page_size: 50,
     page_number: pageNum,
   });
 
@@ -187,13 +185,11 @@ export default function ChatRoomScreen() {
       containerStyle={{ position: "relative", width: "100%" }}
     >
       <Container>
-        <ChatRoomHeader chatRoomId={chatRoomId ?? ""} />
+        <ChatRoomHeader postId={state.chatInfo.chatRoom.postId ?? ""} />
         <ChattingsContainer ref={chattingsRef}>
           <ChattingsWrapper>
             {/* for 무한스크롤 */}
-            {hasMore && chatList && chatList.length > 0 && (
-              <HasMoreWrapper ref={ref} />
-            )}
+            {hasMore && <HasMoreWrapper ref={ref} />}
             {/*  */}
             {chatList.map(
               (item, idx) =>

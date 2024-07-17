@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getPostDetail } from "../../../api/service-api/clubPostApi";
+import { usePostInfo } from "../../../api/service-api/clubPost/usePostInfo";
 
 type ChatMenuType = "exit" | "invite" | "accuse";
 
@@ -12,18 +13,15 @@ const chatMenuList: { type: ChatMenuType; name: string }[] = [
   // {type : 'accuse' , name : '신고하기'},
 ];
 type ChatRoomHeaderProps = {
-  chatRoomId: string;
+  postId: string;
 };
 
-export default function ChatRoomHeader({ chatRoomId }: ChatRoomHeaderProps) {
+export default function ChatRoomHeader({ postId }: ChatRoomHeaderProps) {
   const menuRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 
-  const getPostInfo = async () => {
-    const res = await getPostDetail({ post_id: Number(chatRoomId) });
-    console.log(" --^^-- ", res?.title);
-  };
+  const { data } = usePostInfo(Number(postId));
 
   const handleOutsideClick = (e: MouseEvent) => {
     if (
@@ -41,7 +39,6 @@ export default function ChatRoomHeader({ chatRoomId }: ChatRoomHeaderProps) {
   };
 
   useEffect(() => {
-    getPostInfo();
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
@@ -50,10 +47,10 @@ export default function ChatRoomHeader({ chatRoomId }: ChatRoomHeaderProps) {
   return (
     <Container>
       <LeftWrapper>
-        <PostImg src="https://i.pinimg.com/564x/d3/37/b3/d337b361e7aa9041e5564782906d6068.jpg" />
+        <PostImg src={data?.title_photo} />
         <TitleWrapper>
-          <PostTitle>게시물제목</PostTitle>
-          <UserName>유저닉네임</UserName>
+          <PostTitle>{data?.post_title}</PostTitle>
+          <UserName>{data?.writer_id}</UserName>
         </TitleWrapper>
       </LeftWrapper>
       <MenuBtn onClick={handleMenuButtonClick} ref={buttonRef}>
@@ -91,6 +88,7 @@ const PostImg = styled.img`
 const TitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.5rem;
   width: 100%;
 `;

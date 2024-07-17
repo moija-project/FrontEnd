@@ -115,3 +115,10 @@ export type MembersResType = {
   grant: boolean;
   user_id: string;
 };
+
+// 게시물 정보 (채팅방에서 게시물 정보 얻을 때)
+export type PostInfoResultResType = {
+  post_title: string;
+  title_photo: string;
+  writer_id: string;
+};
