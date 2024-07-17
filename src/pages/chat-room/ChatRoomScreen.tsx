@@ -99,6 +99,7 @@ export default function ChatRoomScreen() {
         `/exchange/chat.exchange/room.${chatRoomId}`,
         (message: IMessage) => {
           const parsedBody = JSON.parse(message.body);
+          console.log("** ", parsedBody);
           let date = parsedBody.regDate.slice(0, 10);
           let time = parsedBody.regDate.slice(11, 16);
 
@@ -109,14 +110,15 @@ export default function ChatRoomScreen() {
             time,
             nickname: parsedBody.nickname,
           };
-          setChatList((prevMessages) => [...prevMessages, newMsgItem]);
-          handleFocusBottom(); // 메시지 보내면 포커스 아래로
+
+          if (parsedBody.type !== "CHAT") {
+            setChatList((prevMessages) => [...prevMessages, newMsgItem]);
+            handleFocusBottom(); // 메시지 보내면 포커스 아래로
+          }
         }
       );
-    });
 
-    // 읽음 처리
-    stompClient.connect({}, () => {
+      // 읽음 처리
       stompClient.publish({
         destination: `/pub/chat.read.${chatRoomId}`,
         body: JSON.stringify({
@@ -124,7 +126,6 @@ export default function ChatRoomScreen() {
         }),
       });
     });
-
     setStompClient(stompClient);
 
     return () => {
@@ -140,7 +141,6 @@ export default function ChatRoomScreen() {
   }, [chatList]);
 
   useEffect(() => {
-    console.log("--- ", pageNum);
     // if (inView && hasMore) {
     if (inView && hasMore) {
       setPageNum((prevPageNum) => prevPageNum + 1);
@@ -155,14 +155,17 @@ export default function ChatRoomScreen() {
 
   useEffect(() => {
     // 페이지네이션으로 추가되는 chat list
+    console.log("==== ", data);
     let prevChatList: ChatListItemType[] | [] = data
-      ? data?.map((chat, i) => ({
-          sendUserId: chat.memberId,
-          message: chat.message,
-          date: chat.regDate.slice(0, 10),
-          time: chat.regDate.slice(11, 16),
-          nickname: chat.nickname,
-        }))
+      ? data
+          ?.filter((val) => val.type === "TALK")
+          .map((chat, i) => ({
+            sendUserId: chat.memberId,
+            message: chat.message,
+            date: chat.regDate.slice(0, 10),
+            time: chat.regDate.slice(11, 16),
+            nickname: chat.nickname,
+          }))
       : [];
     let newChatList = [...prevChatList.reverse(), ...chatList];
     setChatList(newChatList);

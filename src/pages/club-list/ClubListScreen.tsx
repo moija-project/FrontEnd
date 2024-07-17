@@ -18,12 +18,12 @@ export default function ClubListScreen() {
   const [postCate, setPostCate] = useState<CategoryType>("all");
   const [postView, setPostView] = useState<ViewType>("latest");
   const [page, setPage] = useState(0);
-  const [keyword, setKeyword] = useState<string>();
+  const [keyword, setKeyword] = useState<string>("");
   const [searchType, setSearchType] = useState<SearchType>("title");
   const [ref, inView] = useInView({ threshold: 1 });
   const [postList, setPostList] = useState<(postListResType | undefined)[]>([]);
 
-  const { state } = useLocation();
+  const location = useLocation();
 
   const { data, refetch, fetchNextPage, hasNextPage } = useClubPostList({
     category: postCate,
@@ -44,8 +44,9 @@ export default function ClubListScreen() {
   }, [postCate, postView, keyword]);
 
   useEffect(() => {
-    if (state && state.reload) refetch();
-  }, [state]);
+    // 다른 페이지에서 이 페이지로 올때 데이터 다시 받아오기
+    refetch();
+  }, [location]);
 
   // 페이지네이션
   useEffect(() => {

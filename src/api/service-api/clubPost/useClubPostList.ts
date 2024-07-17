@@ -16,6 +16,6 @@ export const useClubPostList = (params: postListParamsType) => {
       if (!lastPage || lastPage.length === 0) return null;
       return allPages.length;
     },
-    refetchOnWindowFocus: false,
+    // refetchOnWindowFocus: false,
   });
 };
