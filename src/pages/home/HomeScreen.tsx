@@ -35,28 +35,29 @@ export default function HomeScreen() {
     getData();
   }, []);
 
-  // useEffect(() => {
-  //   const sock = new SockJS(`stomp/notify`);
-  //   const stompClient = Stomp.over(sock);
+  useEffect(() => {
+    if (userID.length === 0) return;
+    const sock = new SockJS(`stomp/chat`);
+    const stompClient = Stomp.over(sock);
 
-  //   stompClient.connect({}, () => {
-  //     stompClient.subscribe(
-  //       `/exchange/notify.exchange/user.${userID}`,
-  //       (message: IMessage) => {
-  //         const parsedBody = JSON.parse(message.body);
-  //         console.log("########### , ", parsedBody);
-  //       }
-  //     );
-  //   });
-  //   console.log(">>>> , ", stompClient);
-  //   setStompClient(stompClient);
+    stompClient.connect({}, () => {
+      stompClient.subscribe(
+        `/exchange/alarm.exchange/user.${userID}`,
+        (message: IMessage) => {
+          const parsedBody = JSON.parse(message.body);
+          console.log("########### , ", parsedBody);
+        }
+      );
+    });
+    console.log(">>>> , ", stompClient);
+    setStompClient(stompClient);
 
-  //   return () => {
-  //     if (stompClient) {
-  //       stompClient.disconnect();
-  //     }
-  //   };
-  // }, [userID]);
+    return () => {
+      if (stompClient) {
+        stompClient.disconnect();
+      }
+    };
+  }, [userID]);
   return (
     <Container>
       <LeftContainer>
