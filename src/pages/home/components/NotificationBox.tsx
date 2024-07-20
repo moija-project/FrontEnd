@@ -1,25 +1,27 @@
 import React from "react";
 import styled from "styled-components";
+import { NotifyResType } from "../../../interfaces/mypage-type";
+import { Link } from "react-router-dom";
 
 type NotificationBoxProps = {
   isFirst?: boolean;
+  item: NotifyResType;
 };
 
 export default function NotificationBox({
   isFirst = false,
+  item,
 }: NotificationBoxProps) {
   return (
-    <Container isFirst={isFirst}>
-      <IconImage src={require("../../../assets/images/icon-invite.png")} />
-      <MessageWrapper>
-        <MessageTitle>내 모임에 지원자가 생겼어요!</MessageTitle>
-        <MessageContent>
-          내 모임에 지원자가 생겼어요!내 모임에 지원자가 생겼어요!내 모임에
-          지원자가 생겼어요!내 모임에 지원자가 생겼어요!내 모임에 지원자가
-          생겼어요!
-        </MessageContent>
-      </MessageWrapper>
-    </Container>
+    <Link to={item.link} style={{ textDecoration: "none", color: "black" }}>
+      <Container isFirst={isFirst}>
+        <IconImage src={require("../../../assets/images/icon-invite.png")} />
+        <MessageWrapper>
+          <MessageTitle>{item.messasge}</MessageTitle>
+          <MessageContent>자세히 보기</MessageContent>
+        </MessageWrapper>
+      </Container>
+    </Link>
   );
 }
 
@@ -42,10 +44,16 @@ const IconImage = styled.img`
 const MessageWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 const MessageTitle = styled.h2`
-  font-size: 0.875rem;
+  font-size: 1rem;
   margin-bottom: 4px;
+  overflow: hidden;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; // 원하는 라인수
+  -webkit-box-orient: vertical;
 `;
 const MessageContent = styled.span`
   width: 100%;
@@ -54,6 +62,6 @@ const MessageContent = styled.span`
   display: -webkit-box;
   -webkit-line-clamp: 2; // 원하는 라인수
   -webkit-box-orient: vertical;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--gray01);
 `;

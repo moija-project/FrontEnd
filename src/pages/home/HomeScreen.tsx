@@ -17,12 +17,13 @@ import axios from "axios";
 import { axiosAuth } from "../../api/settingAxios";
 import SockJS from "sockjs-client";
 import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
+import { useLocation } from "react-router-dom";
+import { NotifyWrapper } from "./components/NotifyWrapper";
 
 export default function HomeScreen() {
   const isLoggedin = useRecoilValue(isLoggedInState);
   const [postList, setPostList] = useState<postListResType[]>([]);
-  const [stompClient, setStompClient] = useState<CompatClient>();
-  const userID = useRecoilValue(myUserIdState);
+
   useEffect(() => {
     setPostList([]);
     const getData = async () => {
@@ -35,29 +36,6 @@ export default function HomeScreen() {
     getData();
   }, []);
 
-  useEffect(() => {
-    if (userID.length === 0) return;
-    const sock = new SockJS(`stomp/chat`);
-    const stompClient = Stomp.over(sock);
-
-    stompClient.connect({}, () => {
-      stompClient.subscribe(
-        `/exchange/alarm.exchange/user.${userID}`,
-        (message: IMessage) => {
-          const parsedBody = JSON.parse(message.body);
-          console.log("########### , ", parsedBody);
-        }
-      );
-    });
-    console.log(">>>> , ", stompClient);
-    setStompClient(stompClient);
-
-    return () => {
-      if (stompClient) {
-        stompClient.disconnect();
-      }
-    };
-  }, [userID]);
   return (
     <Container>
       <LeftContainer>
@@ -92,14 +70,7 @@ export default function HomeScreen() {
       </MiddleContainer>
 
       <RightContainer>
-        {/* <RightTitle>알림</RightTitle> */}
-        {/* <NoNotificationMsg>알림이 없어요</NoNotificationMsg> */}
-        {/* <div style={{ marginTop: 25 }}>
-          {[1, 2, 3, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(
-            (v, i) =>
-              i === 0 ? <NotificationBox isFirst={true} /> : <NotificationBox />
-          )}
-        </div> */}
+        <NotifyWrapper />
       </RightContainer>
     </Container>
   );
@@ -142,8 +113,7 @@ const ClubListWrapper = styled.div`
   max-width: 100%;
 `;
 const RightContainer = styled.div`
-  min-width: 300px;
-  max-width: 380px;
+  width: 300px;
   max-height: 530px;
   overflow-y: scroll;
   height: fit-content;
@@ -151,7 +121,7 @@ const RightContainer = styled.div`
   right: 0;
   top: 40px;
   background-color: white;
-  /* padding: 18px; */
+  padding: 18px;
   @media screen and (max-width: 1500px) {
     display: none;
   }
@@ -164,11 +134,6 @@ const MiddleInstruction = styled.h4`
   font-size: 0.75rem;
   color: var(--gray01);
   margin-top: 4px;
-`;
-const RightTitle = styled.h2`
-  font-size: 1.125rem;
-  font-weight: 700;
-  margin-bottom: 40px;
 `;
 const NoNotificationMsg = styled.span`
   text-align: center;
