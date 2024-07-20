@@ -3,21 +3,10 @@ import styled from "styled-components";
 import LoginBox from "./components/LoginBox";
 import ProfileBox from "./components/ProfileBox";
 import PreviewPost from "../../components/PreviewPost";
-import NotificationBox from "./components/NotificationBox";
 import { postListResType } from "../../interfaces/post-type";
 import { getPostList } from "../../api/service-api/clubPostApi";
 import { useRecoilValue } from "recoil";
-import {
-  isLoggedInState,
-  myProfileInfoState,
-  myUserIdState,
-} from "../../store/userStore";
-import { postMyProfile } from "../../api/service-api/profileApi";
-import axios from "axios";
-import { axiosAuth } from "../../api/settingAxios";
-import SockJS from "sockjs-client";
-import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
-import { useLocation } from "react-router-dom";
+import { isLoggedInState } from "../../store/userStore";
 import { NotifyWrapper } from "./components/NotifyWrapper";
 
 export default function HomeScreen() {
@@ -68,10 +57,7 @@ export default function HomeScreen() {
           )}
         </ClubListWrapper>
       </MiddleContainer>
-
-      <RightContainer>
-        <NotifyWrapper />
-      </RightContainer>
+      <RightContainer>{isLoggedin && <NotifyWrapper />}</RightContainer>
     </Container>
   );
 }
@@ -121,7 +107,6 @@ const RightContainer = styled.div`
   right: 0;
   top: 40px;
   background-color: white;
-  padding: 18px;
   @media screen and (max-width: 1500px) {
     display: none;
   }

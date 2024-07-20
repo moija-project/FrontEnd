@@ -39,7 +39,6 @@ export const NotifyWrapper = () => {
         }
       );
     });
-    console.log(">>>> , ", stompClient);
     setStompClient(stompClient);
 
     return () => {
@@ -50,14 +49,14 @@ export const NotifyWrapper = () => {
   }, [userID]);
 
   return (
-    <>
+    <div style={{ margin: 18 }}>
       <RightTitle>알림</RightTitle>
       {notify && notify.length !== 0 ? (
         notify.map((v, i) => <NotificationBox isFirst={i === 0} item={v} />)
       ) : (
         <NoNotificationMsg>알림이 없어요</NoNotificationMsg>
       )}
-    </>
+    </div>
   );
 };
 
