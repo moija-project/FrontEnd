@@ -44,7 +44,7 @@ export default function ChatRoomScreen() {
 
   const { data, refetch } = useFetchPrevChatMessages({
     chatRoomId: chatRoomId ?? "",
-    page_size: 50,
+    page_size: 80,
     page_number: pageNum,
   });
 
@@ -97,20 +97,17 @@ export default function ChatRoomScreen() {
         `/exchange/chat.exchange/room.${chatRoomId}`,
         (message: IMessage) => {
           const parsedBody = JSON.parse(message.body);
-          console.log("** ", parsedBody);
-          // let date = parsedBody.regDate.slice(0, 10);
-          // let time = parsedBody.regDate.slice(11, 16);
 
-          let date = `${parsedBody.regDate[0]}-${parsedBody.regDate[1].padStart(
+          let date = `${parsedBody.regDate[0]}-${String(
+            parsedBody.regDate[1]
+          ).padStart(2, "0")}-${String(parsedBody.regDate[2]).padStart(
             2,
-            0
-          )}-${String(parsedBody.regDate[2]).padStart(2, "0")}`;
+            "0"
+          )}`;
           let time = `${String(parsedBody.regDate[3]).padStart(
             2,
             "0"
           )}:${String(parsedBody.regDate[4]).padStart(2, "0")}`;
-
-          console.log("-------------------", date, time);
 
           let newMsgItem: ChatListItemType = {
             sendUserId: parsedBody.memberId,
@@ -164,7 +161,6 @@ export default function ChatRoomScreen() {
 
   useEffect(() => {
     // 페이지네이션으로 추가되는 chat list
-    console.log("==== ", data);
     let prevChatList: ChatListItemType[] | [] = data
       ? data
           ?.filter((val) => val.type === "TALK")
@@ -180,14 +176,8 @@ export default function ChatRoomScreen() {
     setChatList(newChatList);
   }, [data]);
 
-  useEffect(() => console.log(">> ", chatList), [chatList]);
-  useEffect(() => console.log("*** inview ", inView), [inView]);
-  // useEffect(() => console.log("*** hasmore", hasMore), [hasMore]);
-
   useEffect(() => {
     if (pageNum > 0 && hasMore) refetch();
-
-    console.log("==== , ", pageNum);
   }, [pageNum]);
 
   return (
