@@ -89,15 +89,16 @@ export default function HomeScreen() {
           )}
         </ClubListWrapper>
       </MiddleContainer>
+
       <RightContainer>
-        <RightTitle>알림</RightTitle>
+        {/* <RightTitle>알림</RightTitle> */}
         {/* <NoNotificationMsg>알림이 없어요</NoNotificationMsg> */}
-        <div style={{ marginTop: 25 }}>
+        {/* <div style={{ marginTop: 25 }}>
           {[1, 2, 3, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(
             (v, i) =>
               i === 0 ? <NotificationBox isFirst={true} /> : <NotificationBox />
           )}
-        </div>
+        </div> */}
       </RightContainer>
     </Container>
   );
@@ -149,7 +150,7 @@ const RightContainer = styled.div`
   right: 0;
   top: 40px;
   background-color: white;
-  padding: 18px;
+  /* padding: 18px; */
   @media screen and (max-width: 1500px) {
     display: none;
   }
