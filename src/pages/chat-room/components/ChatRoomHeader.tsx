@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getPostDetail } from "../../../api/service-api/clubPostApi";
 import { usePostInfo } from "../../../api/service-api/clubPost/usePostInfo";
+import { postReceivedChatRequestAccept } from "../../../api/service-api/mypageApi";
 
 type ChatMenuType = "exit" | "invite" | "accuse";
 
@@ -38,6 +39,14 @@ export default function ChatRoomHeader({ postId }: ChatRoomHeaderProps) {
     setIsMenuOpened(!isMenuOpened);
   };
 
+  const handleInvite = async () => {
+    // try {
+    //   const res = await postReceivedChatRequestAccept(reqData?.waiting_id);
+    // } catch (error) {
+    //   console.error(error)
+    // }
+  };
+
   useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
@@ -59,7 +68,12 @@ export default function ChatRoomHeader({ postId }: ChatRoomHeaderProps) {
       {isMenuOpened && (
         <MenuModal ref={menuRef} id="menu-modal">
           {chatMenuList.map((menu, i) => (
-            <MenuItem key={`menu-${i}-${menu.type}`}>{menu.name}</MenuItem>
+            <MenuItem
+              key={`menu-${i}-${menu.type}`}
+              onClick={menu.type === "invite" ? handleInvite : undefined}
+            >
+              {menu.name}
+            </MenuItem>
           ))}
         </MenuModal>
       )}

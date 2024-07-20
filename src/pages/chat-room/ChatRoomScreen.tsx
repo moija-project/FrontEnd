@@ -98,8 +98,19 @@ export default function ChatRoomScreen() {
         (message: IMessage) => {
           const parsedBody = JSON.parse(message.body);
           console.log("** ", parsedBody);
-          let date = parsedBody.regDate.slice(0, 10);
-          let time = parsedBody.regDate.slice(11, 16);
+          // let date = parsedBody.regDate.slice(0, 10);
+          // let time = parsedBody.regDate.slice(11, 16);
+
+          let date = `${parsedBody.regDate[0]}-${parsedBody.regDate[1].padStart(
+            2,
+            0
+          )}-${String(parsedBody.regDate[2]).padStart(2, "0")}`;
+          let time = `${String(parsedBody.regDate[3]).padStart(
+            2,
+            "0"
+          )}:${String(parsedBody.regDate[4]).padStart(2, "0")}`;
+
+          console.log("-------------------", date, time);
 
           let newMsgItem: ChatListItemType = {
             sendUserId: parsedBody.memberId,
@@ -116,13 +127,13 @@ export default function ChatRoomScreen() {
         }
       );
 
-      // 읽음 처리
-      stompClient.publish({
-        destination: `/pub/chat.read.${chatRoomId}`,
-        body: JSON.stringify({
-          read: 1,
-        }),
-      });
+      // // 읽음 처리
+      // stompClient.publish({
+      //   destination: `/pub/chat.read.${chatRoomId}`,
+      //   body: JSON.stringify({
+      //     read: 1,
+      //   }),
+      // });
     });
     setStompClient(stompClient);
 
@@ -146,7 +157,7 @@ export default function ChatRoomScreen() {
   }, [inView, hasMore]);
 
   useEffect(() => {
-    if (data?.length === 0) {
+    if (!data || data?.length === 0) {
       setHasMore(false);
     }
   }, [data]);
@@ -242,5 +253,5 @@ const ChattingsWrapper = styled.div`
 const HasMoreWrapper = styled.div`
   width: 100%;
   height: 20px;
-  background-color: pink;
+  background-color: palegoldenrod;
 `;

@@ -24,16 +24,8 @@ export default function ReadRequestDetailScreen() {
   const [reqDetail, setReqDetail] = useState<ReadReceivedAnsResType>(); // 질문들, 대기자 프로필
 
   const handleAccept = async () => {
-    console.log(
-      "------",
-      reqDetail?.user_id,
-      reqDetail?.nickname,
-      reqData?.post_id,
-      reqData?.title
-    );
     if (window.confirm(`${reqData?.nickname}님의 요청을 수락하시겠습니까?`)) {
       if (!reqData) return;
-      const res = await postReceivedChatRequestAccept(reqData?.waiting_id);
       const createChatRes = await createChatRoom({
         myUserId,
         chat: {
@@ -43,7 +35,7 @@ export default function ReadRequestDetailScreen() {
           postTitle: reqData.title,
         },
       });
-      if (res.isSuccess && createChatRes) {
+      if (createChatRes) {
         window.alert("요청을 수락했습니다!");
         navigate("/clubList");
       } else {
