@@ -98,16 +98,19 @@ export default function ChatRoomScreen() {
         (message: IMessage) => {
           const parsedBody = JSON.parse(message.body);
 
-          let date = `${parsedBody.regDate[0]}-${String(
-            parsedBody.regDate[1]
-          ).padStart(2, "0")}-${String(parsedBody.regDate[2]).padStart(
-            2,
-            "0"
-          )}`;
-          let time = `${String(parsedBody.regDate[3]).padStart(
-            2,
-            "0"
-          )}:${String(parsedBody.regDate[4]).padStart(2, "0")}`;
+          let date = parsedBody.regDate.slice(0, 10);
+          let time = parsedBody.regDate.slice(11, 16);
+
+          // let date = `${parsedBody.regDate[0]}-${String(
+          //   parsedBody.regDate[1]
+          // ).padStart(2, "0")}-${String(parsedBody.regDate[2]).padStart(
+          //   2,
+          //   "0"
+          // )}`;
+          // let time = `${String(parsedBody.regDate[3]).padStart(
+          //   2,
+          //   "0"
+          // )}:${String(parsedBody.regDate[4]).padStart(2, "0")}`;
 
           let newMsgItem: ChatListItemType = {
             sendUserId: parsedBody.memberId,
