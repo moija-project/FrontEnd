@@ -27,12 +27,12 @@ export const NotifyWrapper = () => {
 
   useEffect(() => {
     if (userID.length === 0) return;
-    const sock = new SockJS(`stomp/chat`);
+    const sock = new SockJS(`/stomp/chat`);
     const stompClient = Stomp.over(sock);
 
     stompClient.connect({}, () => {
       stompClient.subscribe(
-        `/exchange/alarm.exchange/user.${userID}`,
+        `/exchange/notify.exchange/user.${userID}`,
         (message: IMessage) => {
           const parsedBody = JSON.parse(message.body);
           setNotify(parsedBody);
