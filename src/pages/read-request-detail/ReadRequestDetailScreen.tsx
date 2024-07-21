@@ -12,9 +12,13 @@ import {
   postReceivedChatRequestAccept,
   postReceivedChatRequestDetail,
 } from "../../api/service-api/mypageApi";
+import { createChatRoom } from "../../api/service-api/chat/chatApi";
+import { useRecoilValue } from "recoil";
+import { myUserIdState } from "../../store/userStore";
 
 export default function ReadRequestDetailScreen() {
   const navigate = useNavigate();
+  const myUserId = useRecoilValue(myUserIdState);
   const { state } = useLocation();
   const [reqData, setReqData] = useState<ChatRequestStoreType>(); // 포스트 아이디 및 제목 등
   const [reqDetail, setReqDetail] = useState<ReadReceivedAnsResType>(); // 질문들, 대기자 프로필
@@ -22,8 +26,16 @@ export default function ReadRequestDetailScreen() {
   const handleAccept = async () => {
     if (window.confirm(`${reqData?.nickname}님의 요청을 수락하시겠습니까?`)) {
       if (!reqData) return;
-      const res = await postReceivedChatRequestAccept(reqData?.waiting_id);
-      if (res.isSuccess) {
+      const createChatRes = await createChatRoom({
+        myUserId,
+        chat: {
+          userId: reqDetail?.user_id ?? "",
+          nickname: reqDetail?.nickname ?? "",
+          postId: reqData.post_id,
+          postTitle: reqData.title,
+        },
+      });
+      if (createChatRes) {
         window.alert("요청을 수락했습니다!");
         navigate("/clubList");
       } else {
@@ -54,7 +66,7 @@ export default function ReadRequestDetailScreen() {
         을 보고 <br />
         1대1 채팅을 요청했어요!
       </Title>
-      <PreviewProfile hasBorder user_id={reqDetail?.user_id}/>
+      <PreviewProfile hasBorder user_id={reqDetail?.user_id} />
       <ReadReplyContainer
         // fix !
         nickname={reqDetail?.nickname ?? ""}

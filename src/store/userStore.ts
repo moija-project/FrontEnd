@@ -46,6 +46,7 @@ export const getAccessTokenState = selector({
 export const myUserIdState = atom<string>({
   key: "myUserIdState",
   default: "",
+  effects_UNSTABLE: [persistAtom],
 });
 
 // 본인 프로필
@@ -53,7 +54,7 @@ export const myProfileInfoState = atom<ProfileResType>({
   key: "myProfileInfoState",
   // 로그인 하면 이 setState 해서 바꾸기!!!! fix
   default: {
-    user_id: "", 
+    user_id: "",
     photo_profile: "",
     nickname: "",
     gender: "",

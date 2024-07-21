@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 import {
   ChatMessageListReqType,
   ChatMessageListType,
@@ -6,7 +6,7 @@ import {
 import { axiosAuth } from "../../settingAxios";
 
 // 채팅방 이전 대화 목록 조회
-const fetchChatMessages = async (
+export const fetchChatMessages = async (
   req: ChatMessageListReqType
 ): Promise<ChatMessageListType[] | undefined> => {
   const url = `/message/list`;
@@ -19,10 +19,16 @@ const fetchChatMessages = async (
 };
 
 export const useFetchPrevChatMessages = (req: ChatMessageListReqType) => {
-  // const setChatList = useSetRecoilState(chatListState);
   return useQuery({
-    queryKey: ["chat-msg-list"],
+    queryKey: ["chat-msg-list", `messages-${req.chatRoomId}`],
     queryFn: () => fetchChatMessages(req),
-    enabled: false,
+    // queryFn: ({ pageParam = 1 }) =>
+    //   fetchChatMessages({ ...req, page_number: pageParam }),
+    // getNextPageParam: (lastPage, pages) => {
+    //   if (lastPage?.length === req.page_size) {
+    //     return pages.length;
+    //   }
+    //   return undefined;
+    // },
   });
 };

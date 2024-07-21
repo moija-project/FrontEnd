@@ -34,7 +34,9 @@ export default function ClubReviseScreen() {
   const handleSubmit = () => {
     const postClub = async () => {
       let formData = new FormData();
-      const json = JSON.stringify(writePost);
+      const write = { ...writePost };
+      write.is_changed = true;
+      const json = JSON.stringify(write);
       const blob = new Blob([json], { type: "application/json" });
 
       formData.append("write", blob);

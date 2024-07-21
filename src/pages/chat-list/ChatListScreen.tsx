@@ -8,9 +8,7 @@ import { useFetchChatList } from "../../api/service-api/chat/useFetchChatList";
 
 export default function ChatListScreen() {
   const { data, isLoading } = useFetchChatList();
-  useEffect(() => {
-    console.log("채팅 목록 데이터", data);
-  }, [data]);
+
   return (
     <CommonContainer
       boxStyle={{ width: 500, padding: 0 }}

@@ -2,6 +2,9 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { getPostDetail } from "../../../api/service-api/clubPostApi";
+import { usePostInfo } from "../../../api/service-api/clubPost/usePostInfo";
+import { postReceivedChatRequestAccept } from "../../../api/service-api/mypageApi";
 
 type ChatMenuType = "exit" | "invite" | "accuse";
 
@@ -10,11 +13,16 @@ const chatMenuList: { type: ChatMenuType; name: string }[] = [
   { type: "invite", name: "모임에 초대하기" },
   // {type : 'accuse' , name : '신고하기'},
 ];
+type ChatRoomHeaderProps = {
+  postId: string;
+};
 
-export default function ChatRoomHeader() {
+export default function ChatRoomHeader({ postId }: ChatRoomHeaderProps) {
   const menuRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
+
+  const { data } = usePostInfo(Number(postId));
 
   const handleOutsideClick = (e: MouseEvent) => {
     if (
@@ -31,6 +39,14 @@ export default function ChatRoomHeader() {
     setIsMenuOpened(!isMenuOpened);
   };
 
+  const handleInvite = async () => {
+    // try {
+    //   const res = await postReceivedChatRequestAccept(reqData?.waiting_id);
+    // } catch (error) {
+    //   console.error(error)
+    // }
+  };
+
   useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
@@ -40,10 +56,10 @@ export default function ChatRoomHeader() {
   return (
     <Container>
       <LeftWrapper>
-        <PostImg src="https://i.pinimg.com/564x/d3/37/b3/d337b361e7aa9041e5564782906d6068.jpg" />
+        <PostImg src={data?.title_photo} />
         <TitleWrapper>
-          <PostTitle>게시물제목</PostTitle>
-          <UserName>유저닉네임</UserName>
+          <PostTitle>{data?.post_title}</PostTitle>
+          <UserName>{data?.writer_id}</UserName>
         </TitleWrapper>
       </LeftWrapper>
       <MenuBtn onClick={handleMenuButtonClick} ref={buttonRef}>
@@ -52,7 +68,12 @@ export default function ChatRoomHeader() {
       {isMenuOpened && (
         <MenuModal ref={menuRef} id="menu-modal">
           {chatMenuList.map((menu, i) => (
-            <MenuItem key={`menu-${i}-${menu.type}`}>{menu.name}</MenuItem>
+            <MenuItem
+              key={`menu-${i}-${menu.type}`}
+              onClick={menu.type === "invite" ? handleInvite : undefined}
+            >
+              {menu.name}
+            </MenuItem>
           ))}
         </MenuModal>
       )}
@@ -81,6 +102,7 @@ const PostImg = styled.img`
 const TitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.5rem;
   width: 100%;
 `;

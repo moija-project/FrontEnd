@@ -1,72 +1,68 @@
-import React, { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import MenuNavBar from "./components/MenuNavBar";
 import PreviewPost from "../../components/PreviewPost";
 import ClubListTopMenu from "./components/ClubListTopMenu";
-import { getPostList } from "../../api/service-api/clubPostApi";
-import axios from "axios";
 import {
   CategoryType,
   SearchType,
   ViewType,
-  postListParamsType,
   postListResType,
 } from "../../interfaces/post-type";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { fetchPostListAtom, fetchPostListState } from "../../store/postStore";
+
 import { useInView } from "react-intersection-observer";
+import { useClubPostList } from "../../api/service-api/clubPost/useClubPostList";
+import { useLocation } from "react-router-dom";
 
 export default function ClubListScreen() {
   const [postCate, setPostCate] = useState<CategoryType>("all");
   const [postView, setPostView] = useState<ViewType>("latest");
   const [page, setPage] = useState(0);
-  const [keyword, setKeyword] = useState<string>();
+  const [keyword, setKeyword] = useState<string>("");
   const [searchType, setSearchType] = useState<SearchType>("title");
   const [ref, inView] = useInView({ threshold: 1 });
-  const [postList, setPostList] = useState<postListResType[]>([]);
+  const [postList, setPostList] = useState<(postListResType | undefined)[]>([]);
 
-  const getData = async (params: postListParamsType) => {
-    const res = await getPostList(params);
-    res && setPostList([...postList, ...res]);
-  };
+  const location = useLocation();
+
+  const { data, refetch, fetchNextPage, hasNextPage } = useClubPostList({
+    category: postCate,
+    view_type: postView,
+    keyword,
+    page: 0,
+    search_type: searchType,
+  });
 
   const handleSearch = () => {
     setPostList([]);
     setPage(0);
-    getData({
-      category: postCate,
-      view_type: postView,
-      keyword,
-      page,
-      search_type: searchType,
-    });
   };
 
   useEffect(() => {
-    setPostList([]);
-    setPage(0);
-    getData({
-      category: postCate,
-      view_type: postView,
-      keyword,
-      page,
-      search_type: searchType,
-    });
-  }, [postCate, postView]);
+    // 카테고리 혹은 정렬 클릭 시
+    refetch();
+  }, [postCate, postView, keyword]);
+
+  useEffect(() => {
+    // 다른 페이지에서 이 페이지로 올때 데이터 다시 받아오기
+    refetch();
+  }, [location]);
 
   // 페이지네이션
   useEffect(() => {
-    if (inView && postList) {
-      getData({
-        category: postCate,
-        view_type: postView,
-        keyword,
-        page,
-        search_type: searchType,
-      });
+    if (inView && hasNextPage) {
+      fetchNextPage();
+
       setPage(page + 1);
     }
-  }, [inView]);
+  }, [inView, hasNextPage]);
+
+  useEffect(() => {
+    if (data) {
+      const newPosts = data.pages.flat();
+      setPostList(newPosts);
+    }
+  }, [data]);
 
   return (
     <Container>
@@ -80,21 +76,23 @@ export default function ClubListScreen() {
           onSearch={handleSearch}
         />
         <div>
-          {postList && postList.length ? (
-            postList.map((v, i) =>
-              i === 0 ? (
-                <PreviewPost
-                  postItem={v}
-                  key={`post-item-${i}`}
-                  isFirst={true}
-                />
-              ) : (
-                <PreviewPost
-                  postItem={v}
-                  key={`post-item-${i}`}
-                  isFirst={false}
-                />
-              )
+          {postList && postList.length !== 0 ? (
+            postList.map(
+              (v, i) =>
+                v &&
+                (i === 0 ? (
+                  <PreviewPost
+                    postItem={v}
+                    key={`post-item-${i}`}
+                    isFirst={true}
+                  />
+                ) : (
+                  <PreviewPost
+                    postItem={v}
+                    key={`post-item-${i}`}
+                    isFirst={false}
+                  />
+                ))
             )
           ) : (
             <EmptyText>해당 카테고리에 관한 글이 없습니다.</EmptyText>

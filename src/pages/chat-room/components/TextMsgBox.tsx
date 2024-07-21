@@ -5,7 +5,6 @@ type TextMsgBoxProps = {
   text: string;
   time: string;
   name: string;
-  profileImg: string;
 };
 
 /**
@@ -13,12 +12,7 @@ type TextMsgBoxProps = {
  * @param profile : {name , profileImg}  있으면 상대방 / 없으면 본인
  *
  */
-export default function TextMsgBox({
-  text,
-  time,
-  name,
-  profileImg,
-}: TextMsgBoxProps) {
+export default function TextMsgBox({ text, time, name }: TextMsgBoxProps) {
   const textRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (textRef.current) {
@@ -35,9 +29,9 @@ export default function TextMsgBox({
   return (
     <Container>
       <ChatContainer>
-        <ProfileImg src={profileImg} />
+        {/* <ProfileImg src={profileImg} /> */}
         <ChatWrapper>
-          <ProfileName>name</ProfileName>
+          <ProfileName>{name}</ProfileName>
           <UserChatWrapper>
             <ChatBubble ref={textRef}>{text}</ChatBubble>
             <TimeText>{time}</TimeText>
@@ -64,7 +58,7 @@ const ChatWrapper = styled.div`
   gap: 0.7rem;
 `;
 const ProfileName = styled.span`
-  margin-left: 0.9rem;
+  margin-left: 0.4rem;
 `;
 const Container = styled.div`
   display: flex;

@@ -3,18 +3,16 @@ import styled from "styled-components";
 import LoginBox from "./components/LoginBox";
 import ProfileBox from "./components/ProfileBox";
 import PreviewPost from "../../components/PreviewPost";
-import NotificationBox from "./components/NotificationBox";
 import { postListResType } from "../../interfaces/post-type";
 import { getPostList } from "../../api/service-api/clubPostApi";
 import { useRecoilValue } from "recoil";
-import { isLoggedInState, myProfileInfoState } from "../../store/userStore";
-import { postMyProfile } from "../../api/service-api/profileApi";
-import axios from "axios";
-import { axiosAuth } from "../../api/settingAxios";
+import { isLoggedInState } from "../../store/userStore";
+import { NotifyWrapper } from "./components/NotifyWrapper";
 
 export default function HomeScreen() {
   const isLoggedin = useRecoilValue(isLoggedInState);
   const [postList, setPostList] = useState<postListResType[]>([]);
+
   useEffect(() => {
     setPostList([]);
     const getData = async () => {
@@ -26,6 +24,7 @@ export default function HomeScreen() {
     };
     getData();
   }, []);
+
   return (
     <Container>
       <LeftContainer>
@@ -39,32 +38,26 @@ export default function HomeScreen() {
         <MiddleTitle>모임 모집</MiddleTitle>
         <MiddleInstruction>관심있는 모임에 참여해보세요</MiddleInstruction>
         <ClubListWrapper>
-          {postList.length ? postList
-            .slice(0, 10)
-            .map((v, i) =>
-              i === 0 ? (
-                <PreviewPost
-                  key={`home-post-item-${i}`}
-                  postItem={v}
-                  isFirst={true}
-                />
-              ) : (
-                <PreviewPost key={`home-post-item-${i}`} postItem={v} />
+          {postList.length ? (
+            postList
+              .slice(0, 10)
+              .map((v, i) =>
+                i === 0 ? (
+                  <PreviewPost
+                    key={`home-post-item-${i}`}
+                    postItem={v}
+                    isFirst={true}
+                  />
+                ) : (
+                  <PreviewPost key={`home-post-item-${i}`} postItem={v} />
+                )
               )
-            ) : (<NoNotificationMsg>아직 등록된 게시글이 없어요</NoNotificationMsg>)}
-          
+          ) : (
+            <NoNotificationMsg>아직 등록된 게시글이 없어요</NoNotificationMsg>
+          )}
         </ClubListWrapper>
       </MiddleContainer>
-      <RightContainer>
-        <RightTitle>알림</RightTitle>
-        {/* <NoNotificationMsg>알림이 없어요</NoNotificationMsg> */}
-        <div style={{ marginTop: 25 }}>
-          {[1, 2, 3, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(
-            (v, i) =>
-              i === 0 ? <NotificationBox isFirst={true} /> : <NotificationBox />
-          )}
-        </div>
-      </RightContainer>
+      <RightContainer>{isLoggedin && <NotifyWrapper />}</RightContainer>
     </Container>
   );
 }
@@ -106,8 +99,7 @@ const ClubListWrapper = styled.div`
   max-width: 100%;
 `;
 const RightContainer = styled.div`
-  min-width: 300px;
-  max-width: 380px;
+  width: 300px;
   max-height: 530px;
   overflow-y: scroll;
   height: fit-content;
@@ -115,7 +107,6 @@ const RightContainer = styled.div`
   right: 0;
   top: 40px;
   background-color: white;
-  padding: 18px;
   @media screen and (max-width: 1500px) {
     display: none;
   }
@@ -128,11 +119,6 @@ const MiddleInstruction = styled.h4`
   font-size: 0.75rem;
   color: var(--gray01);
   margin-top: 4px;
-`;
-const RightTitle = styled.h2`
-  font-size: 1.125rem;
-  font-weight: 700;
-  margin-bottom: 40px;
 `;
 const NoNotificationMsg = styled.span`
   text-align: center;

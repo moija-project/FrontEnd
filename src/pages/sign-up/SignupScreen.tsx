@@ -233,16 +233,16 @@ export default function SignupScreen() {
               onChange={handlePhoneNum}
               value={phoneNum}
             />
-            <InputButton>인증번호 전송</InputButton>
+            {/* <InputButton>인증번호 전송</InputButton> */}
           </InputWrapper>
         </InputContainer>
-        <InputContainer style={{ marginBottom: "2.3rem" }}>
+        {/* <InputContainer style={{ marginBottom: "2.3rem" }}>
           <InputWrapper>
             <InputBox placeholder="인증번호" type="text" />
             <InputButton>인증번호 확인</InputButton>
           </InputWrapper>
           <InputMsgText isWarning>인증번호가 다릅니다</InputMsgText>
-        </InputContainer>
+        </InputContainer> */}
 
         <InputContainer>
           <InputWrapper>

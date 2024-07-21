@@ -3,14 +3,19 @@ import CommonContainer from "../../components/CommonContainer";
 import styled from "styled-components";
 import ChatRoomHeader from "./components/ChatRoomHeader";
 import TextMsgBox from "./components/TextMsgBox";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
 import MsgInputWrapper from "./components/MsgInputWrapper";
-import { useFetchPrevChatMessages } from "../../api/service-api/chat/useFetchPrevChatMessages";
+import {
+  fetchChatMessages,
+  useFetchPrevChatMessages,
+} from "../../api/service-api/chat/useFetchPrevChatMessages";
 import { useRecoilValue } from "recoil";
 import { myProfileInfoState } from "../../store/userStore";
 import MyTextMsgBox from "./components/MyTextMsgBox";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useInView } from "react-intersection-observer";
 
 type ChatListItemType = {
   sendUserId: string;
@@ -22,23 +27,35 @@ type ChatListItemType = {
 
 export default function ChatRoomScreen() {
   const { chatRoomId } = useParams();
+  const { state } = useLocation();
   const [stompClient, setStompClient] = useState<CompatClient>();
   const [chatList, setChatList] = useState<ChatListItemType[]>([]); // 채팅 기록
   const [txtMessage, setTxtMessage] = useState(""); // 입력하는 채팅 문자
+  const [pageNum, setPageNum] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   const userInfo = useRecoilValue(myProfileInfoState);
 
   const chattingsRef = useRef<any>(null);
 
-  const { refetch, data } = useFetchPrevChatMessages({
-    chatRoomId: chatRoomId ?? "",
-    page_size: 20,
-    page_number: 0,
+  const { ref, inView, entry } = useInView({
+    threshold: 0.5,
   });
 
+  const { data, refetch } = useFetchPrevChatMessages({
+    chatRoomId: chatRoomId ?? "",
+    page_size: 80,
+    page_number: pageNum,
+  });
+
+  // const chatList = data?.pages.flat() || []
+
+  // 메시지 보내기 클릭 혹은 엔터 쳤을 경우
   const handleSendMsg = () => {
     if (!stompClient || txtMessage.trim().length === 0) return;
-    stompClient?.publish({
+    // stompClient.connect({}, () => {
+    // });
+    stompClient.publish({
       destination: `/pub/chat.message.${chatRoomId}`,
       body: JSON.stringify({
         memberId: userInfo.user_id,
@@ -48,68 +65,123 @@ export default function ChatRoomScreen() {
     });
   };
 
+  // 챗 리스트의 디폴트는 항상 가장 최신 즉, 가장 아래 로 포커스
+  const handleFocusBottom = () => {
+    if (!chattingsRef.current) return;
+    if (chattingsRef.current) {
+      chattingsRef.current.scrollTop = chattingsRef.current.scrollHeight;
+    }
+  };
+  const fetchMessages = async (page_number: number) => {
+    const res = await fetchChatMessages({
+      chatRoomId: chatRoomId ?? "",
+      page_size: 10,
+      page_number,
+    });
+    let newMessages = res?.map((chat, _) => ({
+      sendUserId: chat.memberId,
+      message: chat.message,
+      date: chat.regDate.slice(0, 10),
+      time: chat.regDate.slice(11, 16),
+      nickname: chat.nickname,
+    }));
+    // newMessages && setChatList((prev) => [...newMessages?.reverse(), ...prev]);
+  };
+
   useEffect(() => {
     const sock = new SockJS(`/stomp/chat`);
     const stompClient = Stomp.over(sock);
+
     stompClient.connect({}, () => {
       stompClient.subscribe(
         `/exchange/chat.exchange/room.${chatRoomId}`,
         (message: IMessage) => {
-          let date =
-            JSON.parse(message.body).regDate[0] +
-            "-" +
-            String(JSON.parse(message.body).regDate[1]).padStart(2, "0") +
-            "-" +
-            String(JSON.parse(message.body).regDate[2]).padStart(2, "0");
-          let time =
-            String(JSON.parse(message.body).regDate[3]).padStart(2, "0") +
-            ":" +
-            String(JSON.parse(message.body).regDate[4]).padStart(2, "0");
+          const parsedBody = JSON.parse(message.body);
+
+          let date = parsedBody.regDate.slice(0, 10);
+          let time = parsedBody.regDate.slice(11, 16);
+
+          // let date = `${parsedBody.regDate[0]}-${String(
+          //   parsedBody.regDate[1]
+          // ).padStart(2, "0")}-${String(parsedBody.regDate[2]).padStart(
+          //   2,
+          //   "0"
+          // )}`;
+          // let time = `${String(parsedBody.regDate[3]).padStart(
+          //   2,
+          //   "0"
+          // )}:${String(parsedBody.regDate[4]).padStart(2, "0")}`;
 
           let newMsgItem: ChatListItemType = {
-            sendUserId: JSON.parse(message.body).memberId,
-            message: JSON.parse(message.body).message,
+            sendUserId: parsedBody.memberId,
+            message: parsedBody.message,
             date,
             time,
-            nickname: JSON.parse(message.body).nickname,
+            nickname: parsedBody.nickname,
           };
-          setChatList((prevMessages) => [...prevMessages, newMsgItem]);
+
+          if (parsedBody.type !== "CHAT") {
+            setChatList((prevMessages) => [...prevMessages, newMsgItem]);
+            handleFocusBottom(); // 메시지 보내면 포커스 아래로
+          }
         }
       );
+
+      // // 읽음 처리
+      // stompClient.publish({
+      //   destination: `/pub/chat.read.${chatRoomId}`,
+      //   body: JSON.stringify({
+      //     read: 1,
+      //   }),
+      // });
     });
-
     setStompClient(stompClient);
-
-    refetch();
 
     return () => {
       if (stompClient) {
         stompClient.disconnect();
       }
+      setChatList([]);
     };
   }, [chatRoomId]);
 
   useEffect(() => {
-    // 디폴트는 항상 가장 최신 즉, 가장 아래 로 포커스
-    if (chattingsRef.current) {
-      chattingsRef.current.scrollTop = chattingsRef.current.scrollHeight;
-    }
+    if (chatList) handleFocusBottom();
   }, [chatList]);
+
+  useEffect(() => {
+    // if (inView && hasMore) {
+    if (inView && hasMore) {
+      setPageNum((prevPageNum) => prevPageNum + 1);
+    }
+  }, [inView, hasMore]);
+
+  useEffect(() => {
+    if (!data || data?.length === 0) {
+      setHasMore(false);
+    }
+  }, [data]);
 
   useEffect(() => {
     // 페이지네이션으로 추가되는 chat list
     let prevChatList: ChatListItemType[] | [] = data
-      ? data?.map((chat, i) => ({
-          sendUserId: chat.memberId,
-          message: chat.message,
-          date: chat.regDate.slice(0, 10),
-          time: chat.regDate.slice(11, 16),
-          nickname: chat.nickname,
-        }))
+      ? data
+          ?.filter((val) => val.type === "TALK")
+          .map((chat, i) => ({
+            sendUserId: chat.memberId,
+            message: chat.message,
+            date: chat.regDate.slice(0, 10),
+            time: chat.regDate.slice(11, 16),
+            nickname: chat.nickname,
+          }))
       : [];
     let newChatList = [...prevChatList.reverse(), ...chatList];
     setChatList(newChatList);
   }, [data]);
+
+  useEffect(() => {
+    if (pageNum > 0 && hasMore) refetch();
+  }, [pageNum]);
 
   return (
     <CommonContainer
@@ -117,27 +189,29 @@ export default function ChatRoomScreen() {
       containerStyle={{ position: "relative", width: "100%" }}
     >
       <Container>
-        <ChatRoomHeader />
+        <ChatRoomHeader postId={state.chatInfo.chatRoom.postId ?? ""} />
         <ChattingsContainer ref={chattingsRef}>
           <ChattingsWrapper>
-            {chatList.map((item, idx) =>
-              item.sendUserId === userInfo.user_id ? (
-                <MyTextMsgBox
-                  key={`chat-msg_${idx}`}
-                  text={item.message}
-                  time={item.time}
-                />
-              ) : (
-                <TextMsgBox
-                  key={`chat-msg_${idx}`}
-                  text={item.message}
-                  time={item.time}
-                  name={item.nickname}
-                  profileImg={
-                    "https://i.pinimg.com/736x/68/15/1e/68151e7ec66a2f5eddaacfd895e3bcd2.jpg"
-                  }
-                />
-              )
+            {/* for 무한스크롤 */}
+            {hasMore && <HasMoreWrapper ref={ref} />}
+            {/*  */}
+            {chatList.map(
+              (item, idx) =>
+                item.sendUserId &&
+                (item.sendUserId === userInfo.user_id ? (
+                  <MyTextMsgBox
+                    key={`chat-msg_${idx}`}
+                    text={item.message}
+                    time={item.time}
+                  />
+                ) : (
+                  <TextMsgBox
+                    key={`chat-msg_${idx}`}
+                    text={item.message}
+                    time={item.time}
+                    name={item.nickname}
+                  />
+                ))
             )}
           </ChattingsWrapper>
         </ChattingsContainer>
@@ -167,4 +241,10 @@ const ChattingsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+`;
+
+const HasMoreWrapper = styled.div`
+  width: 100%;
+  height: 20px;
+  background-color: palegoldenrod;
 `;
