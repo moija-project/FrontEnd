@@ -2,9 +2,9 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { getPostDetail } from "../../../api/service-api/clubPostApi";
 import { usePostInfo } from "../../../api/service-api/clubPost/usePostInfo";
-import { postReceivedChatRequestAccept } from "../../../api/service-api/mypageApi";
+import { postInviteClub } from "../../../api/service-api/mypageApi";
+import { useNavigate } from "react-router-dom";
 
 type ChatMenuType = "exit" | "invite" | "accuse";
 
@@ -15,12 +15,18 @@ const chatMenuList: { type: ChatMenuType; name: string }[] = [
 ];
 type ChatRoomHeaderProps = {
   postId: string;
+  waitingId: number;
 };
 
-export default function ChatRoomHeader({ postId }: ChatRoomHeaderProps) {
+export default function ChatRoomHeader({
+  postId,
+  waitingId,
+}: ChatRoomHeaderProps) {
   const menuRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const { data } = usePostInfo(Number(postId));
 
@@ -40,11 +46,21 @@ export default function ChatRoomHeader({ postId }: ChatRoomHeaderProps) {
   };
 
   const handleInvite = async () => {
-    // try {
-    //   const res = await postReceivedChatRequestAccept(reqData?.waiting_id);
-    // } catch (error) {
-    //   console.error(error)
-    // }
+    if (!waitingId) {
+      alert("모임 초대에 실패했습니다. 다시 시도해주세요.");
+      return;
+    }
+    let result = false;
+    try {
+      const res = await postInviteClub(waitingId);
+      result = res;
+    } catch (error) {
+      console.error(error);
+    }
+
+    if (result) {
+      alert("모임에 초대했습니다!");
+    } else alert("모임 초대에 실패했습니다. 다시 시도해주세요.");
   };
 
   useEffect(() => {

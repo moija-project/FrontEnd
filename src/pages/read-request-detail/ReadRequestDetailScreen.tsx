@@ -8,10 +8,7 @@ import {
   ChatRequestStoreType,
   ReadReceivedAnsResType,
 } from "../../interfaces/mypage-type";
-import {
-  postReceivedChatRequestAccept,
-  postReceivedChatRequestDetail,
-} from "../../api/service-api/mypageApi";
+import { postReceivedChatRequestDetail } from "../../api/service-api/mypageApi";
 import { createChatRoom } from "../../api/service-api/chat/chatApi";
 import { useRecoilValue } from "recoil";
 import { myUserIdState } from "../../store/userStore";
@@ -26,15 +23,16 @@ export default function ReadRequestDetailScreen() {
   const handleAccept = async () => {
     if (window.confirm(`${reqData?.nickname}님의 요청을 수락하시겠습니까?`)) {
       if (!reqData) return;
-      const createChatRes = await createChatRoom({
-        myUserId,
-        chat: {
-          userId: reqDetail?.user_id ?? "",
-          nickname: reqDetail?.nickname ?? "",
-          postId: reqData.post_id,
-          postTitle: reqData.title,
-        },
-      });
+      const createChatRes = await createChatRoom(reqData.waiting_id);
+      // const createChatRes = await createChatRoom({
+      //   myUserId,
+      //   chat: {
+      //     userId: reqDetail?.user_id ?? "",
+      //     nickname: reqDetail?.nickname ?? "",
+      //     postId: reqData.post_id,
+      //     postTitle: reqData.title,
+      //   },
+      // });
       if (createChatRes) {
         window.alert("요청을 수락했습니다!");
         navigate("/clubList");

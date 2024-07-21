@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import CommonContainer from "../../components/CommonContainer";
 import ChatListItem from "./components/ChatListItem";
 import styled from "styled-components";
-import { useRecoilValue } from "recoil";
-import { chatListState } from "../../store/chatStore";
 import { useFetchChatList } from "../../api/service-api/chat/useFetchChatList";
 
 export default function ChatListScreen() {
   const { data, isLoading } = useFetchChatList();
+
+  useEffect(() => {
+    console.log("***** ", data);
+  }, [data]);
 
   return (
     <CommonContainer

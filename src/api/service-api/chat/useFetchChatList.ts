@@ -20,6 +20,6 @@ export const useFetchChatList = () => {
   return useQuery({
     queryKey: ["chat-list"],
     queryFn: postChatList,
-    onSuccess: (data) => data && setChatList(data),
+    onSuccess: (data) => data && setChatList(data.reverse()),
   });
 };
