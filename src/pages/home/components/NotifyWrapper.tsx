@@ -32,7 +32,7 @@ export const NotifyWrapper = () => {
 
     stompClient.connect({}, () => {
       stompClient.subscribe(
-        `/exchange/noti.exchange/user.${userID}`,
+        `/exchange/notify.exchange/user.${userID}`,
         (message: IMessage) => {
           const parsedBody = JSON.parse(message.body);
           setNotify(parsedBody);
