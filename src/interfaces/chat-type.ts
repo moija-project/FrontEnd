@@ -3,6 +3,8 @@ export type ChatListItemResType = {
   chatRoom: ChatListItemChatRoomType;
   lastChat: string;
   nonRead: number;
+  receivedTime: string;
+  waitingId: number | null;
 };
 
 export type ChatListItemChatRoomType = {

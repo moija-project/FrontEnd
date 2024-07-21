@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CommonContainer from "../../components/CommonContainer";
 import styled from "styled-components";
 import ChatRoomHeader from "./components/ChatRoomHeader";
@@ -7,14 +7,10 @@ import { useLocation, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
 import MsgInputWrapper from "./components/MsgInputWrapper";
-import {
-  fetchChatMessages,
-  useFetchPrevChatMessages,
-} from "../../api/service-api/chat/useFetchPrevChatMessages";
+import { useFetchPrevChatMessages } from "../../api/service-api/chat/useFetchPrevChatMessages";
 import { useRecoilValue } from "recoil";
 import { myProfileInfoState } from "../../store/userStore";
 import MyTextMsgBox from "./components/MyTextMsgBox";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { useInView } from "react-intersection-observer";
 
 type ChatListItemType = {
@@ -27,8 +23,8 @@ type ChatListItemType = {
 
 export default function ChatRoomScreen() {
   const { chatRoomId } = useParams();
-  const { state } = useLocation();
-  const [stompClient, setStompClient] = useState<CompatClient>();
+  const { state } = useLocation(); // ChatListItemResType
+  const [stompClient, setStompClient] = useState<CompatClient | null>(null);
   const [chatList, setChatList] = useState<ChatListItemType[]>([]); // 채팅 기록
   const [txtMessage, setTxtMessage] = useState(""); // 입력하는 채팅 문자
   const [pageNum, setPageNum] = useState(0);
@@ -37,6 +33,8 @@ export default function ChatRoomScreen() {
   const userInfo = useRecoilValue(myProfileInfoState);
 
   const chattingsRef = useRef<any>(null);
+
+  useEffect(() => console.log("-----------------", state), [state]);
 
   const { ref, inView, entry } = useInView({
     threshold: 0.5,
@@ -66,29 +64,16 @@ export default function ChatRoomScreen() {
   };
 
   // 챗 리스트의 디폴트는 항상 가장 최신 즉, 가장 아래 로 포커스
-  const handleFocusBottom = () => {
+
+  const handleFocusBottom = useCallback(() => {
     if (!chattingsRef.current) return;
-    if (chattingsRef.current) {
-      chattingsRef.current.scrollTop = chattingsRef.current.scrollHeight;
-    }
-  };
-  const fetchMessages = async (page_number: number) => {
-    const res = await fetchChatMessages({
-      chatRoomId: chatRoomId ?? "",
-      page_size: 10,
-      page_number,
-    });
-    let newMessages = res?.map((chat, _) => ({
-      sendUserId: chat.memberId,
-      message: chat.message,
-      date: chat.regDate.slice(0, 10),
-      time: chat.regDate.slice(11, 16),
-      nickname: chat.nickname,
-    }));
-    // newMessages && setChatList((prev) => [...newMessages?.reverse(), ...prev]);
-  };
+    chattingsRef.current.scrollTop = chattingsRef.current.scrollHeight;
+  }, []);
 
   useEffect(() => {
+    console.log(
+      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+    );
     const sock = new SockJS(`/stomp/chat`);
     const stompClient = Stomp.over(sock);
 
@@ -100,17 +85,6 @@ export default function ChatRoomScreen() {
 
           let date = parsedBody.regDate.slice(0, 10);
           let time = parsedBody.regDate.slice(11, 16);
-
-          // let date = `${parsedBody.regDate[0]}-${String(
-          //   parsedBody.regDate[1]
-          // ).padStart(2, "0")}-${String(parsedBody.regDate[2]).padStart(
-          //   2,
-          //   "0"
-          // )}`;
-          // let time = `${String(parsedBody.regDate[3]).padStart(
-          //   2,
-          //   "0"
-          // )}:${String(parsedBody.regDate[4]).padStart(2, "0")}`;
 
           let newMsgItem: ChatListItemType = {
             sendUserId: parsedBody.memberId,
@@ -149,18 +123,18 @@ export default function ChatRoomScreen() {
     if (chatList) handleFocusBottom();
   }, [chatList]);
 
-  useEffect(() => {
-    // if (inView && hasMore) {
-    if (inView && hasMore) {
-      setPageNum((prevPageNum) => prevPageNum + 1);
-    }
-  }, [inView, hasMore]);
+  // useEffect(() => {
+  //   // if (inView && hasMore) {
+  //   if (inView && hasMore) {
+  //     setPageNum((prevPageNum) => prevPageNum + 1);
+  //   }
+  // }, [inView, hasMore]);
 
-  useEffect(() => {
-    if (!data || data?.length === 0) {
-      setHasMore(false);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (!data || data?.length === 0) {
+  //     setHasMore(false);
+  //   }
+  // }, [data]);
 
   useEffect(() => {
     // 페이지네이션으로 추가되는 chat list
@@ -189,7 +163,10 @@ export default function ChatRoomScreen() {
       containerStyle={{ position: "relative", width: "100%" }}
     >
       <Container>
-        <ChatRoomHeader postId={state.chatInfo.chatRoom.postId ?? ""} />
+        <ChatRoomHeader
+          postId={state.chatInfo.chatRoom.recruitId ?? ""}
+          waitingId={state.chatInfo.waitingId}
+        />
         <ChattingsContainer ref={chattingsRef}>
           <ChattingsWrapper>
             {/* for 무한스크롤 */}
@@ -246,5 +223,5 @@ const ChattingsWrapper = styled.div`
 const HasMoreWrapper = styled.div`
   width: 100%;
   height: 20px;
-  background-color: palegoldenrod;
+  /* background-color: palegoldenrod; */
 `;

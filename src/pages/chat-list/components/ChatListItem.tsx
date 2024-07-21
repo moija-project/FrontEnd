@@ -19,16 +19,17 @@ export default function ChatListItem({ chatInfo }: ChatListItemProps) {
       state: { chatInfo },
     });
   };
+
   return (
     <Container onClick={moveToChatRoom}>
-      <Image src={imgUrl} />
+      {/* <Image src={chatInfo.chatRoom.} /> */}
       <RightWrapper>
         <TextWrapper>
           <Title>{chatInfo.chatRoom.chatName}</Title>
           <LastMessage>{chatInfo.lastChat}</LastMessage>
         </TextWrapper>
         <TimeWrapper>
-          <TimeText>1시간 전</TimeText>
+          <TimeText>{chatInfo.receivedTime.slice(0, 10)}</TimeText>
           {chatInfo.nonRead !== 0 && <NewCnt>{chatInfo.nonRead}</NewCnt>}
         </TimeWrapper>
       </RightWrapper>
@@ -61,7 +62,7 @@ const Image = styled.img`
 const RightWrapper = styled.div`
   width: 100%;
   gap: 0;
-  flex: 1;
+  flex: auto;
   display: flex;
   flex-direction: row;
 `;

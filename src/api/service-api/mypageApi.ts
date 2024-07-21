@@ -58,7 +58,7 @@ export const postReceivedChatRequestDetail = async (
   }
 };
 
-// 받은 요청 수락하기
+// 받은 1:1 채팅 요청 수락하기
 export const postReceivedChatRequestAccept = async (waiting_id: number) => {
   const url = `/my/accept/${waiting_id}`;
   try {
@@ -66,6 +66,18 @@ export const postReceivedChatRequestAccept = async (waiting_id: number) => {
     return res.data;
   } catch (error) {
     console.error(error);
+  }
+};
+
+// 모임에 초대하기
+export const postInviteClub = async (waiting_id: number) => {
+  const url = `/my/invite/${waiting_id}`;
+  try {
+    const res = await axiosAuth.post(url);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
   }
 };
 
