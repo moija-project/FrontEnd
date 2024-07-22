@@ -34,7 +34,7 @@ export type ReadReceivedAnsResType = {
 // 푸쉬 알림 응답 타입
 export type NotifyResType = {
   pushId: string;
-  messasge: string;
+  message: string;
   nonRead: boolean;
   pushType: number;
   link: string;

@@ -66,8 +66,6 @@ axiosAuth.interceptors.request.use(
 
 axiosAuth.interceptors.response.use(
   (response) => {
-    console.log("axios auth response : ", response.data);
-
     if (!response.data.isSuccess) {
       // 응답이 실패일 경우 처리
       const errorCode = response.data.code;

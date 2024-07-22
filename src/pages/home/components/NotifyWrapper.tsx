@@ -22,7 +22,7 @@ const ex = [
 export const NotifyWrapper = () => {
   const [stompClient, setStompClient] = useState<CompatClient>();
 
-  const [notify, setNotify] = useState<NotifyResType[]>();
+  const [notify, setNotify] = useState<NotifyResType[] | []>([]);
   const userID = useRecoilValue(myUserIdState);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export const NotifyWrapper = () => {
         `/exchange/notify.exchange/user.${userID}`,
         (message: IMessage) => {
           const parsedBody = JSON.parse(message.body);
-          setNotify(parsedBody);
+          setNotify([parsedBody, ...notify]);
         }
       );
     });

@@ -17,7 +17,7 @@ export default function NotificationBox({
       <Container isFirst={isFirst}>
         <IconImage src={require("../../../assets/images/icon-invite.png")} />
         <MessageWrapper>
-          <MessageTitle>{item.messasge}</MessageTitle>
+          <MessageTitle>{item.message}</MessageTitle>
           <MessageContent>자세히 보기</MessageContent>
         </MessageWrapper>
       </Container>
