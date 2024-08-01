@@ -17,7 +17,10 @@
 - 인터넷 만남이나 모르는 사람과 소통 하는 것이 힘든 사람
 - 함께 도전활동, 취미활동 할 사람을 찾고 있지만, 마땅한 만남의 장이 없어 혼자 공부하거나 취미생활 하는 사람. 
 
-(url : http://front.mo.ija.kro.kr/)
+## 결과물 보기
+- 서비스 바로가기 : https://moija.site/
+- 최종 영상 보기 : https://www.youtube.com/watch?v=QlwdNU2IGKc&list=LL&index=5&t=2s
+- (중간 1차 영상 보기 : https://www.youtube.com/watch?v=91NxnweaSEA&t=0s)
 
 ## 팀원 소개
 ```FE``` 이가영
