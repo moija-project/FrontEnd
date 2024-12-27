@@ -2,21 +2,13 @@ import React, { useEffect, useState } from 'react';
 import CommonContainer from '../../components/CommonContainer';
 import styled from 'styled-components';
 import { postLogin } from '../../api/service-api/userApi';
-import { setCookie } from '../../utils/cookie';
 import { useRecoilState } from 'recoil';
-import {
-  accessTokenState,
-  getAccessTokenState,
-  isLoggedInState,
-  myProfileInfoState,
-  myUserIdState,
-} from '../../store/userStore';
+import { accessTokenState, isLoggedInState, myProfileInfoState, myUserIdState } from '../../store/userStore';
 import { useNavigate } from 'react-router-dom';
 import { postMyProfile } from '../../api/service-api/profileApi';
 
 export default function LoginScreen() {
   const navigate = useNavigate();
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [isLoggedin, setIsLoggedin] = useRecoilState(isLoggedInState);
   const [userProfile, setUserProfile] = useRecoilState(myProfileInfoState);
   const [userId, setUserId] = useRecoilState(myUserIdState); // maybe fix

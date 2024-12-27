@@ -1,10 +1,8 @@
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { debounce } from 'lodash';
-import React, { useEffect, useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { postMyProfile } from '../api/service-api/profileApi';
 
 type HeaderProps = {
   RightOption?: React.ReactNode;

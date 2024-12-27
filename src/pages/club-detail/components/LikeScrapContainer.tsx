@@ -1,10 +1,9 @@
 import { faHeart, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getPostDetail, postPostClip, postPostLike } from '../../../api/service-api/clubPostApi';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { fetchPostDetailAtom, postDetailState } from '../../../store/postStore';
+import { postPostClip, postPostLike } from '../../../api/service-api/clubPostApi';
+import { useRecoilState } from 'recoil';
+import { postDetailState } from '../../../store/postStore';
 import { useNavigate } from 'react-router-dom';
 
 // !!! 로그인했을 때만 클릭 가능하도록!!

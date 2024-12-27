@@ -25,10 +25,11 @@ export const postScrapList = async (): Promise<postListResType[] | undefined> =>
 };
 
 // 받은 요청 (받은 1대1 채팅 요청 )
-export const postReceivedChatRequest = async (data: {}): Promise<ReceivedChatRequestType[] | undefined> => {
+export const postReceivedChatRequest = async (data: object): Promise<ReceivedChatRequestType[] | undefined> => {
   const url = `/my/waiting/list`;
   try {
     const res = await axiosAuth.post(url, {}); // fix
+    console.log('--- ', data);
     return res.data.result;
   } catch (error) {
     console.error(error);

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { myProfileInfoState } from '../store/userStore';
 import { postMyProfile } from '../api/service-api/profileApi';

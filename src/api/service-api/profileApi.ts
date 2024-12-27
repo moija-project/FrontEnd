@@ -2,7 +2,7 @@ import { ProfileResType, UserProfileResType } from '../../interfaces/user-type';
 import { axiosAuth } from '../settingAxios';
 
 // 내 프로필 보기
-export const postMyProfile = async (data: {}): Promise<ProfileResType | undefined> => {
+export const postMyProfile = async (data: object): Promise<ProfileResType | undefined> => {
   const url = `/my/profile`;
   try {
     const res = await axiosAuth.post(url); // fix

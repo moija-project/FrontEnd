@@ -6,7 +6,7 @@ import { faHeart, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { ProfileResType } from '../interfaces/user-type';
 import { useRecoilState } from 'recoil';
 import { myProfileInfoState } from '../store/userStore';
-import { patchMyProfileImg, patchMyProfileNickname, postMyProfile } from '../api/service-api/profileApi';
+import { patchMyProfileImg, patchMyProfileNickname } from '../api/service-api/profileApi';
 
 type ProfileModalProps = {
   setOpen: (open: boolean) => void;

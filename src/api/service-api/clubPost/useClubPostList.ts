@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import { getPostList } from '../clubPostApi';
 import { postListParamsType } from '../../../interfaces/post-type';
 

@@ -1,5 +1,4 @@
-import axios, { AxiosError, AxiosHeaders } from 'axios';
-import useUserProfile from '../hook/useUserProfile';
+import axios, { AxiosError } from 'axios';
 
 axios.defaults.withCredentials = true;
 

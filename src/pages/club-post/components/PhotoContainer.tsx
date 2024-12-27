@@ -1,12 +1,11 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { postPhotoState, writePostState } from '../../../store/postStore';
 
 export default function PhotoContainer() {
-  const [writePost, setWritePost] = useRecoilState(writePostState);
   const [postImg, setPostImg] = useRecoilState(postPhotoState);
   const [previewImg, setPreviewImg] = useState<any[]>([]);
 

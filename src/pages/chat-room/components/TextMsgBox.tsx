@@ -21,7 +21,6 @@ export default function TextMsgBox({ text, time, name }: TextMsgBoxProps) {
       if (textWidth > 100) {
         div.style.wordWrap = 'break-word';
         div.style.height = 'auto';
-      } else {
       }
     }
   }, [text]);
@@ -46,11 +45,6 @@ const ChatContainer = styled.div`
   flex-direction: row;
   gap: 0.4rem;
   align-items: flex-start;
-`;
-const ProfileImg = styled.img`
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 100%;
 `;
 const ChatWrapper = styled.div`
   display: flex;

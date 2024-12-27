@@ -1,8 +1,7 @@
-import React, { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Modal from './Modal';
 import ProfileModal from './ProfileModal';
-import { ProfileResType, ProfileType, UserProfileResType } from '../interfaces/user-type';
+import { ProfileResType } from '../interfaces/user-type';
 import { getUserProfile } from '../api/service-api/profileApi';
 
 type PreviewProfileProps = {

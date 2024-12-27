@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import CommonContainer from '../../components/CommonContainer';
 import ChatListItem from './components/ChatListItem';
 import styled from 'styled-components';

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { postQuestionAnswerState } from '../../../store/postStore';

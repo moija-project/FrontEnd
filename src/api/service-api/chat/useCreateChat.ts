@@ -10,7 +10,7 @@ import { useMutation } from 'react-query';
 const createChatRoom = async (body: CreateChatReqType) => {
   const url = `/message/create/one-to-one`;
 
-  let formData = new FormData();
+  const formData = new FormData();
 
   //   const userIdBlob = new Blob([body.myUserId], { type: "application/json" });
   formData.append('userId', body.myUserId);

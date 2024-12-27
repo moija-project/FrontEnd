@@ -1,13 +1,10 @@
-import React, { useEffect, useId, useState } from 'react';
 import styled from 'styled-components';
 import Carousel from './Carousel';
 import PreviewProfile from '../../../components/PreviewProfile';
-import { getPostDetail } from '../../../api/service-api/clubPostApi';
 import { postDetailResType } from '../../../interfaces/post-type';
 import { changeDateExprssion } from '../../../utils/datetime';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { postDetailState } from '../../../store/postStore';
-import { myProfileInfoState } from '../../../store/userStore';
 
 type ClubDetailContentProps = {
   postId: number;

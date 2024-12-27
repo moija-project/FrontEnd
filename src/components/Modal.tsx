@@ -1,6 +1,6 @@
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import ReactModal from 'react-modal';
 import styled from 'styled-components';
 

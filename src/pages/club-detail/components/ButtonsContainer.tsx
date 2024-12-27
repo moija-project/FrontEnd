@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { deletePostDetail, postAnswering, postChangeClubState } from '../../../api/service-api/clubPostApi';

@@ -1,7 +1,6 @@
-import { atom, selector, selectorFamily } from 'recoil';
+import { atom, selector } from 'recoil';
 import { ProfileResType } from '../interfaces/user-type';
 import { recoilPersist } from 'recoil-persist';
-import { getUserProfile } from '../api/service-api/profileApi';
 
 // recoil - persist
 const { persistAtom } = recoilPersist({

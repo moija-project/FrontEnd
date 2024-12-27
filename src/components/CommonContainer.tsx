@@ -1,5 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 type CommonContainerProps = {

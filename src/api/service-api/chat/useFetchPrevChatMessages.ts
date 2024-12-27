@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { ChatMessageListReqType, ChatMessageListType } from '../../../interfaces/chat-type';
 import { axiosAuth } from '../../settingAxios';
 

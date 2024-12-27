@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import PostContent from './components/PostContent';
 import CreateQuestionnaire from './components/CreateQuestionnaire';
@@ -6,7 +6,7 @@ import CommonContainer from '../../components/CommonContainer';
 import { postPhotoState, writePostState } from '../../store/postStore';
 import { useRecoilState } from 'recoil';
 import { postPostWrite } from '../../api/service-api/clubPostApi';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function ClubPostScreen() {
   const navigate = useNavigate();

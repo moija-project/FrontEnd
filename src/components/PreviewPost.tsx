@@ -1,8 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons/faEye';
 import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart';
-import { faL, faStar } from '@fortawesome/free-solid-svg-icons';
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { changeDateExprssion } from '../utils/datetime';

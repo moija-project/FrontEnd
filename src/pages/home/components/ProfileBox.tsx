@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import ProfileWrapper from './ProfileWrapper';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +8,6 @@ import { postLogout } from '../../../api/service-api/userApi';
 
 export default function ProfileBox() {
   const navigate = useNavigate();
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [isLoggedin, setIsLoggedin] = useRecoilState(isLoggedInState);
   const [myProfile, setMyProfile] = useRecoilState(myProfileInfoState);
 

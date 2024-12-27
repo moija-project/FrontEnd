@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { NotifyResType } from '../../../interfaces/mypage-type';
 import { Link } from 'react-router-dom';

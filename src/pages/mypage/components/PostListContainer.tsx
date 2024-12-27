@@ -1,6 +1,3 @@
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 import styled from 'styled-components';
 import PreviewPost from '../../../components/PreviewPost';
 import { postListResType } from '../../../interfaces/post-type';
@@ -21,14 +18,6 @@ export default function PostListContainer({ postlistType, data }: PostListContai
           : '';
   return (
     <Container>
-      {/* <HeaderWrapper>
-        <Title>{postListTypeName}</Title>
-        <MoreButton>
-          <MoreButtonText>더보기</MoreButtonText>{" "}
-          <FontAwesomeIcon icon={faArrowRight} />
-        </MoreButton>
-      </HeaderWrapper> */}
-
       <ListWrapper>
         {data
           ?.slice(0, 5)

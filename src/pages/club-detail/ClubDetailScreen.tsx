@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import ClubDetailContent from './components/ClubDetailContent';
 import ButtonsContainer from './components/ButtonsContainer';
 import LikeScrapContainer from './components/LikeScrapContainer';
 import ClubManageContainer from './components/ClubManageContainer';
 import { useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { postDetailQuestions, postDetailState } from '../../store/postStore';
 import { getPostDetail, getPostQuestion } from '../../api/service-api/clubPostApi';
 import { postDetailResType } from '../../interfaces/post-type';

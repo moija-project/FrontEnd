@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ChatRequestStoreType } from '../interfaces/mypage-type';
