@@ -1,12 +1,12 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
-import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
-import { faL, faStar } from "@fortawesome/free-solid-svg-icons";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { changeDateExprssion } from "../utils/datetime";
-import { postListResType } from "../interfaces/post-type";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons/faEye';
+import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart';
+import { faL, faStar } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { changeDateExprssion } from '../utils/datetime';
+import { postListResType } from '../interfaces/post-type';
 
 type PreviewPostProps = {
   postItem?: postListResType; // fix!!
@@ -14,11 +14,7 @@ type PreviewPostProps = {
   hasSidePadding?: boolean;
 };
 
-export default function PreviewPost({
-  postItem,
-  isFirst = false,
-  hasSidePadding = true,
-}: PreviewPostProps) {
+export default function PreviewPost({ postItem, isFirst = false, hasSidePadding = true }: PreviewPostProps) {
   const navigate = useNavigate();
 
   const moveToPostDetail = () => {
@@ -26,26 +22,20 @@ export default function PreviewPost({
   };
 
   return (
-    <Container
-      onClick={moveToPostDetail}
-      isFirst={isFirst}
-      sidePadding={hasSidePadding}
-    >
+    <Container onClick={moveToPostDetail} isFirst={isFirst} sidePadding={hasSidePadding}>
       <TopWrapper>
         <RecruitStatus isRecruiting={postItem?.state_recruit ?? true}>
-          {postItem?.state_recruit ? "모집중" : "모집종료"}
+          {postItem?.state_recruit ? '모집중' : '모집종료'}
         </RecruitStatus>
-        <Title>{postItem ? postItem.title : "test title"}</Title>
+        <Title>{postItem ? postItem.title : 'test title'}</Title>
       </TopWrapper>
       <MiddleWrapper>
-        <Content>{postItem?.contents ?? "test contents"}</Content>
+        <Content>{postItem?.contents ?? 'test contents'}</Content>
       </MiddleWrapper>
       <BottomWrapper>
         <BottomLeft>
-          {postItem?.leader_nickname ?? "leader nickname"} ·{" "}
-          {postItem
-            ? changeDateExprssion(postItem?.latest_write)
-            : "2024년 01월 01일"}
+          {postItem?.leader_nickname ?? 'leader nickname'} ·{' '}
+          {postItem ? changeDateExprssion(postItem?.latest_write) : '2024년 01월 01일'}
         </BottomLeft>
         <BottomRight>
           <IconWrapper>
@@ -63,12 +53,12 @@ export default function PreviewPost({
 }
 
 const Container = styled.div<{ isFirst: boolean; sidePadding?: boolean }>`
-  ${({ isFirst }) => !isFirst && "border-top: 1px solid var(--light-gray02);"}
+  ${({ isFirst }) => !isFirst && 'border-top: 1px solid var(--light-gray02);'}
   display: flex;
   flex-direction: column;
   cursor: pointer;
   background-color: white;
-  padding: 1.25rem ${({ sidePadding }) => (sidePadding ? "1.25rem" : "0")};
+  padding: 1.25rem ${({ sidePadding }) => (sidePadding ? '1.25rem' : '0')};
   /* width: 100%; */
   max-width: 100%;
 
@@ -127,8 +117,7 @@ const RecruitStatus = styled.span<{ isRecruiting: boolean }>`
   text-align: center;
   min-width: 55px;
   border-radius: 0.94rem;
-  background-color: ${({ isRecruiting }) =>
-    isRecruiting ? "var(--purple)" : "var(--gray01)"};
+  background-color: ${({ isRecruiting }) => (isRecruiting ? 'var(--purple)' : 'var(--gray01)')};
   color: white;
   margin-right: 0.625rem;
 `;

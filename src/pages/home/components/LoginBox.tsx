@@ -1,12 +1,12 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 export default function LoginBox() {
   const navigate = useNavigate();
 
   const moveToSignup = () => {
-    navigate("/regulation");
+    navigate('/regulation');
   };
 
   return (
@@ -15,7 +15,7 @@ export default function LoginBox() {
         로그인하고 <br /> 모임에 참여하거나 직접 모임을 만들어보세요!
       </Content>
       <ButtonWrapper>
-        <BoxButton isColored={true} onClick={() => navigate("/login")}>
+        <BoxButton isColored={true} onClick={() => navigate('/login')}>
           로그인
         </BoxButton>
         <BoxButton onClick={moveToSignup} isColored={false}>
@@ -52,9 +52,8 @@ const BoxButton = styled.button<{ isColored: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ isColored }) =>
-    isColored ? "var(--purple)" : "white"};
-  color: ${({ isColored }) => (isColored ? "white" : "var(--purple)")};
+  background-color: ${({ isColored }) => (isColored ? 'var(--purple)' : 'white')};
+  color: ${({ isColored }) => (isColored ? 'white' : 'var(--purple)')};
   border-radius: 4px;
-  ${({ isColored }) => !isColored && "border: 1px solid var(--purple);"}
+  ${({ isColored }) => !isColored && 'border: 1px solid var(--purple);'}
 `;

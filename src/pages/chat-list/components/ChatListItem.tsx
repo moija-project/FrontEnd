@@ -1,10 +1,9 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { ChatListItemResType } from "../../../interfaces/chat-type";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { ChatListItemResType } from '../../../interfaces/chat-type';
 
-const imgUrl =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4iPRF0B7snYyA5v9Rn76ptVODPWbnb0Tt0dK6n523A&s";
+const imgUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4iPRF0B7snYyA5v9Rn76ptVODPWbnb0Tt0dK6n523A&s';
 const chatRoomId = 1; // 임시
 
 type ChatListItemProps = {

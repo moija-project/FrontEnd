@@ -1,14 +1,9 @@
-import { useInfiniteQuery, useQuery } from "react-query";
-import {
-  ChatMessageListReqType,
-  ChatMessageListType,
-} from "../../../interfaces/chat-type";
-import { axiosAuth } from "../../settingAxios";
+import { useInfiniteQuery, useQuery } from 'react-query';
+import { ChatMessageListReqType, ChatMessageListType } from '../../../interfaces/chat-type';
+import { axiosAuth } from '../../settingAxios';
 
 // 채팅방 이전 대화 목록 조회
-export const fetchChatMessages = async (
-  req: ChatMessageListReqType
-): Promise<ChatMessageListType[] | undefined> => {
+export const fetchChatMessages = async (req: ChatMessageListReqType): Promise<ChatMessageListType[] | undefined> => {
   const url = `/message/list`;
   try {
     const res = await axiosAuth.post(url, req);
@@ -20,7 +15,7 @@ export const fetchChatMessages = async (
 
 export const useFetchPrevChatMessages = (req: ChatMessageListReqType) => {
   return useQuery({
-    queryKey: ["chat-msg-list", `messages-${req.chatRoomId}`],
+    queryKey: ['chat-msg-list', `messages-${req.chatRoomId}`],
     queryFn: () => fetchChatMessages(req),
     // queryFn: ({ pageParam = 1 }) =>
     //   fetchChatMessages({ ...req, page_number: pageParam }),

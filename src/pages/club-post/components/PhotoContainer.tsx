@@ -1,9 +1,9 @@
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import { postPhotoState, writePostState } from "../../../store/postStore";
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import styled from 'styled-components';
+import { postPhotoState, writePostState } from '../../../store/postStore';
 
 export default function PhotoContainer() {
   const [writePost, setWritePost] = useRecoilState(writePostState);
@@ -23,10 +23,7 @@ export default function PhotoContainer() {
       }
     };
   };
-  const onRemoveImage = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    idx: number
-  ) => {
+  const onRemoveImage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, idx: number) => {
     e.preventDefault();
     const postImgArr = postImg.filter((v, i) => i !== idx);
     const previewImgArr = previewImg.filter((v, i) => i !== idx);
@@ -40,18 +37,16 @@ export default function PhotoContainer() {
         <PhotoTitle>사진</PhotoTitle>
         <PhotoInstruction>(최대 5장)</PhotoInstruction>
       </PhotoTitleWrapper>
-      <PhotosContainer>        
+      <PhotosContainer>
         <AddPhotoButton
           id="addImg"
           type="file"
           accept=".png, .jpg, .jpeg"
-          onClick={() => console.log("click")}
+          onClick={() => console.log('click')}
           onChange={(e) => onUploadImage(e)}
         />
         <AddPhotoLabel htmlFor="addImg">
-          <AddPhotoIcon
-            src={require("../../../assets/images/icon-add-photo.png")}
-          />
+          <AddPhotoIcon src={require('../../../assets/images/icon-add-photo.png')} />
         </AddPhotoLabel>
         {previewImg &&
           previewImg.map((src, i) => (
@@ -93,8 +88,8 @@ const PhotosContainer = styled.div`
   margin-top: 20px;
 `;
 const AddPhotoButton = styled.input`
-width: 0;
-height: 0;
+  width: 0;
+  height: 0;
 `;
 const AddPhotoLabel = styled.label`
   width: 80px;

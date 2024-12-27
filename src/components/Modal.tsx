@@ -1,8 +1,8 @@
-import { faX } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { ReactNode, useState } from "react";
-import ReactModal from "react-modal";
-import styled from "styled-components";
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { ReactNode, useState } from 'react';
+import ReactModal from 'react-modal';
+import styled from 'styled-components';
 
 type ModalProps = {
   setClose: (close: boolean) => void;
@@ -18,30 +18,30 @@ type ModalProps = {
 
 const customModalStyles: ReactModal.Styles = {
   overlay: {
-    backgroundColor: " rgba(0, 0, 0, 0.4)",
-    width: "100%",
-    height: "100vh",
-    zIndex: "10",
-    position: "fixed",
-    top: "0",
-    left: "0",
+    backgroundColor: ' rgba(0, 0, 0, 0.4)',
+    width: '100%',
+    height: '100vh',
+    zIndex: '10',
+    position: 'fixed',
+    top: '0',
+    left: '0',
   },
   content: {
-    width: "800px",
-    maxWidth: "70%",
-    minHeight: "380px",
-    height: "450px",
-    maxHeight: "600px",
-    zIndex: "150",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    borderRadius: "10px",
-    boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
-    backgroundColor: "white",
-    justifyContent: "center",
-    overflow: "auto",
+    width: '800px',
+    maxWidth: '70%',
+    minHeight: '380px',
+    height: '450px',
+    maxHeight: '600px',
+    zIndex: '150',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '10px',
+    boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    overflow: 'auto',
   },
 };
 
@@ -58,11 +58,7 @@ export default function Modal({ setClose, children, open, style }: ModalProps) {
       shouldCloseOnOverlayClick
     >
       <Container>
-        <FontAwesomeIcon
-          onClick={handleCloseModal}
-          icon={faX}
-          style={{ marginLeft: "auto", cursor: "pointer" }}
-        />
+        <FontAwesomeIcon onClick={handleCloseModal} icon={faX} style={{ marginLeft: 'auto', cursor: 'pointer' }} />
         {children}
       </Container>
     </ReactModal>

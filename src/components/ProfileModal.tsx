@@ -1,26 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
-import Modal from "./Modal";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { ProfileResType } from "../interfaces/user-type";
-import { useRecoilState } from "recoil";
-import { myProfileInfoState } from "../store/userStore";
-import {
-  patchMyProfileImg,
-  patchMyProfileNickname,
-  postMyProfile,
-} from "../api/service-api/profileApi";
+import React, { useEffect, useRef, useState } from 'react';
+import Modal from './Modal';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { ProfileResType } from '../interfaces/user-type';
+import { useRecoilState } from 'recoil';
+import { myProfileInfoState } from '../store/userStore';
+import { patchMyProfileImg, patchMyProfileNickname, postMyProfile } from '../api/service-api/profileApi';
 
 type ProfileModalProps = {
   setOpen: (open: boolean) => void;
   profileData?: ProfileResType;
 };
 
-export default function ProfileModal({
-  setOpen,
-  profileData,
-}: ProfileModalProps) {
+export default function ProfileModal({ setOpen, profileData }: ProfileModalProps) {
   let defaultNickname = profileData?.nickname;
   const [postImg, setPostImg] = useState<any>();
   // const
@@ -50,8 +43,8 @@ export default function ProfileModal({
   };
   const handleEditSubmit = async () => {
     let formData = new FormData();
-    formData.append("file", postImg);
-    if (window.confirm("수정하시겠습니까?")) {
+    formData.append('file', postImg);
+    if (window.confirm('수정하시겠습니까?')) {
       // 수정하기
       let nicknameRes;
       if (inpuNickname && inpuNickname !== defaultNickname) {
@@ -61,35 +54,27 @@ export default function ProfileModal({
 
       if (
         (inpuNickname === defaultNickname && imgRes?.data.isSuccess) ||
-        (inpuNickname !== defaultNickname &&
-          nicknameRes?.data.isSuccess &&
-          imgRes?.data.isSuccess)
+        (inpuNickname !== defaultNickname && nicknameRes?.data.isSuccess && imgRes?.data.isSuccess)
       ) {
         setMyProfile({
           ...myProfile,
           photo_profile: previewImg,
-          nickname: inpuNickname ?? defaultNickname ?? "",
+          nickname: inpuNickname ?? defaultNickname ?? '',
         });
-        alert("수정되었습니다!");
+        alert('수정되었습니다!');
         setOpen(false);
       } else {
-        console.log("nick name response :: ", nicknameRes);
-        alert("프로필 수정에 문제가 생겼습니다.");
+        console.log('nick name response :: ', nicknameRes);
+        alert('프로필 수정에 문제가 생겼습니다.');
       }
     }
   };
   const _renderColoredHeart = (score: number) => {
     let rate = score * 19.5;
     return (
-      <HeartWrapper
-        style={{ width: rate, overflow: "hidden", whiteSpace: "nowrap" }}
-      >
+      <HeartWrapper style={{ width: rate, overflow: 'hidden', whiteSpace: 'nowrap' }}>
         {[1, 2, 3, 4, 5].map((v, i) => (
-          <FontAwesomeIcon
-            key={`default-heart-${i}`}
-            icon={faHeart}
-            color="#CEA1E7"
-          />
+          <FontAwesomeIcon key={`default-heart-${i}`} icon={faHeart} color="#CEA1E7" />
         ))}
       </HeartWrapper>
     );
@@ -98,11 +83,7 @@ export default function ProfileModal({
     return (
       <HeartWrapper style={{ width: 95 }}>
         {[1, 2, 3, 4, 5].map((v, i) => (
-          <FontAwesomeIcon
-            key={`default-heart-${i}`}
-            icon={faHeart}
-            color="#e3e3e3"
-          />
+          <FontAwesomeIcon key={`default-heart-${i}`} icon={faHeart} color="#e3e3e3" />
         ))}
       </HeartWrapper>
     );
@@ -110,9 +91,9 @@ export default function ProfileModal({
 
   useEffect(() => {
     setPreviewImg(
-      !profileData?.photo_profile || profileData.photo_profile === ""
-        ? require("../assets/images/default-img-01.png")
-        : profileData.photo_profile
+      !profileData?.photo_profile || profileData.photo_profile === ''
+        ? require('../assets/images/default-img-01.png')
+        : profileData.photo_profile,
     );
   }, []);
 
@@ -134,7 +115,7 @@ export default function ProfileModal({
               <input
                 type="file"
                 accept=".png, .jpg, .jpeg"
-                style={{ display: "none" }}
+                style={{ display: 'none' }}
                 id="file_btn"
                 onChange={(e) => onUploadImage(e)}
               />
@@ -168,9 +149,7 @@ export default function ProfileModal({
             </MyScore>
           </ScoreWrapper>
         </CredWrapper>
-        {myProfile.user_id === profileData?.user_id && (
-          <EditButton onClick={handleEditSubmit}>수정하기</EditButton>
-        )}
+        {myProfile.user_id === profileData?.user_id && <EditButton onClick={handleEditSubmit}>수정하기</EditButton>}
       </Container>
     </Modal>
   );

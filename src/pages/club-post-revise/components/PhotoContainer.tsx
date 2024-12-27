@@ -1,9 +1,9 @@
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import { writePostState } from "../../../store/postStore";
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import styled from 'styled-components';
+import { writePostState } from '../../../store/postStore';
 
 export default function PhotoContainer() {
   const [writePost, setWritePost] = useRecoilState(writePostState);
@@ -23,10 +23,7 @@ export default function PhotoContainer() {
       }
     };
   };
-  const onRemoveImage = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    idx: number
-  ) => {
+  const onRemoveImage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, idx: number) => {
     e.preventDefault();
     const postImgArr = postImg.filter((v, i) => i !== idx);
     const previewImgArr = previewImg.filter((v, i) => i !== idx);
@@ -41,16 +38,9 @@ export default function PhotoContainer() {
         <PhotoInstruction>(최대 5장)</PhotoInstruction>
       </PhotoTitleWrapper>
       <PhotosContainer>
-        <AddPhotoButton
-          id="addImg"
-          type="file"
-          accept="image/*"
-          onChange={(e) => onUploadImage(e)}
-        />
+        <AddPhotoButton id="addImg" type="file" accept="image/*" onChange={(e) => onUploadImage(e)} />
         <AddPhotoLabel htmlFor="addImg">
-          <AddPhotoIcon
-            src={require("../../../assets/images/icon-add-photo.png")}
-          />
+          <AddPhotoIcon src={require('../../../assets/images/icon-add-photo.png')} />
         </AddPhotoLabel>
         {previewImg &&
           previewImg.map((src, i) => (

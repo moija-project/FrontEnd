@@ -1,5 +1,5 @@
-import { LoginResType, SignupReqType } from "../../interfaces/user-type";
-import { axiosAuth } from "../settingAxios";
+import { LoginResType, SignupReqType } from '../../interfaces/user-type';
+import { axiosAuth } from '../settingAxios';
 
 // 회원가입
 export const postSignup = async (data: SignupReqType) => {
@@ -13,10 +13,7 @@ export const postSignup = async (data: SignupReqType) => {
 };
 
 // 로그인
-export const postLogin = async (
-  username: string,
-  password: string
-): Promise<LoginResType | undefined> => {
+export const postLogin = async (username: string, password: string): Promise<LoginResType | undefined> => {
   const url = `/user/login`;
   try {
     const res = await axiosAuth.post(url, { username, password });

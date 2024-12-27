@@ -17,8 +17,8 @@ export type ProfileResType = {
 };
 
 export type UserProfileResType = ProfileResType & {
-  my_grant : any
-}
+  my_grant: any;
+};
 
 // 회원가입
 export type SignupReqType = {

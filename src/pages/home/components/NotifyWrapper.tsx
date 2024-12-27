@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import NotificationBox from "./NotificationBox";
-import { useRecoilValue } from "recoil";
-import { myUserIdState } from "../../../store/userStore";
-import SockJS from "sockjs-client";
-import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
-import { NotifyResType } from "../../../interfaces/mypage-type";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import NotificationBox from './NotificationBox';
+import { useRecoilValue } from 'recoil';
+import { myUserIdState } from '../../../store/userStore';
+import SockJS from 'sockjs-client';
+import { CompatClient, IMessage, Stomp } from '@stomp/stompjs';
+import { NotifyResType } from '../../../interfaces/mypage-type';
 
 const ex = [
   {
-    pushId: "1",
-    messasge:
-      "메시지에요메시지에요메시지에요메시지에요메시지에요메시지에요메시지에요메시지에요메시지에요메시지에요",
+    pushId: '1',
+    messasge: '메시지에요메시지에요메시지에요메시지에요메시지에요메시지에요메시지에요메시지에요메시지에요메시지에요',
     nonRead: true,
     pushType: 1,
-    pubDate: "",
-    link: "http://front.mo.ija.kro.kr/clubList",
+    pubDate: '',
+    link: 'http://front.mo.ija.kro.kr/clubList',
   },
 ];
 
@@ -31,13 +30,10 @@ export const NotifyWrapper = () => {
     const stompClient = Stomp.over(sock);
 
     stompClient.connect({}, () => {
-      stompClient.subscribe(
-        `/exchange/notify.exchange/user.${userID}`,
-        (message: IMessage) => {
-          const parsedBody = JSON.parse(message.body);
-          setNotify([parsedBody, ...notify]);
-        }
-      );
+      stompClient.subscribe(`/exchange/notify.exchange/user.${userID}`, (message: IMessage) => {
+        const parsedBody = JSON.parse(message.body);
+        setNotify([parsedBody, ...notify]);
+      });
     });
     setStompClient(stompClient);
 

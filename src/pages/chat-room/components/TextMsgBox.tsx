@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import styled from "styled-components";
+import { useEffect, useRef } from 'react';
+import styled from 'styled-components';
 
 type TextMsgBoxProps = {
   text: string;
@@ -19,8 +19,8 @@ export default function TextMsgBox({ text, time, name }: TextMsgBoxProps) {
       const div = textRef.current;
       const textWidth = div.scrollWidth;
       if (textWidth > 100) {
-        div.style.wordWrap = "break-word";
-        div.style.height = "auto";
+        div.style.wordWrap = 'break-word';
+        div.style.height = 'auto';
       } else {
       }
     }

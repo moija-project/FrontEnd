@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 type QuestionContainerProps = {
   setScore: (score: number, num: number) => void;
@@ -8,18 +8,14 @@ type QuestionContainerProps = {
 };
 
 const scoresArr = [
-  { score: 0.2, text: "전혀 아니다" },
-  { score: 0.4, text: "아니다" },
-  { score: 0.6, text: "보통이다" },
-  { score: 0.8, text: "그렇다" },
-  { score: 1, text: "매우 그렇다" },
+  { score: 0.2, text: '전혀 아니다' },
+  { score: 0.4, text: '아니다' },
+  { score: 0.6, text: '보통이다' },
+  { score: 0.8, text: '그렇다' },
+  { score: 1, text: '매우 그렇다' },
 ];
 
-export default function QuestionContainer({
-  setScore,
-  qustionNum,
-  questionText,
-}: QuestionContainerProps) {
+export default function QuestionContainer({ setScore, qustionNum, questionText }: QuestionContainerProps) {
   const [checkedScore, setCheckedScore] = useState<number>();
   const onClickScore = (idx: number) => {
     setCheckedScore(idx);
@@ -31,11 +27,7 @@ export default function QuestionContainer({
       <Question>{questionText}</Question>
       <ButtonsWrapper>
         {scoresArr.map((v, i) => (
-          <ButtonWrapper
-            key={`score-${i}`}
-            onClick={() => onClickScore(i)}
-            isChecked={i === checkedScore}
-          >
+          <ButtonWrapper key={`score-${i}`} onClick={() => onClickScore(i)} isChecked={i === checkedScore}>
             <RadioButton />
             <RadioButtonLabel>{v.text}</RadioButtonLabel>
           </ButtonWrapper>
@@ -65,8 +57,7 @@ const ButtonWrapper = styled.div<{ isChecked: boolean }>`
   width: 5rem;
   height: 5rem;
   border-radius: 5rem;
-  background-color: ${({ isChecked }) =>
-    isChecked ? "var(--purple)" : "var(--light-gray03)"};
+  background-color: ${({ isChecked }) => (isChecked ? 'var(--purple)' : 'var(--light-gray03)')};
   display: flex;
   justify-content: center;
   align-items: center;

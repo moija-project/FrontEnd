@@ -1,4 +1,4 @@
-import { ClubConditionType } from "./post-type";
+import { ClubConditionType } from './post-type';
 
 export type RequestUserType = {
   nickname: string;
@@ -15,7 +15,7 @@ export type ReceivedChatRequestType = {
 export type ChatRequestStoreType = {
   nickname: string | null;
   title: string; // 게시물 제목
-  type: "received" | "sent";
+  type: 'received' | 'sent';
   waiting_id: number;
   post_id: number;
 };

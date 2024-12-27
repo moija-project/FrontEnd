@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import PostContent from "./components/PostContent";
-import CreateQuestionnaire from "./components/CreateQuestionnaire";
-import CommonContainer from "../../components/CommonContainer";
-import { postPhotoState, writePostState } from "../../store/postStore";
-import { useRecoilState } from "recoil";
-import { postPostWrite } from "../../api/service-api/clubPostApi";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import PostContent from './components/PostContent';
+import CreateQuestionnaire from './components/CreateQuestionnaire';
+import CommonContainer from '../../components/CommonContainer';
+import { postPhotoState, writePostState } from '../../store/postStore';
+import { useRecoilState } from 'recoil';
+import { postPostWrite } from '../../api/service-api/clubPostApi';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function ClubPostScreen() {
   const navigate = useNavigate();
@@ -17,9 +17,7 @@ export default function ClubPostScreen() {
       return {
         ...prev,
         num_condition: list.length,
-        conditions: [
-          ...list.map((question: string) => ({ question, answer: null })),
-        ],
+        conditions: [...list.map((question: string) => ({ question, answer: null }))],
       };
     });
   };
@@ -28,66 +26,66 @@ export default function ClubPostScreen() {
     const postClub = async () => {
       let formData = new FormData();
       const json = JSON.stringify(writePost);
-      const blob = new Blob([json], { type: "application/json" });
+      const blob = new Blob([json], { type: 'application/json' });
 
-      formData.append("write", blob);
+      formData.append('write', blob);
       postImg.length !== 0 &&
         postImg.forEach((img) => {
-          formData.append("image", img);
+          formData.append('image', img);
         });
 
       const res = await postPostWrite(formData);
       if (res?.data.isSuccess) {
         setWritePost({
-          title: "",
-          contents: "",
-          category: "etc",
+          title: '',
+          contents: '',
+          category: 'etc',
           num_condition: 0,
           is_changed: false,
           penalty: 0,
           conditions: [],
         });
-        navigate("/clubList");
+        navigate('/clubList');
       } else if (res?.status === 200 && !res.data.isSuccess) {
         window.alert(res.data.message);
       }
       // 요청 성공 시 ui 보여지게
     };
-    if (window.confirm("게시물을 등록하시겠습니까?")) {
+    if (window.confirm('게시물을 등록하시겠습니까?')) {
       postClub();
     }
   };
   const preventClose = (event: BeforeUnloadEvent) => {
     event.preventDefault();
-    event.returnValue = "";
+    event.returnValue = '';
   };
   const preventGoBack = () => {
-    window.history.pushState(null, "", window.location.href);
+    window.history.pushState(null, '', window.location.href);
   };
 
   useEffect(() => {
     (() => {
-      window.addEventListener("beforeunload", preventClose);
+      window.addEventListener('beforeunload', preventClose);
     })();
     return () => {
       setWritePost({
-        title: "",
-        contents: "",
-        category: "etc",
+        title: '',
+        contents: '',
+        category: 'etc',
         // leader_id: "testman1", // fix
         num_condition: 0,
         is_changed: false,
         penalty: 0,
         conditions: [],
       });
-      window.removeEventListener("beforeunload", preventClose);
+      window.removeEventListener('beforeunload', preventClose);
     };
   }, []);
   useEffect(() => {
-    window.history.pushState(null, "", window.location.href);
-    window.addEventListener("popstate", preventGoBack);
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', preventGoBack);
     return () => {
-      window.removeEventListener("popstate", preventGoBack);
+      window.removeEventListener('popstate', preventGoBack);
       // handleCloseDrawer();
     };
   }, []);

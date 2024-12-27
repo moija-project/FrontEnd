@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import CommonContainer from "../../components/CommonContainer";
-import styled from "styled-components";
-import ChatRoomHeader from "./components/ChatRoomHeader";
-import TextMsgBox from "./components/TextMsgBox";
-import { useLocation, useParams } from "react-router-dom";
-import SockJS from "sockjs-client";
-import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
-import MsgInputWrapper from "./components/MsgInputWrapper";
-import { useFetchPrevChatMessages } from "../../api/service-api/chat/useFetchPrevChatMessages";
-import { useRecoilValue } from "recoil";
-import { myProfileInfoState } from "../../store/userStore";
-import MyTextMsgBox from "./components/MyTextMsgBox";
-import { useInView } from "react-intersection-observer";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import CommonContainer from '../../components/CommonContainer';
+import styled from 'styled-components';
+import ChatRoomHeader from './components/ChatRoomHeader';
+import TextMsgBox from './components/TextMsgBox';
+import { useLocation, useParams } from 'react-router-dom';
+import SockJS from 'sockjs-client';
+import { CompatClient, IMessage, Stomp } from '@stomp/stompjs';
+import MsgInputWrapper from './components/MsgInputWrapper';
+import { useFetchPrevChatMessages } from '../../api/service-api/chat/useFetchPrevChatMessages';
+import { useRecoilValue } from 'recoil';
+import { myProfileInfoState } from '../../store/userStore';
+import MyTextMsgBox from './components/MyTextMsgBox';
+import { useInView } from 'react-intersection-observer';
 
 type ChatListItemType = {
   sendUserId: string;
@@ -26,7 +26,7 @@ export default function ChatRoomScreen() {
   const { state } = useLocation(); // ChatListItemResType
   const [stompClient, setStompClient] = useState<CompatClient | null>(null);
   const [chatList, setChatList] = useState<ChatListItemType[]>([]); // 채팅 기록
-  const [txtMessage, setTxtMessage] = useState(""); // 입력하는 채팅 문자
+  const [txtMessage, setTxtMessage] = useState(''); // 입력하는 채팅 문자
   const [pageNum, setPageNum] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
@@ -34,14 +34,14 @@ export default function ChatRoomScreen() {
 
   const chattingsRef = useRef<any>(null);
 
-  useEffect(() => console.log("-----------------", state), [state]);
+  useEffect(() => console.log('-----------------', state), [state]);
 
   const { ref, inView, entry } = useInView({
     threshold: 0.5,
   });
 
   const { data, refetch } = useFetchPrevChatMessages({
-    chatRoomId: chatRoomId ?? "",
+    chatRoomId: chatRoomId ?? '',
     page_size: 80,
     page_number: pageNum,
   });
@@ -71,35 +71,30 @@ export default function ChatRoomScreen() {
   }, []);
 
   useEffect(() => {
-    console.log(
-      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-    );
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
     const sock = new SockJS(`/stomp/chat`);
     const stompClient = Stomp.over(sock);
 
     stompClient.connect({}, () => {
-      stompClient.subscribe(
-        `/exchange/chat.exchange/room.${chatRoomId}`,
-        (message: IMessage) => {
-          const parsedBody = JSON.parse(message.body);
+      stompClient.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`, (message: IMessage) => {
+        const parsedBody = JSON.parse(message.body);
 
-          let date = parsedBody.regDate.slice(0, 10);
-          let time = parsedBody.regDate.slice(11, 16);
+        let date = parsedBody.regDate.slice(0, 10);
+        let time = parsedBody.regDate.slice(11, 16);
 
-          let newMsgItem: ChatListItemType = {
-            sendUserId: parsedBody.memberId,
-            message: parsedBody.message,
-            date,
-            time,
-            nickname: parsedBody.nickname,
-          };
+        let newMsgItem: ChatListItemType = {
+          sendUserId: parsedBody.memberId,
+          message: parsedBody.message,
+          date,
+          time,
+          nickname: parsedBody.nickname,
+        };
 
-          if (parsedBody.type !== "CHAT") {
-            setChatList((prevMessages) => [...prevMessages, newMsgItem]);
-            handleFocusBottom(); // 메시지 보내면 포커스 아래로
-          }
+        if (parsedBody.type !== 'CHAT') {
+          setChatList((prevMessages) => [...prevMessages, newMsgItem]);
+          handleFocusBottom(); // 메시지 보내면 포커스 아래로
         }
-      );
+      });
 
       // // 읽음 처리
       // stompClient.publish({
@@ -140,7 +135,7 @@ export default function ChatRoomScreen() {
     // 페이지네이션으로 추가되는 chat list
     let prevChatList: ChatListItemType[] | [] = data
       ? data
-          ?.filter((val) => val.type === "TALK")
+          ?.filter((val) => val.type === 'TALK')
           .map((chat, i) => ({
             sendUserId: chat.memberId,
             message: chat.message,
@@ -160,13 +155,10 @@ export default function ChatRoomScreen() {
   return (
     <CommonContainer
       boxStyle={{ width: 500, padding: 0, flex: 1 }}
-      containerStyle={{ position: "relative", width: "100%" }}
+      containerStyle={{ position: 'relative', width: '100%' }}
     >
       <Container>
-        <ChatRoomHeader
-          postId={state.chatInfo.chatRoom.recruitId ?? ""}
-          waitingId={state.chatInfo.waitingId}
-        />
+        <ChatRoomHeader postId={state.chatInfo.chatRoom.recruitId ?? ''} waitingId={state.chatInfo.waitingId} />
         <ChattingsContainer ref={chattingsRef}>
           <ChattingsWrapper>
             {/* for 무한스크롤 */}
@@ -176,27 +168,14 @@ export default function ChatRoomScreen() {
               (item, idx) =>
                 item.sendUserId &&
                 (item.sendUserId === userInfo.user_id ? (
-                  <MyTextMsgBox
-                    key={`chat-msg_${idx}`}
-                    text={item.message}
-                    time={item.time}
-                  />
+                  <MyTextMsgBox key={`chat-msg_${idx}`} text={item.message} time={item.time} />
                 ) : (
-                  <TextMsgBox
-                    key={`chat-msg_${idx}`}
-                    text={item.message}
-                    time={item.time}
-                    name={item.nickname}
-                  />
-                ))
+                  <TextMsgBox key={`chat-msg_${idx}`} text={item.message} time={item.time} name={item.nickname} />
+                )),
             )}
           </ChattingsWrapper>
         </ChattingsContainer>
-        <MsgInputWrapper
-          onSend={handleSendMsg}
-          setMsg={setTxtMessage}
-          msg={txtMessage}
-        />
+        <MsgInputWrapper onSend={handleSendMsg} setMsg={setTxtMessage} msg={txtMessage} />
       </Container>
     </CommonContainer>
   );

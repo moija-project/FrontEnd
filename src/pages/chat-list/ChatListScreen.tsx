@@ -1,29 +1,23 @@
-import React, { useEffect } from "react";
-import CommonContainer from "../../components/CommonContainer";
-import ChatListItem from "./components/ChatListItem";
-import styled from "styled-components";
-import { useFetchChatList } from "../../api/service-api/chat/useFetchChatList";
+import React, { useEffect } from 'react';
+import CommonContainer from '../../components/CommonContainer';
+import ChatListItem from './components/ChatListItem';
+import styled from 'styled-components';
+import { useFetchChatList } from '../../api/service-api/chat/useFetchChatList';
 
 export default function ChatListScreen() {
   const { data, isLoading } = useFetchChatList();
 
   useEffect(() => {
-    console.log("***** ", data);
+    console.log('***** ', data);
   }, [data]);
 
   return (
-    <CommonContainer
-      boxStyle={{ width: 500, padding: 0 }}
-      containerStyle={{ position: "relative", width: "100%" }}
-    >
+    <CommonContainer boxStyle={{ width: 500, padding: 0 }} containerStyle={{ position: 'relative', width: '100%' }}>
       <Title>채팅방 리스트</Title>
       <ListContainer>
         {data &&
           data.map(
-            (item, i) =>
-              item.chatRoom.chatRoomId && (
-                <ChatListItem chatInfo={item} key={`chat-list-item-${i}`} />
-              )
+            (item, i) => item.chatRoom.chatRoomId && <ChatListItem chatInfo={item} key={`chat-list-item-${i}`} />,
           )}
       </ListContainer>
     </CommonContainer>

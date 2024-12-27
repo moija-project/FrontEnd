@@ -1,16 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import { ClubConditionType } from "../../../interfaces/post-type";
+import React from 'react';
+import styled from 'styled-components';
+import { ClubConditionType } from '../../../interfaces/post-type';
 
 type ReadReplyContainer = {
   nickname: string;
   data: ClubConditionType[];
 };
 
-export default function ReadReplyContainer({
-  nickname,
-  data,
-}: ReadReplyContainer) {
+export default function ReadReplyContainer({ nickname, data }: ReadReplyContainer) {
   const _renderReplyItems = (idx: number, question: string, answer: string) => {
     return (
       <ItemWrapper key={`question-item-${idx}`}>
@@ -31,9 +28,7 @@ export default function ReadReplyContainer({
         가입 조건 질문 답변을 확인해보세요!
       </Title>
       <ItemsContainer>
-        {data.map((item, idx) =>
-          _renderReplyItems(idx, item.question, item.answer ?? "")
-        )}
+        {data.map((item, idx) => _renderReplyItems(idx, item.question, item.answer ?? ''))}
       </ItemsContainer>
     </Container>
   );

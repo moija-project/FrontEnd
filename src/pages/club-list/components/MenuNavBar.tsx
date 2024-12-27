@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { CategoryType } from "../../../interfaces/post-type";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { CategoryType } from '../../../interfaces/post-type';
 
 type MenuNavBarProps = {
   setCate: (cate: CategoryType) => void;
@@ -8,16 +8,16 @@ type MenuNavBarProps = {
 
 // const menuItems = ["전체", "어학", "학업", "취업", "취미 및 소모임", "기타"];
 const menuItems: { data: CategoryType; name: string }[] = [
-  { data: "all", name: "전체" },
-  { data: "language", name: "어학" },
-  { data: "hobby", name: "취미 및 소모임" },
-  { data: "study", name: "학업" },
-  { data: "employ", name: "취업" },
-  { data: "etc", name: "기타" },
+  { data: 'all', name: '전체' },
+  { data: 'language', name: '어학' },
+  { data: 'hobby', name: '취미 및 소모임' },
+  { data: 'study', name: '학업' },
+  { data: 'employ', name: '취업' },
+  { data: 'etc', name: '기타' },
 ];
 
 export default function MenuNavBar({ setCate }: MenuNavBarProps) {
-  const [activeCate, setActiveCate] = useState<CategoryType>("all");
+  const [activeCate, setActiveCate] = useState<CategoryType>('all');
 
   const handleCate = (cate: CategoryType) => {
     setActiveCate(cate);
@@ -62,5 +62,5 @@ const MenuItem = styled.li<{ isSelected: boolean }>`
   height: 100%;
   display: flex;
   align-items: center;
-  color: ${({ isSelected }) => (isSelected ? "var(--purple) " : "black")};
+  color: ${({ isSelected }) => (isSelected ? 'var(--purple) ' : 'black')};
 `;

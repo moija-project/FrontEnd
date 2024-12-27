@@ -1,11 +1,11 @@
-import { useResetRecoilState } from "recoil";
-import { myProfileInfoState, myUserIdState } from "../store/userStore";
+import { useResetRecoilState } from 'recoil';
+import { myProfileInfoState, myUserIdState } from '../store/userStore';
 import {
   fetchMyHostListState,
   fetchMyJoinListState,
   fetchMyScrapListState,
   fetchRequestListState,
-} from "../store/mypageStore";
+} from '../store/mypageStore';
 
 export const useResetUserInfo = () => {
   const resetMyProfile = useResetRecoilState(myProfileInfoState);

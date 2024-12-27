@@ -1,7 +1,7 @@
-import React from "react";
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import { myProfileInfoState } from "../../../store/userStore";
+import React from 'react';
+import { useRecoilValue } from 'recoil';
+import styled from 'styled-components';
+import { myProfileInfoState } from '../../../store/userStore';
 
 export default function ProfileWrapper() {
   const myProfile = useRecoilValue(myProfileInfoState);
@@ -11,8 +11,8 @@ export default function ProfileWrapper() {
       <ProfileImage
         // src={require("../../../assets/images/default-img-01.png")}
         src={
-          !myProfile.photo_profile || myProfile.photo_profile === ""
-            ? require("../../../assets/images/default-img-01.png")
+          !myProfile.photo_profile || myProfile.photo_profile === ''
+            ? require('../../../assets/images/default-img-01.png')
             : myProfile.photo_profile
         }
       />

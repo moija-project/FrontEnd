@@ -1,27 +1,24 @@
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import styled from "styled-components";
-import PreviewPost from "../../../components/PreviewPost";
-import { postListResType } from "../../../interfaces/post-type";
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import styled from 'styled-components';
+import PreviewPost from '../../../components/PreviewPost';
+import { postListResType } from '../../../interfaces/post-type';
 
 type PostListContainerProps = {
-  postlistType: "host" | "join" | "scrap";
+  postlistType: 'host' | 'join' | 'scrap';
   data?: postListResType[];
 };
 
-export default function PostListContainer({
-  postlistType,
-  data,
-}: PostListContainerProps) {
+export default function PostListContainer({ postlistType, data }: PostListContainerProps) {
   let postListTypeName =
-    postlistType === "host"
-      ? "내가 주최한 모임"
-      : postlistType === "join"
-      ? "내가 참여한 모임"
-      : postlistType === "scrap"
-      ? "내가 스크랩한 모임"
-      : "";
+    postlistType === 'host'
+      ? '내가 주최한 모임'
+      : postlistType === 'join'
+        ? '내가 참여한 모임'
+        : postlistType === 'scrap'
+          ? '내가 스크랩한 모임'
+          : '';
   return (
     <Container>
       {/* <HeaderWrapper>
@@ -37,23 +34,12 @@ export default function PostListContainer({
           ?.slice(0, 5)
           .map((item, idx) =>
             idx === 0 ? (
-              <PreviewPost
-                key={`preview-post-${idx}`}
-                postItem={item}
-                isFirst
-                hasSidePadding={false}
-              />
+              <PreviewPost key={`preview-post-${idx}`} postItem={item} isFirst hasSidePadding={false} />
             ) : (
-              <PreviewPost
-                key={`preview-post-${idx}`}
-                postItem={item}
-                hasSidePadding={false}
-              />
-            )
+              <PreviewPost key={`preview-post-${idx}`} postItem={item} hasSidePadding={false} />
+            ),
           )}
-        {(data?.length === 0 || !data) && (
-          <NoneText>{postListTypeName}이 없어요</NoneText>
-        )}
+        {(data?.length === 0 || !data) && <NoneText>{postListTypeName}이 없어요</NoneText>}
       </ListWrapper>
     </Container>
   );

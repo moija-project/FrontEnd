@@ -1,10 +1,10 @@
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { debounce } from "lodash";
-import React, { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { postMyProfile } from "../api/service-api/profileApi";
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { debounce } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { postMyProfile } from '../api/service-api/profileApi';
 
 type HeaderProps = {
   RightOption?: React.ReactNode;
@@ -15,7 +15,7 @@ export default function Header({ RightOption }: HeaderProps) {
 
   const [openToggleBar, setOpenToggleBar] = useState(false);
   const navigate = useNavigate();
-  const moveToHome = () => navigate("/");
+  const moveToHome = () => navigate('/');
 
   return (
     <>
@@ -24,25 +24,20 @@ export default function Header({ RightOption }: HeaderProps) {
           <ToggleBarButton onClick={() => setOpenToggleBar(!openToggleBar)}>
             <FontAwesomeIcon icon={faBars} size="xl" color="#ffffff" />
           </ToggleBarButton>
-          <Logo
-            onClick={moveToHome}
-            src={require("../assets/images/logo-01.png")}
-          />
+          <Logo onClick={moveToHome} src={require('../assets/images/logo-01.png')} />
           <RightToggleBarButton>{RightOption}</RightToggleBarButton>
         </LogoWrapper>
         <MenuListWrapper isOpen={openToggleBar}>
           <MenuList isOpen={openToggleBar}>
-            <Link to={"/"}>
-              <Menu isActive={path === "/"}>홈</Menu>
+            <Link to={'/'}>
+              <Menu isActive={path === '/'}>홈</Menu>
             </Link>
-            <Link to={"/clubList"}>
-              <Menu isActive={path === "/clubList"}>모임</Menu>
+            <Link to={'/clubList'}>
+              <Menu isActive={path === '/clubList'}>모임</Menu>
             </Link>
-            <Link
-              to={localStorage.getItem("accessToken") ? "/mypage" : "/login"}
-            >
+            <Link to={localStorage.getItem('accessToken') ? '/mypage' : '/login'}>
               {/* <Link to={"/mypage"}> */}
-              <Menu isActive={path === "/mypage"}>마이페이지</Menu>
+              <Menu isActive={path === '/mypage'}>마이페이지</Menu>
             </Link>
           </MenuList>
         </MenuListWrapper>
@@ -103,7 +98,7 @@ const MenuListWrapper = styled.div<{ isOpen: boolean }>`
   align-items: center;
   width: 100%;
   @media screen and (max-width: 1100px) {
-    display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
+    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
     align-items: center;
     background-color: var(--light-purple01);
     width: 100vw;
@@ -118,7 +113,7 @@ const MenuList = styled.div<{ isOpen: boolean }>`
   flex-direction: row;
   max-width: 100%;
   @media screen and (max-width: 1100px) {
-    display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
+    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
     margin: auto;
     flex-direction: column;
     position: static;
@@ -131,11 +126,11 @@ const Menu = styled.button<{ isActive: boolean }>`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  color: ${({ isActive }) => (isActive ? "var(--yellow)" : "white")};
+  color: ${({ isActive }) => (isActive ? 'var(--yellow)' : 'white')};
   font-size: 1.125rem;
   font-weight: 400;
-  ${({ isActive }) => isActive && "text-decoration: underline;"}
-  ${({ isActive }) => isActive && "text-underline-position: under;"}
+  ${({ isActive }) => isActive && 'text-decoration: underline;'}
+  ${({ isActive }) => isActive && 'text-underline-position: under;'}
 
   @media screen and (max-width: 1100px) {
     font-size: 1rem;

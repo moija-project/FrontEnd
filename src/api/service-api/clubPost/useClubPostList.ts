@@ -1,6 +1,6 @@
-import { useInfiniteQuery, useQuery } from "react-query";
-import { getPostList } from "../clubPostApi";
-import { postListParamsType } from "../../../interfaces/post-type";
+import { useInfiniteQuery, useQuery } from 'react-query';
+import { getPostList } from '../clubPostApi';
+import { postListParamsType } from '../../../interfaces/post-type';
 
 export const useClubPostList = (params: postListParamsType) => {
   return useInfiniteQuery({
@@ -12,7 +12,7 @@ export const useClubPostList = (params: postListParamsType) => {
     //   `club-post_${params.page}`,
     // ],
     queryKey: [
-      "club-post",
+      'club-post',
       {
         category: params.category,
         view_type: params.view_type,

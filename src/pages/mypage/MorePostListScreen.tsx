@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import CommonContainer from "../../components/CommonContainer";
-import styled from "styled-components";
-import PreviewPost from "../../components/PreviewPost";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { useRecoilValue } from "recoil";
-import { fetchMyScrapListState } from "../../store/mypageStore";
-import { postListResType } from "../../interfaces/post-type";
-import InfiniteScroll from "react-infinite-scroll-component";
-import {
-  postListIWrote,
-  postMyJoinedClub,
-} from "../../api/service-api/mypageApi";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import CommonContainer from '../../components/CommonContainer';
+import styled from 'styled-components';
+import PreviewPost from '../../components/PreviewPost';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useRecoilValue } from 'recoil';
+import { fetchMyScrapListState } from '../../store/mypageStore';
+import { postListResType } from '../../interfaces/post-type';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { postListIWrote, postMyJoinedClub } from '../../api/service-api/mypageApi';
 
 export default function MorePostListScreen() {
   const { type } = useParams(); // host , join , scrap
@@ -33,30 +30,30 @@ export default function MorePostListScreen() {
   useEffect(() => {
     // if (type === "host") setPostList(myHostList);
     // else if (type === "join") setPostList(myJoinList);
-    if (type === "host") fetchHostData();
-    else if (type === "join") fetchJoinData();
+    if (type === 'host') fetchHostData();
+    else if (type === 'join') fetchJoinData();
     else setPostList(myScrapList);
   }, [type]);
 
   useEffect(() => {
     if (pageNum === 0) return;
-    if (type === "host") fetchHostData();
-    else if (type === "join") fetchJoinData();
+    if (type === 'host') fetchHostData();
+    else if (type === 'join') fetchJoinData();
   }, [pageNum]);
   return (
     <CommonContainer>
       <TitleWrapper>
-        <BackButton onClick={() => navigate("/mypage")}>
+        <BackButton onClick={() => navigate('/mypage')}>
           <FontAwesomeIcon icon={faArrowLeft} />
         </BackButton>
         <Title>
-          {type === "host"
-            ? "내가 주최한 모임"
-            : type === "join"
-            ? "내가 참여한 모임"
-            : type === "scrap"
-            ? "내가 스크랩한 모임"
-            : ""}
+          {type === 'host'
+            ? '내가 주최한 모임'
+            : type === 'join'
+              ? '내가 참여한 모임'
+              : type === 'scrap'
+                ? '내가 스크랩한 모임'
+                : ''}
         </Title>
       </TitleWrapper>
       {/* <ListWrapper> */}
@@ -68,31 +65,22 @@ export default function MorePostListScreen() {
       >
         {postList?.length === 0 || !postList ? (
           <NoneText>
-            {type === "host"
-              ? "내가 주최한 모임"
-              : type === "join"
-              ? "내가 참여한 모임"
-              : type === "scrap"
-              ? "내가 스크랩한 모임"
-              : ""}
+            {type === 'host'
+              ? '내가 주최한 모임'
+              : type === 'join'
+                ? '내가 참여한 모임'
+                : type === 'scrap'
+                  ? '내가 스크랩한 모임'
+                  : ''}
             이 없어요
           </NoneText>
         ) : (
           postList?.map((item, idx) =>
             idx === 0 ? (
-              <PreviewPost
-                key={`preview-post-${idx}`}
-                postItem={item}
-                isFirst
-                hasSidePadding={false}
-              />
+              <PreviewPost key={`preview-post-${idx}`} postItem={item} isFirst hasSidePadding={false} />
             ) : (
-              <PreviewPost
-                key={`preview-post-${idx}`}
-                postItem={item}
-                hasSidePadding={false}
-              />
-            )
+              <PreviewPost key={`preview-post-${idx}`} postItem={item} hasSidePadding={false} />
+            ),
           )
         )}
       </InfiniteScroll>

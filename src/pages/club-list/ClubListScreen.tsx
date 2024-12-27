@@ -1,25 +1,20 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import MenuNavBar from "./components/MenuNavBar";
-import PreviewPost from "../../components/PreviewPost";
-import ClubListTopMenu from "./components/ClubListTopMenu";
-import {
-  CategoryType,
-  SearchType,
-  ViewType,
-  postListResType,
-} from "../../interfaces/post-type";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import MenuNavBar from './components/MenuNavBar';
+import PreviewPost from '../../components/PreviewPost';
+import ClubListTopMenu from './components/ClubListTopMenu';
+import { CategoryType, SearchType, ViewType, postListResType } from '../../interfaces/post-type';
 
-import { useInView } from "react-intersection-observer";
-import { useClubPostList } from "../../api/service-api/clubPost/useClubPostList";
-import { useLocation } from "react-router-dom";
+import { useInView } from 'react-intersection-observer';
+import { useClubPostList } from '../../api/service-api/clubPost/useClubPostList';
+import { useLocation } from 'react-router-dom';
 
 export default function ClubListScreen() {
-  const [postCate, setPostCate] = useState<CategoryType>("all");
-  const [postView, setPostView] = useState<ViewType>("latest");
+  const [postCate, setPostCate] = useState<CategoryType>('all');
+  const [postView, setPostView] = useState<ViewType>('latest');
   const [page, setPage] = useState(0);
-  const [keyword, setKeyword] = useState<string>("");
-  const [searchType, setSearchType] = useState<SearchType>("title");
+  const [keyword, setKeyword] = useState<string>('');
+  const [searchType, setSearchType] = useState<SearchType>('title');
   const [ref, inView] = useInView({ threshold: 1 });
   const [postList, setPostList] = useState<(postListResType | undefined)[]>([]);
 
@@ -81,23 +76,15 @@ export default function ClubListScreen() {
               (v, i) =>
                 v &&
                 (i === 0 ? (
-                  <PreviewPost
-                    postItem={v}
-                    key={`post-item-${i}`}
-                    isFirst={true}
-                  />
+                  <PreviewPost postItem={v} key={`post-item-${i}`} isFirst={true} />
                 ) : (
-                  <PreviewPost
-                    postItem={v}
-                    key={`post-item-${i}`}
-                    isFirst={false}
-                  />
-                ))
+                  <PreviewPost postItem={v} key={`post-item-${i}`} isFirst={false} />
+                )),
             )
           ) : (
             <EmptyText>해당 카테고리에 관한 글이 없습니다.</EmptyText>
           )}
-          <div style={{ height: 100, width: "100%" }}></div>
+          <div style={{ height: 100, width: '100%' }}></div>
           <div ref={ref}></div>
         </div>
       </ContentContainer>

@@ -1,5 +1,5 @@
-import { CreateChatReqType } from "../../../interfaces/chat-type";
-import { axiosAuth } from "../../settingAxios";
+import { CreateChatReqType } from '../../../interfaces/chat-type';
+import { axiosAuth } from '../../settingAxios';
 
 // 1:1 채팅방 생성 기능 (채팅 요청 수락 버튼 누를 시)
 // export const createChatRoom = async (body: CreateChatReqType) => {

@@ -1,16 +1,16 @@
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import { usePostInfo } from "../../../api/service-api/clubPost/usePostInfo";
-import { postInviteClub } from "../../../api/service-api/mypageApi";
-import { useNavigate } from "react-router-dom";
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import { usePostInfo } from '../../../api/service-api/clubPost/usePostInfo';
+import { postInviteClub } from '../../../api/service-api/mypageApi';
+import { useNavigate } from 'react-router-dom';
 
-type ChatMenuType = "exit" | "invite" | "accuse";
+type ChatMenuType = 'exit' | 'invite' | 'accuse';
 
 const chatMenuList: { type: ChatMenuType; name: string }[] = [
-  { type: "exit", name: "채팅방 나가기" },
-  { type: "invite", name: "모임에 초대하기" },
+  { type: 'exit', name: '채팅방 나가기' },
+  { type: 'invite', name: '모임에 초대하기' },
   // {type : 'accuse' , name : '신고하기'},
 ];
 type ChatRoomHeaderProps = {
@@ -18,10 +18,7 @@ type ChatRoomHeaderProps = {
   waitingId: number;
 };
 
-export default function ChatRoomHeader({
-  postId,
-  waitingId,
-}: ChatRoomHeaderProps) {
+export default function ChatRoomHeader({ postId, waitingId }: ChatRoomHeaderProps) {
   const menuRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
@@ -47,7 +44,7 @@ export default function ChatRoomHeader({
 
   const handleInvite = async () => {
     if (!waitingId) {
-      alert("모임 초대에 실패했습니다. 다시 시도해주세요.");
+      alert('모임 초대에 실패했습니다. 다시 시도해주세요.');
       return;
     }
     let result = false;
@@ -59,14 +56,14 @@ export default function ChatRoomHeader({
     }
 
     if (result) {
-      alert("모임에 초대했습니다!");
-    } else alert("모임 초대에 실패했습니다. 다시 시도해주세요.");
+      alert('모임에 초대했습니다!');
+    } else alert('모임 초대에 실패했습니다. 다시 시도해주세요.');
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener('mousedown', handleOutsideClick);
     return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, []);
   return (
@@ -84,10 +81,7 @@ export default function ChatRoomHeader({
       {isMenuOpened && (
         <MenuModal ref={menuRef} id="menu-modal">
           {chatMenuList.map((menu, i) => (
-            <MenuItem
-              key={`menu-${i}-${menu.type}`}
-              onClick={menu.type === "invite" ? handleInvite : undefined}
-            >
+            <MenuItem key={`menu-${i}-${menu.type}`} onClick={menu.type === 'invite' ? handleInvite : undefined}>
               {menu.name}
             </MenuItem>
           ))}
