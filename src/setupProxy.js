@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     "/api", // 첫 번째 프록시 경로
     createProxyMiddleware({
-      target: "http://mo.ija.kro.kr",
+      target: process.env.REACT_APP_BASE_API_URL,
       changeOrigin: true,
       pathRewrite: {
         "^/api": "",
@@ -16,7 +16,7 @@ module.exports = function (app) {
     "/stomp/chat", // 두 번째 프록시 경로
     // "/stomp/ws", // 두 번째 프록시 경로
     createProxyMiddleware({
-      target: "http://mo.ija.kro.kr",
+      target: process.env.REACT_APP_BASE_API_URL,
       // target: "http://localhost:8093",
       changeOrigin: true,
       ws: false, // WebSocket 지원
@@ -26,7 +26,7 @@ module.exports = function (app) {
     "/stomp/notify", // 두 번째 프록시 경로
     // "/stomp/ws", // 두 번째 프록시 경로
     createProxyMiddleware({
-      target: "http://mo.ija.kro.kr",
+      target: process.env.REACT_APP_BASE_API_URL,
       // target: "http://localhost:8093",
       changeOrigin: true,
       ws: false, // WebSocket 지원
@@ -36,7 +36,7 @@ module.exports = function (app) {
   app.use(
     "/pub/chat",
     createProxyMiddleware({
-      target: "http://mo.ija.kro.kr",
+      target: process.env.REACT_APP_BASE_API_URL,
       changeOrigin: true,
       ws: false,
     })
@@ -44,7 +44,7 @@ module.exports = function (app) {
   app.use(
     "/exchange/chat",
     createProxyMiddleware({
-      target: "http://mo.ija.kro.kr",
+      target: process.env.REACT_APP_BASE_API_URL,
       changeOrigin: true,
       ws: false,
     })

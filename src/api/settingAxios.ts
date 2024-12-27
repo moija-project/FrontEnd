@@ -1,12 +1,4 @@
-import { isLoggedInState } from "./../store/userStore";
-import axios, {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosRequestHeaders,
-} from "axios";
-import { getCookie } from "../utils/cookie";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { getAccessTokenState } from "../store/userStore";
+import axios, { AxiosError, AxiosHeaders } from "axios";
 import useUserProfile from "../hook/useUserProfile";
 
 axios.defaults.withCredentials = true;
@@ -18,19 +10,16 @@ const axiosUnAuth = axios.create({
     // "Access-Control-Allow-Origin": `http://localhost:3000`,
     // "Access-Control-Allow-Credentials": true,
   },
-
-  // baseURL: "http://mo.ija.kro.kr",
 });
 const axiosAuth = axios.create({
   baseURL: "/api",
-  // baseURL: "http://mo.ija.kro.kr",
   headers: {},
 });
 
 // 응답 헤더에서 새로운 토큰을 추출하는 함수
 const extractNewTokenFromHeader = (headers: any): string | null => {
   // 응답 헤더에서 토큰을 추출하고, 새로운 토큰이 있다면 반환
-  const newToken = headers["Bearer-Token"]; // 예시로 'new-token' 헤더에서 새로운 토큰을 추출하는 것으로 가정합니다.
+  const newToken = headers["Bearer-Token"];
   return newToken || null;
 };
 
@@ -41,7 +30,6 @@ axiosAuth.interceptors.request.use(
       if (ACCESS_TOKEN) {
         config.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
       }
-      // else config.headers.Authorization = ``;
       return config;
     } catch (error) {
       console.error("[_axios.interceptors.request] config : " + error);
@@ -51,15 +39,15 @@ axiosAuth.interceptors.request.use(
   (error: AxiosError) => {
     console.log("setting axios request ::  ", error.response?.headers);
     if (error.status) {
-      // if (error.status === 401 || error.status === 500) {
       localStorage.setItem(
         "accessToken",
         extractNewTokenFromHeader(error.config?.headers) ?? ""
       );
       return extractNewTokenFromHeader(error.config?.headers);
     }
+    console.log("$$$$$$ 1111");
     localStorage.removeItem("accessToken");
-    useUserProfile({});
+    // useUserProfile({});
     return Promise.reject(error);
   }
 );
@@ -70,26 +58,23 @@ axiosAuth.interceptors.response.use(
       // 응답이 실패일 경우 처리
       const errorCode = response.data.code;
 
+      console.log("@@@@@@@@@@@@@@@@, ", errorCode);
       // 특정 에러 코드에 따른 처리
-      switch (errorCode) {
-        case 4006:
-        case 4020:
-          // 특정 에러 코드에 대한 처리 (새로운 토큰 추출 등)
-          const newToken = extractTokenFromHeader(response.headers);
-          if (!newToken) {
-            localStorage.removeItem("accessToken");
-            useUserProfile({});
-          } else {
-            // 새로운 토큰이 있는 경우 localStorage에 저장
-            localStorage.setItem("accessToken", newToken);
 
-            // 새로운 토큰을 사용하여 재시도
-            return axios.request(response.config);
-          }
-          break;
-        default:
-          // 기타 처리
-          break;
+      if (errorCode === 4006 || errorCode === 4020) {
+        // 특정 에러 코드에 대한 처리 (새로운 토큰 추출 등)
+        const newToken = extractTokenFromHeader(response.headers);
+        if (!newToken) {
+          console.log("$$$$$$ 2222");
+          localStorage.removeItem("accessToken");
+          // useUserProfile({});
+        } else {
+          // 새로운 토큰이 있는 경우 localStorage에 저장
+          localStorage.setItem("accessToken", newToken);
+
+          // 새로운 토큰을 사용하여 재시도
+          return axios.request(response.config);
+        }
       }
 
       // 특정 에러 코드에 대한 처리가 없으면 에러 반환
@@ -114,13 +99,15 @@ axiosAuth.interceptors.response.use(
         console.log("Updated Response:", updatedResponse);
         return updatedResponse;
       } catch (requestError) {
+        console.log("$$$$$$ 3333");
         localStorage.removeItem("accessToken");
-        useUserProfile({});
+        // useUserProfile({});
         console.error("Failed to reattempt request:", requestError);
         return Promise.reject(requestError);
       }
     }
-    console.log("erorrrrrr : ", error.response?.status);
+    console.log("$$$$$$ 4444");
+    localStorage.removeItem("accessToken");
     return Promise.reject(error);
   }
 );

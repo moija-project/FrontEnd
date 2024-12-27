@@ -27,7 +27,7 @@ export default function MyPageScreen() {
 
   useEffect(() => {
     const fetchList = async () => {
-      const requestRes = await postReceivedChatRequest({});     
+      const requestRes = await postReceivedChatRequest({});
       let transformedArray: ChatRequestStoreType[] = [];
       requestRes?.forEach((post) => {
         post.users.forEach((user) => {

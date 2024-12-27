@@ -11,7 +11,6 @@ import {
   patchMyProfileNickname,
   postMyProfile,
 } from "../api/service-api/profileApi";
-import useUserProfile from "../hook/useUserProfile";
 
 type ProfileModalProps = {
   setOpen: (open: boolean) => void;

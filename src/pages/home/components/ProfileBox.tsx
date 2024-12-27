@@ -26,9 +26,9 @@ export default function ProfileBox() {
   };
 
   const getLogout = async () => {
+    localStorage.removeItem("accessToken");
     const res = await postLogout();
     if (res?.status === 200) {
-      localStorage.removeItem("accessToken");
       removeCookie("REFRESH_TOKEN");
       setMyProfile({
         nickname: "",
