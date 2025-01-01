@@ -1,119 +1,74 @@
 import axios, { AxiosError } from 'axios';
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true; // 쿠키를 자동으로 전송하도록 설정
 
 const axiosUnAuth = axios.create({
   baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
-    // "Access-Control-Allow-Origin": `http://localhost:3000`,
-    // "Access-Control-Allow-Credentials": true,
   },
 });
+
+// AT / RT로 인증을 위한 Axios 인스턴스 생성
 const axiosAuth = axios.create({
   baseURL: '/api',
   headers: {},
 });
 
-// 응답 헤더에서 새로운 토큰을 추출하는 함수
-const extractNewTokenFromHeader = (headers: any): string | null => {
-  // 응답 헤더에서 토큰을 추출하고, 새로운 토큰이 있다면 반환
-  const newToken = headers['Bearer-Token'];
-  return newToken || null;
-};
-
-axiosAuth.interceptors.request.use(
-  (config) => {
-    const ACCESS_TOKEN = localStorage.getItem('accessToken') ?? '';
-    try {
-      if (ACCESS_TOKEN) {
-        config.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
-      }
-      return config;
-    } catch (error) {
-      console.error('[_axios.interceptors.request] config : ' + error);
-    }
-    return config;
-  },
-  (error: AxiosError) => {
-    console.log('setting axios request ::  ', error.response?.headers);
-    if (error.status) {
-      localStorage.setItem('accessToken', extractNewTokenFromHeader(error.config?.headers) ?? '');
-      return extractNewTokenFromHeader(error.config?.headers);
-    }
-    console.log('$$$$$$ 1111');
-    localStorage.removeItem('accessToken');
-    // useUserProfile({});
-    return Promise.reject(error);
-  },
-);
-
-axiosAuth.interceptors.response.use(
-  (response) => {
-    if (!response.data.isSuccess) {
-      // 응답이 실패일 경우 처리
-      const errorCode = response.data.code;
-
-      console.log('@@@@@@@@@@@@@@@@, ', errorCode);
-      // 특정 에러 코드에 따른 처리
-
-      if (errorCode === 4006 || errorCode === 4020) {
-        // 특정 에러 코드에 대한 처리 (새로운 토큰 추출 등)
-        const newToken = extractTokenFromHeader(response.headers);
-        if (!newToken) {
-          console.log('$$$$$$ 2222');
-          localStorage.removeItem('accessToken');
-          // useUserProfile({});
-        } else {
-          // 새로운 토큰이 있는 경우 localStorage에 저장
-          localStorage.setItem('accessToken', newToken);
-
-          // 새로운 토큰을 사용하여 재시도
-          return axios.request(response.config);
-        }
-      }
-
-      // 특정 에러 코드에 대한 처리가 없으면 에러 반환
-      return Promise.reject(new Error('Unsuccessful response'));
-    }
-
-    const newToken = extractTokenFromHeader(response.headers);
-    if (newToken) {
-      console.log('axios auth response :  ', newToken);
-      localStorage.setItem('accessToken', newToken);
-    }
-    return response;
-  },
-  async (error: AxiosError) => {
-    const newToken = extractTokenFromHeader(error.response?.headers);
-    if (newToken && error.config) {
-      localStorage.setItem('accessToken', newToken);
-      error.config.headers.Authorization = `Bearer ${newToken}`;
-
-      try {
-        const updatedResponse = await axios.request(error.config);
-        console.log('Updated Response:', updatedResponse);
-        return updatedResponse;
-      } catch (requestError) {
-        console.log('$$$$$$ 3333');
-        localStorage.removeItem('accessToken');
-        // useUserProfile({});
-        console.error('Failed to reattempt request:', requestError);
-        return Promise.reject(requestError);
-      }
-    }
-    console.log('$$$$$$ 4444');
-    localStorage.removeItem('accessToken');
-    return Promise.reject(error);
-  },
-);
-
-function extractTokenFromHeader(headers: any): string | null {
+// 응답에서 새로운 AT를 추출하는 함수
+const extractTokenFromHeader = (headers: any): string | null => {
   const authorizationHeader = headers['Authorization'] || headers['authorization'];
   if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
     return authorizationHeader.split('Bearer ')[1];
   }
   return null;
-}
+};
+
+// 요청 인터셉터: AccessToken을 요청 헤더에 추가
+axiosAuth.interceptors.request.use(
+  (config) => {
+    const ACCESS_TOKEN = localStorage.getItem('accessToken') ?? '';
+    if (ACCESS_TOKEN) {
+      config.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
+    }
+    return config;
+  },
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  },
+);
+
+// 응답 인터셉터: AccessToken 갱신
+axiosAuth.interceptors.response.use(
+  (response) => {
+    const newToken = extractTokenFromHeader(response.headers);
+    if (newToken) {
+      localStorage.setItem('accessToken', newToken);
+    }
+    return response;
+  },
+  async (error: AxiosError) => {
+    if (error.config) {
+      const refreshToken = document.cookie.split('; ').find((row) => row.startsWith('REFRESH_TOKEN='));
+      if (refreshToken) {
+        try {
+          const response = await axios.post('/auth/refresh', null, {
+            headers: { Authorization: `Bearer ${refreshToken.split('=')[1]}` },
+          });
+          const newAccessToken = response.data.accessToken;
+          localStorage.setItem('accessToken', newAccessToken);
+          error.config.headers.Authorization = `Bearer ${newAccessToken}`;
+          return axios.request(error.config);
+        } catch (refreshError) {
+          console.error('Failed to refresh token', refreshError);
+          localStorage.removeItem('accessToken');
+          // document.cookie = 'REFRESH_TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'; // 쿠키 삭제
+          return Promise.reject(refreshError);
+        }
+      }
+    }
+    return Promise.reject(error);
+  },
+);
 
 export { axiosUnAuth, axiosAuth };

@@ -30,16 +30,11 @@ export default function LoginScreen() {
     // 로그인 처리
     if (!activeSubBtn) return;
     const res = await postLogin(id, pw);
-    console.log('!!!!!! ', res);
     if (res?.isSuccess && res.result) {
-      // setAccessToken(res.result.accessToken);
-      console.log('----------------------', res.result.accessToken);
       localStorage.setItem('accessToken', res.result.accessToken);
-      // setCookie("accessToken", res.result.accessToken);
       setIsLoggedin(true);
       setUserId(id); // maybe fix
-      // setUserProfile()
-      // fetchProfile();
+      fetchProfile();
       navigate('/');
     } else {
       window.alert(res?.message);
