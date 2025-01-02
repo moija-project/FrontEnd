@@ -1,16 +1,10 @@
 // 카테고리 타입
-export type CategoryType =
-  | "all"
-  | "language"
-  | "hobby"
-  | "study"
-  | "employ"
-  | "etc";
+export type CategoryType = 'all' | 'language' | 'hobby' | 'study' | 'employ' | 'etc';
 
 // 보기 순 타입
-export type ViewType = "latest" | "most_view" | "most_like";
+export type ViewType = 'latest' | 'most_view' | 'most_like';
 // 검색 범위 타입
-export type SearchType = "title" | "contents" | "leader" | "all";
+export type SearchType = 'title' | 'contents' | 'leader' | 'all';
 
 // 게시물 리스트 검색&필터링 (카테고리, 보기순서, 검색어)
 export type FilterListType = {
@@ -82,12 +76,12 @@ export type postDetailResType = PostWriterProfileType & {
   state_recruit: boolean;
   title: string;
   views: number;
-  category: Exclude<CategoryType, "all">;
+  category: Exclude<CategoryType, 'all'>;
   changed: boolean;
   last_write: string;
   first_write: string;
   num_condition: number;
-  role_in_post: "V" | "L" | "M" | "T"; // viewer, leader, member , temp(요청만 보낸상태)
+  role_in_post: 'V' | 'L' | 'M' | 'T'; // viewer, leader, member , temp(요청만 보낸상태)
 };
 
 export type PostLikeReqType = {

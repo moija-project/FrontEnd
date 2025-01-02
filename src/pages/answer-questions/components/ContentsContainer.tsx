@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import { postQuestionAnswerState } from "../../../store/postStore";
+import React from 'react';
+import { useRecoilState } from 'recoil';
+import styled from 'styled-components';
+import { postQuestionAnswerState } from '../../../store/postStore';
 
 export default function ContentsContainer() {
-  const [postQuestion, setPostQuestion] = useRecoilState(
-    postQuestionAnswerState
-  );
+  const [postQuestion, setPostQuestion] = useRecoilState(postQuestionAnswerState);
   const handleAnswering = (answer: string, idx: number) => {
     if (!postQuestion) return;
     let newItem = [...postQuestion];
@@ -21,22 +19,14 @@ export default function ContentsContainer() {
         </Question>
         <Answer
           type="text"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleAnswering(e.target.value, idx)
-          }
-          value={(postQuestion && postQuestion[idx].answer) || ""}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleAnswering(e.target.value, idx)}
+          value={(postQuestion && postQuestion[idx].answer) || ''}
         />
       </ItemWrapper>
     );
   };
 
-  return (
-    <Container>
-      {postQuestion?.map(
-        (value, idx) => value && _renderQuestionItem(value.question, idx)
-      )}
-    </Container>
-  );
+  return <Container>{postQuestion?.map((value, idx) => value && _renderQuestionItem(value.question, idx))}</Container>;
 }
 
 const Container = styled.div`

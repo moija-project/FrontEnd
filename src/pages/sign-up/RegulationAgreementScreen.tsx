@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import CommonContainer from "../../components/CommonContainer";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import {
-  personalInfoText,
-  termsText,
-} from "../../utils/regulationAgreementText";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import CommonContainer from '../../components/CommonContainer';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { personalInfoText, termsText } from '../../utils/regulationAgreementText';
+import { useNavigate } from 'react-router-dom';
 
 export default function RegulationAgreementScreen() {
   const navigate = useNavigate();
@@ -23,12 +20,12 @@ export default function RegulationAgreementScreen() {
       setPersonalInfo(true);
     }
   };
-  const handleAgreement = (type: "terms" | "personalInfo") => {
-    if (type === "terms") setTerms(!terms);
+  const handleAgreement = (type: 'terms' | 'personalInfo') => {
+    if (type === 'terms') setTerms(!terms);
     else setPersonalInfo(!personalInfo);
   };
   const onSubmit = () => {
-    navigate("/signup");
+    navigate('/signup');
   };
   return (
     <CommonContainer>
@@ -36,9 +33,7 @@ export default function RegulationAgreementScreen() {
       <Line />
 
       <ButtonWrapper onClick={handleAll}>
-        <AgreeLabel style={{ fontWeight: 600 }}>
-          회원가입 약관에 모두 동의합니다
-        </AgreeLabel>
+        <AgreeLabel style={{ fontWeight: 600 }}>회원가입 약관에 모두 동의합니다</AgreeLabel>
         <AgreeButton isChecked={terms && personalInfo}>
           <FontAwesomeIcon icon={faCheck} color="white" />
         </AgreeButton>
@@ -46,9 +41,9 @@ export default function RegulationAgreementScreen() {
       <DivLine />
 
       <AgreementContainer>
-        <ButtonWrapper onClick={() => handleAgreement("terms")}>
+        <ButtonWrapper onClick={() => handleAgreement('terms')}>
           <AgreeLabel style={{ fontWeight: 600 }}>
-            이용약관 동의 <span style={{ color: "var(--red)" }}>(필수)</span>
+            이용약관 동의 <span style={{ color: 'var(--red)' }}>(필수)</span>
           </AgreeLabel>
           <AgreeButton isChecked={terms}>
             <FontAwesomeIcon icon={faCheck} color="white" />
@@ -58,10 +53,9 @@ export default function RegulationAgreementScreen() {
       </AgreementContainer>
 
       <AgreementContainer>
-        <ButtonWrapper onClick={() => handleAgreement("personalInfo")}>
+        <ButtonWrapper onClick={() => handleAgreement('personalInfo')}>
           <AgreeLabel style={{ fontWeight: 600 }}>
-            개인정보 수집 및 이용 동의{" "}
-            <span style={{ color: "var(--red)" }}>(필수)</span>
+            개인정보 수집 및 이용 동의 <span style={{ color: 'var(--red)' }}>(필수)</span>
           </AgreeLabel>
           <AgreeButton isChecked={personalInfo}>
             <FontAwesomeIcon icon={faCheck} color="white" />
@@ -69,14 +63,8 @@ export default function RegulationAgreementScreen() {
         </ButtonWrapper>
         <AgreementContent>{personalInfoText}</AgreementContent>
       </AgreementContainer>
-      <SubmitBtn
-        disabled={!(terms && personalInfo)}
-        onClick={onSubmit}
-        isActive={terms && personalInfo}
-      >
-        {terms && personalInfo
-          ? "회원가입 하기"
-          : "모두 동의해야 가입할 수 있어요"}
+      <SubmitBtn disabled={!(terms && personalInfo)} onClick={onSubmit} isActive={terms && personalInfo}>
+        {terms && personalInfo ? '회원가입 하기' : '모두 동의해야 가입할 수 있어요'}
       </SubmitBtn>
     </CommonContainer>
   );
@@ -113,8 +101,7 @@ const AgreeButton = styled.div<{ isChecked: boolean }>`
   width: 15px;
   height: 15px;
   border: 1px solid var(--purple);
-  background-color: ${({ isChecked }) =>
-    isChecked ? "var(--purple)" : "white"};
+  background-color: ${({ isChecked }) => (isChecked ? 'var(--purple)' : 'white')};
   border-radius: 2px;
 `;
 const AgreementContainer = styled.div`
@@ -134,7 +121,7 @@ const AgreementContent = styled.div`
   line-height: 1.5rem;
 `;
 const SubmitBtn = styled.button<{ isActive: boolean }>`
-  cursor: ${({ isActive }) => (isActive ? "pointer" : "not-allowed")};
+  cursor: ${({ isActive }) => (isActive ? 'pointer' : 'not-allowed')};
   margin: 6rem 0 2rem;
   width: 100%;
   padding: 1.2rem;
@@ -142,8 +129,7 @@ const SubmitBtn = styled.button<{ isActive: boolean }>`
   justify-content: center;
   font-size: 1rem;
   font-weight: 500;
-  background-color: ${({ isActive }) =>
-    isActive ? "var(--purple)" : "var(--light-gray03)"};
+  background-color: ${({ isActive }) => (isActive ? 'var(--purple)' : 'var(--light-gray03)')};
   border-radius: 4px;
   color: white;
 `;

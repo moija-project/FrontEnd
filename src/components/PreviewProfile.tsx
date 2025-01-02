@@ -1,13 +1,8 @@
-import React, { useEffect, useId, useState } from "react";
-import styled from "styled-components";
-import Modal from "./Modal";
-import ProfileModal from "./ProfileModal";
-import {
-  ProfileResType,
-  ProfileType,
-  UserProfileResType,
-} from "../interfaces/user-type";
-import { getUserProfile } from "../api/service-api/profileApi";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import ProfileModal from './ProfileModal';
+import { ProfileResType } from '../interfaces/user-type';
+import { getUserProfile } from '../api/service-api/profileApi';
 
 type PreviewProfileProps = {
   hasBorder?: boolean;
@@ -15,13 +10,9 @@ type PreviewProfileProps = {
   user_id?: string; // 타인
 };
 
-const defaultImg = require("../assets/images/default-img-01.png");
+const defaultImg = require('../assets/images/default-img-01.png');
 
-export default function PreviewProfile({
-  hasBorder = false,
-  profileData,
-  user_id,
-}: PreviewProfileProps) {
+export default function PreviewProfile({ hasBorder = false, profileData, user_id }: PreviewProfileProps) {
   const [showModal, setShowModal] = useState(false);
   const [profile, setProfile] = useState<ProfileResType>();
   const handleClickProfile = () => {
@@ -41,18 +32,10 @@ export default function PreviewProfile({
 
   return (
     <Container hasBorder={hasBorder}>
-      {showModal && (
-        <ProfileModal
-          setOpen={(open) => setShowModal(open)}
-          profileData={profile ?? undefined}
-        />
-      )}
-      <ProfileImg
-        onClick={handleClickProfile}
-        src={profile?.photo_profile || defaultImg}
-      />
+      {showModal && <ProfileModal setOpen={(open) => setShowModal(open)} profileData={profile ?? undefined} />}
+      <ProfileImg onClick={handleClickProfile} src={profile?.photo_profile || defaultImg} />
       <ProfileContentWrapper>
-        <Nickname>{profile?.nickname ?? "nickname"}</Nickname>
+        <Nickname>{profile?.nickname ?? 'nickname'}</Nickname>
         <Content>
           {profile?.gender} {profile?.birth_year}
         </Content>
@@ -71,9 +54,9 @@ const Container = styled.div<{ hasBorder: boolean }>`
   flex-direction: row;
   align-items: center;
   background-color: white;
-  padding: 0.94rem ${({ hasBorder }) => (hasBorder ? "20px" : "0")};
+  padding: 0.94rem ${({ hasBorder }) => (hasBorder ? '20px' : '0')};
   border-radius: 90px;
-  ${({ hasBorder }) => hasBorder && "border: 1px solid var(--purple);"}
+  ${({ hasBorder }) => hasBorder && 'border: 1px solid var(--purple);'}
 `;
 const ProfileImg = styled.img`
   cursor: pointer;

@@ -1,27 +1,19 @@
-import React, { useEffect, useState } from "react";
-import CommonContainer from "../../components/CommonContainer";
-import styled from "styled-components";
-import { postLogin } from "../../api/service-api/userApi";
-import { setCookie } from "../../utils/cookie";
-import { useRecoilState } from "recoil";
-import {
-  accessTokenState,
-  getAccessTokenState,
-  isLoggedInState,
-  myProfileInfoState,
-  myUserIdState,
-} from "../../store/userStore";
-import { useNavigate } from "react-router-dom";
-import { postMyProfile } from "../../api/service-api/profileApi";
+import React, { useEffect, useState } from 'react';
+import CommonContainer from '../../components/CommonContainer';
+import styled from 'styled-components';
+import { postLogin } from '../../api/service-api/userApi';
+import { useRecoilState } from 'recoil';
+import { accessTokenState, isLoggedInState, myProfileInfoState, myUserIdState } from '../../store/userStore';
+import { useNavigate } from 'react-router-dom';
+import { postMyProfile } from '../../api/service-api/profileApi';
 
 export default function LoginScreen() {
   const navigate = useNavigate();
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [isLoggedin, setIsLoggedin] = useRecoilState(isLoggedInState);
   const [userProfile, setUserProfile] = useRecoilState(myProfileInfoState);
   const [userId, setUserId] = useRecoilState(myUserIdState); // maybe fix
-  const [id, setId] = useState("");
-  const [pw, setPw] = useState("");
+  const [id, setId] = useState('');
+  const [pw, setPw] = useState('');
   const [activeSubBtn, setActiveSubBtn] = useState(false);
 
   const handleId = (val: string) => {
@@ -39,21 +31,18 @@ export default function LoginScreen() {
     if (!activeSubBtn) return;
     const res = await postLogin(id, pw);
     if (res?.isSuccess && res.result) {
-      // setAccessToken(res.result.accessToken);
-      localStorage.setItem("accessToken", res.result.accessToken);
-      // setCookie("accessToken", res.result.accessToken);
+      localStorage.setItem('accessToken', res.result.accessToken);
       setIsLoggedin(true);
       setUserId(id); // maybe fix
-      // setUserProfile()
       fetchProfile();
-      navigate("/");
+      navigate('/');
     } else {
       window.alert(res?.message);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleSubmit();
     }
   };
@@ -86,12 +75,7 @@ export default function LoginScreen() {
           onKeyDown={handleKeyDown}
         />
       </InputContainer>
-      <SubmitButton
-        disabled={!activeSubBtn}
-        isActive={activeSubBtn}
-        type="submit"
-        onClick={handleSubmit}
-      >
+      <SubmitButton disabled={!activeSubBtn} isActive={activeSubBtn} type="submit" onClick={handleSubmit}>
         로그인
       </SubmitButton>
     </CommonContainer>
@@ -125,8 +109,7 @@ const SubmitButton = styled.button<{ isActive: boolean }>`
   font-size: 1rem;
   width: 100%;
   padding: 0.8rem;
-  background-color: ${({ isActive }) =>
-    isActive ? "var(--purple)" : "var(--light-gray03)"};
+  background-color: ${({ isActive }) => (isActive ? 'var(--purple)' : 'var(--light-gray03)')};
   /* background-color: var(--purple); */
   border-radius: 4px;
 `;

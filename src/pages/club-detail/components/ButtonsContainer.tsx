@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import {
-  deletePostDetail,
-  postAnswering,
-  postChangeClubState,
-} from "../../../api/service-api/clubPostApi";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { postDetailState } from "../../../store/postStore";
-import { myProfileInfoState, myUserIdState } from "../../../store/userStore";
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { deletePostDetail, postAnswering, postChangeClubState } from '../../../api/service-api/clubPostApi';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { postDetailState } from '../../../store/postStore';
+import { myProfileInfoState, myUserIdState } from '../../../store/userStore';
 
 type ButtonsContainerProps = {
   postId: number;
@@ -20,10 +15,10 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
   const [postDetail, setPostDetail] = useRecoilState(postDetailState);
   const myUserid = useRecoilValue(myUserIdState);
   const moveToClubCredReview = () => {
-    navigate("/credReview", { state: { type: "club", postId } });
+    navigate('/credReview', { state: { type: 'club', postId } });
   };
 
-  const handleClubState = async (changeTo: "start" | "stop") => {
+  const handleClubState = async (changeTo: 'start' | 'stop') => {
     const res = await postChangeClubState(postId, changeTo);
     if (res?.data.isSuccess) {
       let newPost = { ...postDetail };
@@ -38,12 +33,12 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
         is_ask: true,
         answers: [],
       },
-      postId
+      postId,
     );
     if (res?.data.isSuccess) {
-      window.alert("1대1 채팅 요청됐습니다!");
-      navigate("/clubList");
-    } else window.alert("1대1 채팅 요청에 실패했습니다. 다시 시도해주세요.");
+      window.alert('1대1 채팅 요청됐습니다!');
+      navigate('/clubList');
+    } else window.alert('1대1 채팅 요청에 실패했습니다. 다시 시도해주세요.');
   };
   const moveToAnswerQuestions = () => {
     if (!postDetail.num_condition) {
@@ -59,48 +54,38 @@ export default function ButtonsContainer({ postId }: ButtonsContainerProps) {
   const handleDelete = () => {
     const deleteData = async () => {
       const res = await deletePostDetail(postId);
-      if (res?.data.isSuccess) navigate("/clubList");
+      if (res?.data.isSuccess) navigate('/clubList');
     };
-    if (window.confirm("정말 게시물을 삭제하시겠습니까? ")) {
+    if (window.confirm('정말 게시물을 삭제하시겠습니까? ')) {
       deleteData();
     }
   };
 
   return (
     <Container>
-      {postDetail.role_in_post === "L" && (
+      {postDetail.role_in_post === 'L' && (
         <SettingWrapper>
           <NonColoredButton onClick={moveToRevise}>수정하기</NonColoredButton>
           <RedBorderButton onClick={handleDelete}>삭제하기</RedBorderButton>
         </SettingWrapper>
       )}
 
-      {(postDetail.role_in_post === "M" || postDetail.role_in_post === "L") && (
-        <ColoredButton onClick={moveToClubCredReview}>
-          모임 신뢰도 평가하기
-        </ColoredButton>
+      {(postDetail.role_in_post === 'M' || postDetail.role_in_post === 'L') && (
+        <ColoredButton onClick={moveToClubCredReview}>모임 신뢰도 평가하기</ColoredButton>
       )}
 
-      {postDetail.role_in_post === "L" && postDetail.state_recruit && (
-        <ColoredButton onClick={() => handleClubState("stop")}>
-          모집 종료하기
-        </ColoredButton>
+      {postDetail.role_in_post === 'L' && postDetail.state_recruit && (
+        <ColoredButton onClick={() => handleClubState('stop')}>모집 종료하기</ColoredButton>
       )}
-      {postDetail.role_in_post === "L" && !postDetail.state_recruit && (
-        <NonColoredButton onClick={() => handleClubState("start")}>
-          모집하기
-        </NonColoredButton>
+      {postDetail.role_in_post === 'L' && !postDetail.state_recruit && (
+        <NonColoredButton onClick={() => handleClubState('start')}>모집하기</NonColoredButton>
       )}
 
-      {localStorage.getItem("accessToken") &&
-        postDetail.role_in_post === "V" &&
-        postDetail.state_recruit && (
-          <ColoredButton onClick={moveToAnswerQuestions}>
-            1대1 채팅 요청하기
-          </ColoredButton>
-        )}
+      {localStorage.getItem('accessToken') && postDetail.role_in_post === 'V' && postDetail.state_recruit && (
+        <ColoredButton onClick={moveToAnswerQuestions}>1대1 채팅 요청하기</ColoredButton>
+      )}
 
-      {postDetail.role_in_post === "V" && !postDetail.state_recruit && (
+      {postDetail.role_in_post === 'V' && !postDetail.state_recruit && (
         <DisabledButton disabled>모집이 종료됐어요</DisabledButton>
       )}
     </Container>

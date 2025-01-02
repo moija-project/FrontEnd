@@ -1,10 +1,8 @@
-import { useQuery } from "react-query";
-import { PostInfoResultResType } from "../../../interfaces/post-type";
-import { axiosAuth } from "../../settingAxios";
+import { useQuery } from 'react-query';
+import { PostInfoResultResType } from '../../../interfaces/post-type';
+import { axiosAuth } from '../../settingAxios';
 
-const getPostInfo = async (
-  postId: number
-): Promise<PostInfoResultResType | undefined> => {
+const getPostInfo = async (postId: number): Promise<PostInfoResultResType | undefined> => {
   const url = `/post/info/${postId}`;
   try {
     const res = await axiosAuth.get(url);
@@ -16,7 +14,7 @@ const getPostInfo = async (
 
 export const usePostInfo = (postId: number) => {
   return useQuery({
-    queryKey: ["post-info", postId],
+    queryKey: ['post-info', postId],
     queryFn: () => getPostInfo(postId),
     // enabled: false,
   });

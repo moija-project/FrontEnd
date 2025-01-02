@@ -1,6 +1,5 @@
-import React, { ReactNode, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React, { ReactNode } from 'react';
+import styled from 'styled-components';
 
 type CommonContainerProps = {
   children?: ReactNode;
@@ -8,11 +7,7 @@ type CommonContainerProps = {
   boxStyle?: React.CSSProperties;
 };
 
-export default function CommonContainer({
-  children,
-  containerStyle,
-  boxStyle,
-}: CommonContainerProps) {
+export default function CommonContainer({ children, containerStyle, boxStyle }: CommonContainerProps) {
   return (
     <Container>
       <BoxContainer style={boxStyle}>

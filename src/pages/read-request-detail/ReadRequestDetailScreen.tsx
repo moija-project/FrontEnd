@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
-import CommonContainer from "../../components/CommonContainer";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import PreviewProfile from "../../components/PreviewProfile";
-import ReadReplyContainer from "./components/ReadReplyContainer";
-import {
-  ChatRequestStoreType,
-  ReadReceivedAnsResType,
-} from "../../interfaces/mypage-type";
-import { postReceivedChatRequestDetail } from "../../api/service-api/mypageApi";
-import { createChatRoom } from "../../api/service-api/chat/chatApi";
-import { useRecoilValue } from "recoil";
-import { myUserIdState } from "../../store/userStore";
+import React, { useEffect, useState } from 'react';
+import CommonContainer from '../../components/CommonContainer';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import PreviewProfile from '../../components/PreviewProfile';
+import ReadReplyContainer from './components/ReadReplyContainer';
+import { ChatRequestStoreType, ReadReceivedAnsResType } from '../../interfaces/mypage-type';
+import { postReceivedChatRequestDetail } from '../../api/service-api/mypageApi';
+import { createChatRoom } from '../../api/service-api/chat/chatApi';
+import { useRecoilValue } from 'recoil';
+import { myUserIdState } from '../../store/userStore';
 
 export default function ReadRequestDetailScreen() {
   const navigate = useNavigate();
@@ -34,10 +31,10 @@ export default function ReadRequestDetailScreen() {
       //   },
       // });
       if (createChatRes) {
-        window.alert("요청을 수락했습니다!");
-        navigate("/clubList");
+        window.alert('요청을 수락했습니다!');
+        navigate('/clubList');
       } else {
-        window.alert("요청 수락에 실패했습니다. 다시 시도해주세요.");
+        window.alert('요청 수락에 실패했습니다. 다시 시도해주세요.');
       }
     }
   };
@@ -60,19 +57,17 @@ export default function ReadRequestDetailScreen() {
         <br />
         <Link to={`/clubDetail/${reqData?.post_id}`} target="_blank">
           <PostLink>{reqData?.title}</PostLink>
-        </Link>{" "}
+        </Link>{' '}
         을 보고 <br />
         1대1 채팅을 요청했어요!
       </Title>
       <PreviewProfile hasBorder user_id={reqDetail?.user_id} />
       <ReadReplyContainer
         // fix !
-        nickname={reqDetail?.nickname ?? ""}
+        nickname={reqDetail?.nickname ?? ''}
         data={reqDetail?.qnas ?? []}
       />
-      <AcceptButton onClick={handleAccept}>
-        1대1 채팅 요청 수락하기
-      </AcceptButton>
+      <AcceptButton onClick={handleAccept}>1대1 채팅 요청 수락하기</AcceptButton>
     </CommonContainer>
   );
 }

@@ -1,35 +1,31 @@
-import {
-  faCaretDown,
-  faCaretUp,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { SearchType, ViewType } from "../../../interfaces/post-type";
-import { useRecoilValue } from "recoil";
-import { isLoggedInState } from "../../../store/userStore";
+import { faCaretDown, faCaretUp, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { SearchType, ViewType } from '../../../interfaces/post-type';
+import { useRecoilValue } from 'recoil';
+import { isLoggedInState } from '../../../store/userStore';
 
 type ClubListTopMenuProps = {
   setViewType: (cate: ViewType) => void;
   searchType: SearchType;
   setSearchType: (type: SearchType) => void;
-  setKeyword : (word : string) => void ;
-  onSearch : () => void 
+  setKeyword: (word: string) => void;
+  onSearch: () => void;
 };
 
 const viewItems: { data: ViewType; name: string }[] = [
-  { data: "latest", name: "최신순" },
-  { data: "most_view", name: "조회수순" },
-  { data: "most_like", name: "좋아요순" },
+  { data: 'latest', name: '최신순' },
+  { data: 'most_view', name: '조회수순' },
+  { data: 'most_like', name: '좋아요순' },
 ];
 
 const searchTypesList: { id: SearchType; name: string }[] = [
-  { id: "title", name: "제목" },
-  { id: "contents", name: "내용" },
-  { id: "leader", name: "작성자" },
-  { id: "all", name: "전체" },
+  { id: 'title', name: '제목' },
+  { id: 'contents', name: '내용' },
+  { id: 'leader', name: '작성자' },
+  { id: 'all', name: '전체' },
 ];
 
 export default function ClubListTopMenu({
@@ -37,20 +33,20 @@ export default function ClubListTopMenu({
   searchType,
   setSearchType,
   setKeyword,
-  onSearch
+  onSearch,
 }: ClubListTopMenuProps) {
-  const [activeView, setActiveView] = useState<ViewType>("latest");
+  const [activeView, setActiveView] = useState<ViewType>('latest');
   const [isDropdownViewed, setIsDropdownViewed] = useState(false);
   // const
   const isLoggedin = useRecoilValue(isLoggedInState);
 
   const navigate = useNavigate();
   const onClickPost = () => {
-    if (localStorage.getItem("accessToken")) navigate("/postClub");
+    if (localStorage.getItem('accessToken')) navigate('/postClub');
     // if (isLoggedin) navigate("/postClub");
     else {
-      window.alert("로그인을 먼저 해주세요");
-      navigate("/login");
+      window.alert('로그인을 먼저 해주세요');
+      navigate('/login');
     }
   };
   const handleViewType = (type: ViewType) => {
@@ -98,9 +94,13 @@ export default function ClubListTopMenu({
               </DropDownBox>
             )}
           </SearchTypeWrapper>
-          <InputBox type="text" onChange={(e) => setKeyword(e.target.value)} onKeyDown={(e) => {
-            if(e.key === 'Enter') onSearch()
-          }}/>
+          <InputBox
+            type="text"
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') onSearch();
+            }}
+          />
           <SearchButton onClick={onSearch}>
             <FontAwesomeIcon icon={faMagnifyingGlass} color="#8F8F8F" />
           </SearchButton>
@@ -151,8 +151,7 @@ const DropDownBox = styled.ul`
   padding: 0.7rem 0.4rem;
 `;
 const DropdownType = styled.li<{ isSelected: boolean }>`
-  color: ${({ isSelected }) =>
-    isSelected ? "var(--purple)" : "var(--gray01)"};
+  color: ${({ isSelected }) => (isSelected ? 'var(--purple)' : 'var(--gray01)')};
   font-size: 0.8rem;
 `;
 const SearchTypeText = styled.span`
@@ -199,7 +198,7 @@ const FilterWrapper = styled.ul`
 const FilterItem = styled.li<{ isActive: boolean }>`
   font-size: 0.875rem;
   font-weight: 400;
-  color: ${({ isActive }) => (isActive ? "var(--purple)" : "var(--gray01)")};
+  color: ${({ isActive }) => (isActive ? 'var(--purple)' : 'var(--gray01)')};
   cursor: pointer;
 `;
 const Line = styled.div`

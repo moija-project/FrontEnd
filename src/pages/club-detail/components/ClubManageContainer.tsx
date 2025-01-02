@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import MemberItem from "./MemberItem";
-import {
-  getPostMembers,
-  postPostBump,
-} from "../../../api/service-api/clubPostApi";
-import { useRecoilValue } from "recoil";
-import { postDetailState } from "../../../store/postStore";
-import { hasPassed } from "../../../utils/datetime";
-import { MembersResType } from "../../../interfaces/post-type";
-import { myProfileInfoState } from "../../../store/userStore";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import MemberItem from './MemberItem';
+import { getPostMembers, postPostBump } from '../../../api/service-api/clubPostApi';
+import { useRecoilValue } from 'recoil';
+import { postDetailState } from '../../../store/postStore';
+import { hasPassed } from '../../../utils/datetime';
+import { MembersResType } from '../../../interfaces/post-type';
+import { myProfileInfoState } from '../../../store/userStore';
 
 type ClubManageContainer = {
   postId: number;
@@ -31,7 +28,7 @@ export default function ClubManageContainer({ postId }: ClubManageContainer) {
 
     const getMembers = async () => {
       const res = await getPostMembers(postId);
-      console.log("상세페이지 - 멤버들 보기 : ", res);
+      console.log('상세페이지 - 멤버들 보기 : ', res);
       setMembers(res);
     };
     getMembers();
@@ -39,12 +36,12 @@ export default function ClubManageContainer({ postId }: ClubManageContainer) {
 
   return (
     <Container>
-      {postDetail.role_in_post === "L" && isActiveBumpBtn && (
+      {postDetail.role_in_post === 'L' && isActiveBumpBtn && (
         <Button isActivated onClick={handleBump}>
           모집글 끌어올리기
         </Button>
       )}
-      {postDetail.role_in_post === "L" && !isActiveBumpBtn && (
+      {postDetail.role_in_post === 'L' && !isActiveBumpBtn && (
         <Button isActivated={false} disabled>
           30시간 지난 후에 끌올이 가능해요
         </Button>
@@ -55,9 +52,7 @@ export default function ClubManageContainer({ postId }: ClubManageContainer) {
           <HeaderTitle>모집 인원</HeaderTitle>
           <PeopleCnt>총 {members?.length ?? 0}명</PeopleCnt>
         </HeaderWrapper>
-        <InstructionText>
-          멤버의 개인 평가를 하고 싶으면 멤버 닉네임을 클릭해보세요
-        </InstructionText>
+        <InstructionText>멤버의 개인 평가를 하고 싶으면 멤버 닉네임을 클릭해보세요</InstructionText>
         <MemberListWrapper>
           {members?.length &&
             members.map((member, i) => (
@@ -90,9 +85,8 @@ const Button = styled.button<{ isActivated: boolean }>`
   color: white;
   text-align: center;
   padding: 11px;
-  ${({ isActivated }) => !isActivated && "pointer-events: none;"}
-  background-color: ${({ isActivated }) =>
-    isActivated ? "var(--purple)" : "var(--gray01)"};
+  ${({ isActivated }) => !isActivated && 'pointer-events: none;'}
+  background-color: ${({ isActivated }) => (isActivated ? 'var(--purple)' : 'var(--gray01)')};
   font-size: 1.125rem;
   margin-bottom: 20px;
 `;

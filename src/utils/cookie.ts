@@ -1,4 +1,4 @@
-import { Cookies } from "react-cookie";
+import { Cookies } from 'react-cookie';
 
 const cookies = new Cookies();
 //쿠키에 값을 저장할때

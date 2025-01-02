@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import styled from "styled-components";
+import { useEffect, useRef } from 'react';
+import styled from 'styled-components';
 
 type TextMsgBoxProps = {
   text: string;
@@ -19,9 +19,8 @@ export default function TextMsgBox({ text, time, name }: TextMsgBoxProps) {
       const div = textRef.current;
       const textWidth = div.scrollWidth;
       if (textWidth > 100) {
-        div.style.wordWrap = "break-word";
-        div.style.height = "auto";
-      } else {
+        div.style.wordWrap = 'break-word';
+        div.style.height = 'auto';
       }
     }
   }, [text]);
@@ -46,11 +45,6 @@ const ChatContainer = styled.div`
   flex-direction: row;
   gap: 0.4rem;
   align-items: flex-start;
-`;
-const ProfileImg = styled.img`
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 100%;
 `;
 const ChatWrapper = styled.div`
   display: flex;

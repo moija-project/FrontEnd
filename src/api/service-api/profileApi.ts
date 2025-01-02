@@ -1,10 +1,8 @@
-import { ProfileResType, UserProfileResType } from "../../interfaces/user-type";
-import { axiosAuth } from "../settingAxios";
+import { ProfileResType, UserProfileResType } from '../../interfaces/user-type';
+import { axiosAuth } from '../settingAxios';
 
 // 내 프로필 보기
-export const postMyProfile = async (data: {}): Promise<
-  ProfileResType | undefined
-> => {
+export const postMyProfile = async (data: object): Promise<ProfileResType | undefined> => {
   const url = `/my/profile`;
   try {
     const res = await axiosAuth.post(url); // fix
@@ -17,12 +15,11 @@ export const postMyProfile = async (data: {}): Promise<
 
 // 내 프로필 사진 수정하기
 export const patchMyProfileImg = async (body: any) => {
-  // export const patchMyProfileImg = async (data: { file: File }) => {
   const url = `/my/profile/edit/photo`;
   try {
     const res = await axiosAuth.patch(url, body, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
     });
     return res;
@@ -44,9 +41,7 @@ export const patchMyProfileNickname = async (new_nickname: string) => {
 };
 
 // userId 로 유저 프로필 조회
-export const getUserProfile = async (
-  user_id: string
-): Promise<UserProfileResType | undefined> => {
+export const getUserProfile = async (user_id: string): Promise<UserProfileResType | undefined> => {
   const url = `/user/profile`;
   try {
     const res = await axiosAuth.post(url, { user_id });

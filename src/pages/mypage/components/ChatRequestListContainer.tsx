@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import PreviewChatRequest from "../../../components/PreviewChatRequest";
-import { useRecoilValue } from "recoil";
-import { fetchRequestListState } from "../../../store/mypageStore";
+import styled from 'styled-components';
+import PreviewChatRequest from '../../../components/PreviewChatRequest';
+import { useRecoilValue } from 'recoil';
+import { fetchRequestListState } from '../../../store/mypageStore';
 
 export default function ChatRequestListContainer() {
   const list = useRecoilValue(fetchRequestListState);
@@ -12,17 +11,10 @@ export default function ChatRequestListContainer() {
       <RequestContainer>
         <Title>받은 요청</Title>
         <MessageList>
-          {!list.map((v) => v.type === "received").length && (
-            <NoneText>받은 요청이 없어요</NoneText>
-          )}
+          {!list.map((v) => v.type === 'received').length && <NoneText>받은 요청이 없어요</NoneText>}
           {list.map(
             (item, idx) =>
-              item.type === "received" && (
-                <PreviewChatRequest
-                  key={`received-request-msg-${idx}`}
-                  data={item}
-                />
-              )
+              item.type === 'received' && <PreviewChatRequest key={`received-request-msg-${idx}`} data={item} />,
           )}
         </MessageList>
       </RequestContainer>
@@ -30,17 +22,9 @@ export default function ChatRequestListContainer() {
       <RequestContainer>
         <Title>보낸 요청</Title>
         <MessageList>
-          {!list.map((v) => v.type === "sent").length && (
-            <NoneText>보낸 요청이 없어요</NoneText>
-          )}
+          {!list.map((v) => v.type === 'sent').length && <NoneText>보낸 요청이 없어요</NoneText>}
           {list.map(
-            (item, idx) =>
-              item.type === "sent" && (
-                <PreviewChatRequest
-                  key={`sent-request-msg-${idx}`}
-                  data={item}
-                />
-              )
+            (item, idx) => item.type === 'sent' && <PreviewChatRequest key={`sent-request-msg-${idx}`} data={item} />,
           )}
         </MessageList>
       </RequestContainer>

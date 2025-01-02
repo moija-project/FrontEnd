@@ -1,21 +1,17 @@
-import React from "react";
-import styled from "styled-components";
-import { NotifyResType } from "../../../interfaces/mypage-type";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import { NotifyResType } from '../../../interfaces/mypage-type';
+import { Link } from 'react-router-dom';
 
 type NotificationBoxProps = {
   isFirst?: boolean;
   item: NotifyResType;
 };
 
-export default function NotificationBox({
-  isFirst = false,
-  item,
-}: NotificationBoxProps) {
+export default function NotificationBox({ isFirst = false, item }: NotificationBoxProps) {
   return (
-    <Link to={item.link} style={{ textDecoration: "none", color: "black" }}>
+    <Link to={item.link} style={{ textDecoration: 'none', color: 'black' }}>
       <Container isFirst={isFirst}>
-        <IconImage src={require("../../../assets/images/icon-invite.png")} />
+        <IconImage src={require('../../../assets/images/icon-invite.png')} />
         <MessageWrapper>
           <MessageTitle>{item.message}</MessageTitle>
           <MessageContent>자세히 보기</MessageContent>
@@ -27,7 +23,7 @@ export default function NotificationBox({
 
 const Container = styled.div<{ isFirst: boolean }>`
   padding-top: 0.94rem;
-  ${({ isFirst }) => !isFirst && "border-top: 1px solid var(--light-gray02);"}
+  ${({ isFirst }) => !isFirst && 'border-top: 1px solid var(--light-gray02);'}
   cursor: pointer;
   border-radius: 4px;
   display: flex;

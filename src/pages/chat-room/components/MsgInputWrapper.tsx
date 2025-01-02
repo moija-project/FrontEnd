@@ -1,7 +1,7 @@
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import styled from "styled-components";
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import styled from 'styled-components';
 
 type MsgInputWrapperProps = {
   setMsg: (msg: string) => void;
@@ -9,34 +9,24 @@ type MsgInputWrapperProps = {
   onSend: () => void;
 };
 
-export default function MsgInputWrapper({
-  setMsg,
-  msg,
-  onSend,
-}: MsgInputWrapperProps) {
-  const handleSendMsg = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+export default function MsgInputWrapper({ setMsg, msg, onSend }: MsgInputWrapperProps) {
+  const handleSendMsg = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     // 보내지는 로직
     onSend();
-    setMsg("");
+    setMsg('');
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       onSend();
-      setMsg("");
+      setMsg('');
     }
   };
   return (
     <InputWrapper>
-      <MsgInput
-        placeholder="채팅을 남겨보세요"
-        onChange={(e) => setMsg(e.target.value)}
-        value={msg}
-      />
+      <MsgInput placeholder="채팅을 남겨보세요" onChange={(e) => setMsg(e.target.value)} value={msg} />
       <SendBtn onClick={handleSendMsg} onKeyDown={(e) => handlePressEnter(e)}>
         <FontAwesomeIcon icon={faPaperPlane} size="lg" color="#ffffff" />
       </SendBtn>

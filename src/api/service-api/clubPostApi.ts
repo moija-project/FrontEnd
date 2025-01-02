@@ -1,37 +1,31 @@
-import axios from "axios";
 import {
   AnsweringReqType,
   ClubConditionType,
   PostClipReqType,
   PostLikeReqType,
   PostLikeResType,
-  PostWriteReqType,
   getPostDetailParamsType,
   postDetailResType,
   postListParamsType,
   postListResType,
-} from "../../interfaces/post-type";
-import { axiosAuth, axiosUnAuth } from "../settingAxios";
+} from '../../interfaces/post-type';
+import { axiosAuth, axiosUnAuth } from '../settingAxios';
 
-export const getPostList = async (
-  params: postListParamsType
-): Promise<postListResType[] | undefined> => {
+export const getPostList = async (params: postListParamsType): Promise<postListResType[] | undefined> => {
   const url = `/post/list`;
   try {
     const response = await axiosAuth.get(url, { params }); // fix?!
     return response.data.result;
   } catch (error) {
-    console.error("**ERROR**", error);
+    console.error('**ERROR**', error);
   }
 };
 
-export const getPostDetail = async (
-  params: getPostDetailParamsType
-): Promise<postDetailResType | undefined> => {
+export const getPostDetail = async (params: getPostDetailParamsType): Promise<postDetailResType | undefined> => {
   const url = `/post/page`;
   let res;
   try {
-    if (localStorage.getItem("accessToken")) {
+    if (localStorage.getItem('accessToken')) {
       res = await axiosAuth.post(url, null, { params });
     } else {
       res = await axiosUnAuth.get(url, { params });
@@ -43,12 +37,11 @@ export const getPostDetail = async (
 };
 
 export const postPostWrite = async (body: any) => {
-  // export const postPostWrite = async (body: PostWriteReqType) => {
   const url = `/post/write`;
   try {
     const res = await axiosAuth.post(url, body, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
     });
     return res;
@@ -57,9 +50,7 @@ export const postPostWrite = async (body: any) => {
   }
 };
 
-export const postPostLike = async (
-  data: PostLikeReqType
-): Promise<PostLikeResType | undefined> => {
+export const postPostLike = async (data: PostLikeReqType): Promise<PostLikeResType | undefined> => {
   const url = `/post/like`;
   try {
     const res = await axiosAuth.post(url, data);
@@ -69,9 +60,7 @@ export const postPostLike = async (
   }
 };
 
-export const postPostClip = async (
-  data: PostClipReqType
-): Promise<PostLikeResType | undefined> => {
+export const postPostClip = async (data: PostClipReqType): Promise<PostLikeResType | undefined> => {
   const url = `/post/clip`;
   try {
     const res = await axiosAuth.post(url, data);
@@ -89,7 +78,7 @@ export const patchPost = async (body: any, post_id: number) => {
     // const res = await axiosAuth.patch(url, data);
     const res = await axiosAuth.patch(url, body, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
     });
     return res;
@@ -98,9 +87,7 @@ export const patchPost = async (body: any, post_id: number) => {
   }
 };
 
-export const getPostQuestion = async (body: {
-  post_id: number;
-}): Promise<ClubConditionType[] | undefined> => {
+export const getPostQuestion = async (body: { post_id: number }): Promise<ClubConditionType[] | undefined> => {
   const url = `/post/question/${body.post_id}`;
   try {
     const res = await axiosAuth.post(url, body);
@@ -131,10 +118,7 @@ export const postPostBump = async (data: { post_id: number }) => {
 };
 
 // 가입조건 질문에 답하기
-export const postAnswering = async (
-  data: AnsweringReqType,
-  post_id: number
-) => {
+export const postAnswering = async (data: AnsweringReqType, post_id: number) => {
   const url = `/post/waiting/${post_id}`;
   try {
     const res = await axiosAuth.post(url, data);
@@ -145,10 +129,7 @@ export const postAnswering = async (
 };
 
 // 모임 재개 / 종료 시키기
-export const postChangeClubState = async (
-  post_id: number,
-  state: "start" | "stop"
-) => {
+export const postChangeClubState = async (post_id: number, state: 'start' | 'stop') => {
   const url = `/post/${state}/${post_id}`;
   try {
     const res = await axiosAuth.post(url);

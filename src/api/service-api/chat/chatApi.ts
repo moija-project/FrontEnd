@@ -1,5 +1,4 @@
-import { CreateChatReqType } from "../../../interfaces/chat-type";
-import { axiosAuth } from "../../settingAxios";
+import { axiosAuth } from '../../settingAxios';
 
 // 1:1 채팅방 생성 기능 (채팅 요청 수락 버튼 누를 시)
 // export const createChatRoom = async (body: CreateChatReqType) => {
@@ -22,7 +21,7 @@ export const createChatRoom = async (waitingId: number) => {
     //     "Content-Type": "multipart/form-data",
     //   },
     // });
-    const res = await axiosAuth.post(url);
+    // const res = await axiosAuth.post(url);
     return true;
   } catch (error) {
     console.error(error);

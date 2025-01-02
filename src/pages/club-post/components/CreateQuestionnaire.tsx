@@ -1,15 +1,13 @@
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 type CreateQuestionnaireProps = {
   setListArr: (listArr: string[]) => void;
 };
 
-export default function CreateQuestionnaire({
-  setListArr,
-}: CreateQuestionnaireProps) {
+export default function CreateQuestionnaire({ setListArr }: CreateQuestionnaireProps) {
   const [isChecked, setIsChecked] = useState(false);
   const [questionCnt, setQuestionCnt] = useState<number>(1);
   const [questionList, setQuestionList] = useState<any[]>([]);
@@ -24,10 +22,7 @@ export default function CreateQuestionnaire({
     setQuestionList(filteredList);
     setQuestionCnt(questionCnt - 1);
   };
-  const onChangeQuestion = (
-    idx: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const onChangeQuestion = (idx: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedList = [...questionList];
     updatedList[idx] = e.target.value;
     setQuestionList(updatedList);
@@ -45,8 +40,7 @@ export default function CreateQuestionnaire({
           <TopInstruction>
             1대1 채팅을 하기 전에 가입을 원하는 사용자들에게 질문할 수 있어요.
             <br />
-            사용자의 답변을 보고 1대1 채팅을 수락하여 팀에 초대할 지
-            결정해보세요.
+            사용자의 답변을 보고 1대1 채팅을 수락하여 팀에 초대할 지 결정해보세요.
           </TopInstruction>
         </TopTextWrapper>
         <ToggleButton isChecked={isChecked} onClick={() => onToggle()}>
@@ -56,15 +50,14 @@ export default function CreateQuestionnaire({
       {isChecked && (
         <ContentContainer>
           <InstructionText>
-            가입을 원하는 사람에게 궁금한 점을 작성해보세요. 질문은 최대
-            10개이며, 모든 질문은 단답형 입니다.
+            가입을 원하는 사람에게 궁금한 점을 작성해보세요. 질문은 최대 10개이며, 모든 질문은 단답형 입니다.
           </InstructionText>
           <QuestionsContainer>
             {[...Array(questionCnt)].map((v, i) => (
               <QuestionWrapper key={`question-${i}`}>
                 <QuestionNumber>{i + 1}</QuestionNumber>
                 <QuestionInput
-                  value={questionList[i] || ""}
+                  value={questionList[i] || ''}
                   onChange={(e) => onChangeQuestion(i, e)}
                   placeholder="질문을 작성해주세요. (ex : 토익 점수가 어떻게 되나요?, 어떤 자격증을 준비 중이신가요? 등)"
                 />
@@ -74,10 +67,7 @@ export default function CreateQuestionnaire({
               </QuestionWrapper>
             ))}
           </QuestionsContainer>
-          <AddButton
-            isMax={questionCnt >= 10}
-            onClick={() => onClickAddButton()}
-          >
+          <AddButton isMax={questionCnt >= 10} onClick={() => onClickAddButton()}>
             질문 추가하기
           </AddButton>
         </ContentContainer>
@@ -113,13 +103,12 @@ const ToggleButton = styled.button<{ isChecked: boolean }>`
   width: 55px;
   height: 28px;
   border-radius: 55px;
-  background-color: ${({ isChecked }) =>
-    isChecked ? "var(--purple)" : "var(--light-gray02)"};
+  background-color: ${({ isChecked }) => (isChecked ? 'var(--purple)' : 'var(--light-gray02)')};
 `;
 const ToggleButtonCircle = styled.div<{ isChecked: boolean }>`
   position: absolute;
   top: 4px;
-  ${({ isChecked }) => (isChecked ? "right : 4px;" : "left : 4px;")}
+  ${({ isChecked }) => (isChecked ? 'right : 4px;' : 'left : 4px;')}
   width: 20px;
   height: 20px;
   border-radius: 20px;
@@ -137,7 +126,7 @@ const AddButton = styled.button<{ isMax?: boolean }>`
   border-radius: 50px;
   background-color: white;
   border: 1px solid var(--purple);
-  ${({ isMax }) => isMax && "display : none ;"}
+  ${({ isMax }) => isMax && 'display : none ;'}
 `;
 const QuestionsContainer = styled.div`
   display: flex;

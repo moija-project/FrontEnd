@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import styled from "styled-components";
+import { useEffect, useRef } from 'react';
+import styled from 'styled-components';
 
 type MyTextMsgBoxProps = {
   text: string;
@@ -7,19 +7,15 @@ type MyTextMsgBoxProps = {
   isRead?: boolean;
 };
 
-export default function MyTextMsgBox({
-  text,
-  time,
-  isRead = false,
-}: MyTextMsgBoxProps) {
+export default function MyTextMsgBox({ text, time, isRead = false }: MyTextMsgBoxProps) {
   const textRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (textRef.current) {
       const div = textRef.current;
       const textWidth = div.scrollWidth;
       if (textWidth > 100) {
-        div.style.wordWrap = "break-word";
-        div.style.height = "auto";
+        div.style.wordWrap = 'break-word';
+        div.style.height = 'auto';
       } else {
       }
     }
