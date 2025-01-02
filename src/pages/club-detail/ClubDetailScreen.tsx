@@ -17,8 +17,7 @@ export default function ClubDetailScreen() {
   useEffect(() => {
     const getData = async () => {
       const res = await getPostDetail({ post_id: Number(postId) });
-      console.log('상세페이지 : ', res);
-      console.log('상세페이지 - detail: ', res?.leader_id);
+      console.log('###', res);
       res && setPostDetail(res);
       if (localStorage.getItem('accessToken')) {
         const questionRes = await getPostQuestion({

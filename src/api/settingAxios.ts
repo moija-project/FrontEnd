@@ -41,6 +41,24 @@ axiosAuth.interceptors.request.use(
 // 응답 인터셉터: AccessToken 갱신
 axiosAuth.interceptors.response.use(
   (response) => {
+    if (!response.data.isSuccess) {
+      const errorCode = response.data.code;
+
+      switch (errorCode) {
+        case 4006:
+        case 4020:
+          const newToken = extractTokenFromHeader(response.headers);
+          if (!newToken) {
+            localStorage.removeItem('accessToken');
+            return axios.request(response.config);
+          } else {
+            localStorage.setItem('accessToken', newToken);
+            return axios.request(response.config);
+          }
+        default:
+          break;
+      }
+    }
     const newToken = extractTokenFromHeader(response.headers);
     if (newToken) {
       localStorage.setItem('accessToken', newToken);
@@ -61,7 +79,7 @@ axiosAuth.interceptors.response.use(
           return axios.request(error.config);
         } catch (refreshError) {
           console.error('Failed to refresh token', refreshError);
-          localStorage.removeItem('accessToken');
+          // localStorage.removeItem('accessToken');
           // document.cookie = 'REFRESH_TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'; // 쿠키 삭제
           return Promise.reject(refreshError);
         }
